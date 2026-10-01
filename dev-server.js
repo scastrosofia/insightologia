@@ -20,6 +20,7 @@ const MIME_TYPES = {
   '.ico': 'image/x-icon',
   '.gif': 'image/gif',
   '.webp': 'image/webp',
+  '.webm': 'video/webm',
   '.wav': 'audio/wav',
   '.mp3': 'audio/mpeg'
 };

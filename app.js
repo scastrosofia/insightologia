@@ -72,11 +72,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewportWrapper = document.getElementById('viewport-wrapper');
 
   const assetsToPreload = [
-    'assets/escena.webp',
-    'assets/manos.png',
-    'assets/logo.webp',
-    'assets/fondo-aterciopelado.jpeg',
-    'assets/gato.gif'
+    { type: 'image', src: 'assets/escena.webp' },
+    { type: 'image', src: 'assets/manos.png' },
+    { type: 'image', src: 'assets/logo.webp' },
+    { type: 'image', src: 'assets/fondo-aterciopelado.jpeg' },
+    { type: 'video', src: 'assets/gato.webm' }
   ];
 
   let loadedAssets = 0;
@@ -138,13 +138,19 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // Iniciar descarga y rastreo de cada asset visual crítico
-  assetsToPreload.forEach(src => {
-    const img = new Image();
-    img.onload = onAssetDone;
-    img.onerror = onAssetDone; // Para que ningún recurso roto bloquee la aplicación
-    img.src = src;
-    if (img.complete) {
-      onAssetDone();
+  assetsToPreload.forEach(asset => {
+    if (asset.type === 'video') {
+      const vid = document.createElement('video');
+      vid.onloadeddata = onAssetDone;
+      vid.onerror = onAssetDone;
+      vid.src = asset.src;
+      if (vid.readyState >= 2) onAssetDone();
+    } else {
+      const img = new Image();
+      img.onload = onAssetDone;
+      img.onerror = onAssetDone;
+      img.src = asset.src;
+      if (img.complete) onAssetDone();
     }
   });
 

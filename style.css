@@ -32,7 +32,7 @@
   --color-pill-text: #1d1736;
   --color-oracle-light: #F7F4FF;
   --color-oracle-glow: rgba(165, 140, 255, 0.85);
-  --color-oracle-credit: rgba(220, 210, 255, 0.8);
+  --color-oracle-credit: #2B1E5C; /* Violeta oscuro institucional de máxima legibilidad */
 
   /* Tipografía */
   --font-family-base: 'Open Sans', system-ui, -apple-system, sans-serif;
@@ -361,23 +361,27 @@ body.kiosk-mode * {
   will-change: opacity, filter, transform;
 }
 
-/* Crédito de la frase */
+/* Crédito de la frase (Violeta oscuro nítido y legible) */
 .phrase-credit {
   color: var(--color-oracle-credit);
-  font-size: 8px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-size: 8.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  text-shadow: 0 0 8px rgba(147, 95, 240, 0.6);
+  text-shadow: 
+    0 0 3px rgba(255, 255, 255, 0.95),
+    0 0 8px rgba(230, 215, 255, 0.7),
+    0 1px 2px rgba(255, 255, 255, 0.5);
   opacity: 0;
-  margin-top: 4px;
+  margin-top: 6px;
   max-width: 92%;
-  line-height: 1.25;
+  line-height: 1.3;
 }
 
 /* 3. Capa Manos y Gato */
 #layer-hands {
   z-index: 4;
+  filter: drop-shadow(0 0 2px rgba(35, 18, 65, 0.3));
 }
 
 #layer-cat {
@@ -385,6 +389,8 @@ body.kiosk-mode * {
   pointer-events: none;
   transform: translate(var(--cat-offset-x), var(--cat-offset-y));
   will-change: transform;
+  border: none;
+  outline: none;
 }
 
 /* ========================================================
