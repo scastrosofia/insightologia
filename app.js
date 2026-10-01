@@ -74,7 +74,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const assetsToPreload = [
     { type: 'image', src: 'assets/escena.webp' },
     { type: 'image', src: 'assets/manos.png' },
-    { type: 'image', src: 'assets/logo.webp' },
     { type: 'image', src: 'assets/fondo-aterciopelado.jpeg' },
     { type: 'video', src: 'assets/gato.webm' }
   ];
@@ -351,8 +350,8 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const tlFly = gsap.timeline();
       tlFly.fromTo(floatingQuestion, 
-        { opacity: 0, scale: 0.8, x: '25%', y: '50%' },
-        { opacity: 1, scale: 1, x: '25%', y: '50%', duration: 0.4, ease: 'back.out(1.5)' }
+        { opacity: 0, scale: 0.8, x: '20%', y: '57%' },
+        { opacity: 1, scale: 1, x: '20%', y: '57%', duration: 0.4, ease: 'back.out(1.5)' }
       )
       .to(floatingQuestion, {
         opacity: 0,
