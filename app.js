@@ -675,33 +675,34 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(() => {});
   }
 
-  // Diccionario semántico para enriquecer coincidencias conceptuales
-  const SEMANTIC_THEMES = {
-    amor: {
-      triggers: ['amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'relacion', 'corazon', 'sentimiento', 'hombre', 'mujer', 'hombres', 'mujeres', 'divorcio', 'empatia', 'caring', 'enamorar', 'querer', 'gustar'],
-      phraseIds: ['4', '7', '24', '26', '33'] // igualismo, amo a laura, divorciarnos, empatía, caring
-    },
-    trabajo: {
-      triggers: ['trabajo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 'empresa', 'marca', 'negocio', 'exito', 'ascenso', 'cliente', 'jefe', 'agencia', 'banco', 'salchicha'],
-      phraseIds: ['15', '18', '21', '22', '25', '27', '38', '40', '41'] // trabajo real, palacio, sacamos petróleo, etc.
-    },
-    tecnologia: {
-      triggers: ['ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'futuro', 'computadora', 'chatgpt', 'digital', 'automatizar', 'innovar', 'mañana'],
-      phraseIds: ['30', '34', '49', '31'] // el AI concluye, caballo de troya, la IA acelera, innovar
-    },
-    creatividad: {
-      triggers: ['idea', 'ideas', 'crear', 'creativo', 'creatividad', 'inventar', 'campaña', 'publicidad', 'antidoto', 'desordenar', 'filosofia', 'fresco', 'original'],
-      phraseIds: ['23', '29', '35', '36', '37', '39', '42', '45', '46'] // la creatividad es el antídoto, la idea primero, etc.
-    },
-    riesgo: {
-      triggers: ['miedo', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 'atreverse', 'cambiar', 'cambio', 'decision', 'seguro'],
-      phraseIds: ['32', '41', '43', '48'] // valentía es contagiosa, había peligro, peor ellos o mejor tú
-    },
-    existencial: {
-      triggers: ['verdad', 'mentir', 'mentira', 'vida', 'destino', 'sentido', 'porvenir', 'tiempo', 'conducir', 'agua', 'despeinar', 'casa', 'libertad'],
-      phraseIds: ['1', '2', '6', '8', '9', '10', '14', '44', '47'] // teletransportarte, einstein, be water, despeine, etc.
-    }
+  // ========================================================
+  // 6. MOTOR SEMÁNTICO LOCAL INTELIGENTE (Basado en Tags)
+  // ========================================================
+  const THEME_TRIGGERS = {
+    'Amor y vínculos': ['amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'separacion', 'divorcio', 'relacion', 'corazon', 'enamorar', 'querer', 'gustar', 'empatia', 'amigo', 'amigos', 'amistad', 'sentimiento', 'hombre', 'mujer'],
+    'Trabajo y creatividad': ['trabajo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 'empresa', 'marca', 'negocio', 'exito', 'ascenso', 'cliente', 'jefe', 'agencia', 'idea', 'ideas', 'crear', 'creativo', 'creatividad', 'campana', 'publicidad', 'aviso', 'oficio'],
+    'Futuro y tecnología': ['ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'futuro', 'computadora', 'chatgpt', 'digital', 'automatizar', 'innovar', 'manana', 'destino', 'chip', 'data', 'inteligencia', 'artificial'],
+    'Riesgo y valentía': ['miedo', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 'atreverse', 'cambiar', 'cambio', 'decision', 'saltar', 'coraje', 'avanzar', 'tirarme'],
+    'Identidad': ['quien soy', 'estilo', 'edad', 'grande', 'viejo', 'ser yo', 'autoestima', 'identidad', 'dudas', 'autentico', 'comparar', 'sentido', 'propio'],
+    'Placer y vida cotidiana': ['comer', 'pasta', 'hambre', 'sed', 'cerveza', 'birra', 'comida', 'cuerpo', 'casa', 'disfrutar', 'cotidiano', 'dormir', 'desayuno'],
+    'Tiempo y país': ['tiempo', 'nostalgia', 'anos', 'pais', 'argentina', 'epoca', 'antes', 'pasado', 'recuerdo']
   };
+
+  const FUNCTION_TRIGGERS = {
+    'Empuja a actuar': ['debo', 'tengo que', 'hago', 'hacerlo', 'me animo', 'avanzo', 'empiezo', 'tiro', 'arriesgo', 'comienzo', 'deberia', 'puedo', 'voy a'],
+    'Tranquiliza o relativiza': ['miedo', 'cansado', 'cansada', 'angustia', 'estres', 'preocupado', 'preocupada', 'duda', 'dudas', 'perder', 'sola', 'solo', 'triste', 'pasa nada'],
+    'Sí o no rotundo': ['si o no', 'va a pasar', 'sera que', 'es verdad', 'triunfare', 'lo lograre', 'va a salir', 'saldra bien', 'va a funcionar'],
+    'Sentencia de oráculo': ['que va a pasar', 'cual es el', 'hacia donde', 'que pasara', 'que significa', 'que sentido', 'por que', 'para que'],
+    'Desafía o cuestiona': ['seguro', 'verdad', 'enserio', 'crees', 'pensas', 'te parece', 'tonto', 'loco'],
+    'Humor o absurdo': ['jaja', 'chiste', 'mentira', 'locura', 'broma', 'ridiculo']
+  };
+
+  function matchesTrigger(text, wordsSet, trigger) {
+    if (trigger.includes(' ')) {
+      return text.includes(trigger);
+    }
+    return wordsSet.has(trigger);
+  }
 
   async function getLocalFallbackAnswer(question) {
     const list = (clientCachedSheet && clientCachedSheet.length > 0) 
@@ -715,8 +716,7 @@ document.addEventListener('DOMContentLoaded', () => {
         marca: "Cerveza Andes",
         agencia: "Del Campo Nazca Saatchi & Saatchi",
         pais: "Argentina",
-        ano: "2010",
-        tema: "Publicidad"
+        ano: "2010"
       };
     }
 
@@ -731,36 +731,69 @@ document.addEventListener('DOMContentLoaded', () => {
       .replace(/[\u0300-\u036f]/g, "");
 
     const words = qLower
-      .split(/[\s,?.!¡¿;:]+/)
+      .split(/[\s,?.!¡¿;:\-_]+/)
       .filter(w => w.length > 2 && !['que', 'como', 'para', 'este', 'esta', 'estos', 'estas', 'los', 'las', 'del', 'por', 'con', 'sin', 'sobre', 'voy', 'va', 'sera', 'hacer'].includes(w));
+    const wordsSet = new Set(words);
 
-    // Evaluar afinidad temática conceptual
-    const matchedCategoryPhraseIds = new Set();
-    Object.values(SEMANTIC_THEMES).forEach(theme => {
-      const hasTrigger = theme.triggers.some(tr => qLower.includes(tr));
-      if (hasTrigger) {
-        theme.phraseIds.forEach(id => matchedCategoryPhraseIds.add(id));
+    // Detectar temas activos en la pregunta
+    const matchedThemes = new Set();
+    Object.entries(THEME_TRIGGERS).forEach(([themeName, triggers]) => {
+      if (triggers.some(tr => matchesTrigger(qLower, wordsSet, tr))) {
+        matchedThemes.add(themeName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
       }
     });
 
-    // Puntuar cada frase del pool
+    // Detectar funciones activas en la pregunta
+    const matchedFunctions = new Set();
+    Object.entries(FUNCTION_TRIGGERS).forEach(([funcName, triggers]) => {
+      if (triggers.some(tr => matchesTrigger(qLower, wordsSet, tr))) {
+        matchedFunctions.add(funcName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+      }
+    });
+
+    // Puntuar cada frase del pool con el nuevo sistema de tags
     const scored = pool.map(item => {
       let score = 0;
       const fNorm = (item.frase || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       const tNorm = (item.tema || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const funcNorm = (item.funcion || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       const mNorm = (item.marca || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-      // Si coincide con categoría temática conceptual (+5 pts)
-      if (matchedCategoryPhraseIds.has(String(item.id))) {
-        score += 5;
+      // 1. Afinidad temática por Tag (+6 pts)
+      let hasThemeMatch = false;
+      for (const t of matchedThemes) {
+        if (tNorm.includes(t)) {
+          score += 6;
+          hasThemeMatch = true;
+          break;
+        }
       }
 
-      // Si contiene palabras clave de la pregunta
+      // 2. Afinidad funcional por Tag (+5 pts)
+      for (const fn of matchedFunctions) {
+        if (funcNorm.includes(fn)) {
+          score += 5;
+          break;
+        }
+      }
+
+      // 3. Coincidencia léxica directa (+3 pts por palabra de la pregunta)
       words.forEach(w => {
         if (fNorm.includes(w)) score += 3;
         if (tNorm.includes(w)) score += 2;
         if (mNorm.includes(w)) score += 1;
       });
+
+      // 4. Modificadores de Tag: Flag y Comodín
+      if (item.flag === 'Depende de contexto' && !hasThemeMatch) {
+        score -= 10; // Solo entra si el tema de la pregunta coincide explícitamente
+      }
+      if (item.flag === 'Revisar') {
+        score -= 10; // Evitar frases sensibles salvo match intencional explícito
+      }
+      if (item.comodin && score <= 3) {
+        score += 2; // Si la pregunta es abierta o abstracta, dar prioridad al comodín
+      }
 
       return { item, score };
     });
@@ -771,13 +804,15 @@ document.addEventListener('DOMContentLoaded', () => {
     let selected;
     const topScore = scored[0]?.score || 0;
 
-    if (topScore > 0) {
-      // Tomar las frases con mayor afinidad y seleccionar una al azar entre las mejores
-      const bestCandidates = scored.filter(s => s.score >= Math.max(2, topScore * 0.7)).map(s => s.item);
+    if (topScore > 3) {
+      // Tomar las frases con mayor afinidad y seleccionar una al azar entre el grupo líder
+      const bestCandidates = scored.filter(s => s.score >= Math.max(3, topScore * 0.75)).map(s => s.item);
       selected = bestCandidates[Math.floor(Math.random() * bestCandidates.length)];
     } else {
-      // Si la pregunta es abierta o abstracta, seleccionar una al azar de todo el catálogo (sin repetir las últimas 5)
-      selected = pool[Math.floor(Math.random() * pool.length)];
+      // Si la pregunta es abierta, dar prioridad a frases Comodín o aleatorias del catálogo
+      const comodines = pool.filter(p => p.comodin && p.flag !== 'Revisar');
+      const fallbackList = (comodines.length > 0) ? comodines : pool;
+      selected = fallbackList[Math.floor(Math.random() * fallbackList.length)];
     }
 
     saveRecentId(selected.id);

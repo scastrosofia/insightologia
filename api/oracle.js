@@ -157,36 +157,35 @@ async function getSheetPhrases() {
   return CONFIG.CATALOG_PHRASES || CONFIG.TEST_PHRASES;
 }
 
-// Diccionario de temas para enriquecer afinidades semánticas en fallback
+// Diccionario semántico por Tags para fallback del backend
 const BACKEND_THEMES = {
-  amor: {
-    triggers: ['amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'relacion', 'corazon', 'hombre', 'mujer', 'hombres', 'mujeres', 'divorcio', 'empatia', 'caring', 'enamorar', 'querer'],
-    phraseIds: ['4', '7', '24', '26', '33']
-  },
-  trabajo: {
-    triggers: ['trabajo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 'empresa', 'marca', 'negocio', 'exito', 'ascenso', 'cliente', 'jefe', 'banco', 'salchicha'],
-    phraseIds: ['15', '18', '21', '22', '25', '27', '38', '40', '41']
-  },
-  tecnologia: {
-    triggers: ['ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'futuro', 'computadora', 'chatgpt', 'digital', 'automatizar', 'innovar', 'mañana'],
-    phraseIds: ['30', '34', '49', '31']
-  },
-  creatividad: {
-    triggers: ['idea', 'ideas', 'crear', 'creativo', 'creatividad', 'inventar', 'campaña', 'publicidad', 'antidoto', 'desordenar', 'filosofia', 'fresco', 'original'],
-    phraseIds: ['23', '29', '35', '36', '37', '39', '42', '45', '46']
-  },
-  riesgo: {
-    triggers: ['miedo', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 'atreverse', 'cambiar', 'cambio', 'decision'],
-    phraseIds: ['32', '41', '43', '48']
-  },
-  existencial: {
-    triggers: ['verdad', 'mentir', 'mentira', 'vida', 'destino', 'sentido', 'porvenir', 'tiempo', 'conducir', 'agua', 'despeinar', 'casa', 'libertad'],
-    phraseIds: ['1', '2', '6', '8', '9', '10', '14', '44', '47']
-  }
+  'Amor y vínculos': ['amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'separacion', 'divorcio', 'relacion', 'corazon', 'enamorar', 'querer', 'gustar', 'empatia', 'amigo', 'amigos', 'amistad', 'sentimiento', 'hombre', 'mujer'],
+  'Trabajo y creatividad': ['trabajo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 'empresa', 'marca', 'negocio', 'exito', 'ascenso', 'cliente', 'jefe', 'agencia', 'idea', 'ideas', 'crear', 'creativo', 'creatividad', 'campana', 'publicidad', 'aviso', 'oficio'],
+  'Futuro y tecnología': ['ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'futuro', 'computadora', 'chatgpt', 'digital', 'automatizar', 'innovar', 'manana', 'destino', 'chip', 'data', 'inteligencia', 'artificial'],
+  'Riesgo y valentía': ['miedo', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 'atreverse', 'cambiar', 'cambio', 'decision', 'saltar', 'coraje', 'avanzar', 'tirarme'],
+  'Identidad': ['quien soy', 'estilo', 'edad', 'grande', 'viejo', 'ser yo', 'autoestima', 'identidad', 'dudas', 'autentico', 'comparar', 'sentido', 'propio'],
+  'Placer y vida cotidiana': ['comer', 'pasta', 'hambre', 'sed', 'cerveza', 'birra', 'comida', 'cuerpo', 'casa', 'disfrutar', 'cotidiano', 'dormir', 'desayuno'],
+  'Tiempo y país': ['tiempo', 'nostalgia', 'anos', 'pais', 'argentina', 'epoca', 'antes', 'pasado', 'recuerdo']
 };
 
+const BACKEND_FUNCTIONS = {
+  'Empuja a actuar': ['debo', 'tengo que', 'hago', 'hacerlo', 'me animo', 'avanzo', 'empiezo', 'tiro', 'arriesgo', 'comienzo', 'deberia', 'puedo', 'voy a'],
+  'Tranquiliza o relativiza': ['miedo', 'cansado', 'cansada', 'angustia', 'estres', 'preocupado', 'preocupada', 'duda', 'dudas', 'perder', 'sola', 'solo', 'triste', 'pasa nada'],
+  'Sí o no rotundo': ['si o no', 'va a pasar', 'sera que', 'es verdad', 'triunfare', 'lo lograre', 'va a salir', 'saldra bien', 'va a funcionar'],
+  'Sentencia de oráculo': ['que va a pasar', 'cual es el', 'hacia donde', 'que pasara', 'que significa', 'que sentido', 'por que', 'para que'],
+  'Desafía o cuestiona': ['seguro', 'verdad', 'enserio', 'crees', 'pensas', 'te parece', 'tonto', 'loco'],
+  'Humor o absurdo': ['jaja', 'chiste', 'mentira', 'locura', 'broma', 'ridiculo']
+};
+
+function matchesTrigger(text, wordsSet, trigger) {
+  if (trigger.includes(' ')) {
+    return text.includes(trigger);
+  }
+  return wordsSet.has(trigger);
+}
+
 /**
- * Fallback inteligente: selección semántica con rotación variada sobre las 49 frases
+ * Fallback inteligente: selección semántica con rotación variada sobre las 50 frases
  */
 function pickFallbackPhrase(phrases, question, recentIds = []) {
   const safeRecent = recentIds.map(String);
@@ -199,13 +198,21 @@ function pickFallbackPhrase(phrases, question, recentIds = []) {
     .replace(/[\u0300-\u036f]/g, "");
 
   const words = qLower
-    .split(/[\s,?.!¡¿;:]+/)
+    .split(/[\s,?.!¡¿;:\-_]+/)
     .filter(w => w.length > 2 && !['que', 'como', 'para', 'este', 'esta', 'los', 'las', 'del', 'por', 'con', 'sin', 'sobre', 'voy', 'va', 'sera', 'hacer'].includes(w));
+  const wordsSet = new Set(words);
 
-  const matchedIds = new Set();
-  Object.values(BACKEND_THEMES).forEach(theme => {
-    if (theme.triggers.some(tr => qLower.includes(tr))) {
-      theme.phraseIds.forEach(id => matchedIds.add(id));
+  const matchedThemes = new Set();
+  Object.entries(BACKEND_THEMES).forEach(([themeName, triggers]) => {
+    if (triggers.some(tr => matchesTrigger(qLower, wordsSet, tr))) {
+      matchedThemes.add(themeName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
+    }
+  });
+
+  const matchedFunctions = new Set();
+  Object.entries(BACKEND_FUNCTIONS).forEach(([funcName, triggers]) => {
+    if (triggers.some(tr => matchesTrigger(qLower, wordsSet, tr))) {
+      matchedFunctions.add(funcName.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, ""));
     }
   });
 
@@ -213,15 +220,43 @@ function pickFallbackPhrase(phrases, question, recentIds = []) {
     let score = 0;
     const fNorm = (item.frase || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const tNorm = (item.tema || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const funcNorm = (item.funcion || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const mNorm = (item.marca || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-    if (matchedIds.has(String(item.id))) score += 5;
+    // Coincidencia por Tema
+    let hasThemeMatch = false;
+    for (const t of matchedThemes) {
+      if (tNorm.includes(t)) {
+        score += 6;
+        hasThemeMatch = true;
+        break;
+      }
+    }
 
+    // Coincidencia por Función
+    for (const fn of matchedFunctions) {
+      if (funcNorm.includes(fn)) {
+        score += 5;
+        break;
+      }
+    }
+
+    // Coincidencias léxicas
     words.forEach(w => {
       if (fNorm.includes(w)) score += 3;
       if (tNorm.includes(w)) score += 2;
       if (mNorm.includes(w)) score += 1;
     });
+
+    if (item.flag === 'Depende de contexto' && !hasThemeMatch) {
+      score -= 10;
+    }
+    if (item.flag === 'Revisar') {
+      score -= 10;
+    }
+    if (item.comodin && score <= 3) {
+      score += 2;
+    }
 
     return { item, score };
   });
@@ -229,13 +264,14 @@ function pickFallbackPhrase(phrases, question, recentIds = []) {
   scored.sort((a, b) => b.score - a.score);
   const topScore = scored[0]?.score || 0;
 
-  if (topScore > 0) {
-    const topTier = scored.filter(s => s.score >= Math.max(2, topScore * 0.7)).map(s => s.item);
+  if (topScore > 3) {
+    const topTier = scored.filter(s => s.score >= Math.max(3, topScore * 0.75)).map(s => s.item);
     return topTier[Math.floor(Math.random() * topTier.length)];
   }
 
-  // Selección aleatoria entre los 49 ítems si la pregunta es abierta
-  return candidates[Math.floor(Math.random() * candidates.length)];
+  const comodines = candidates.filter(p => p.comodin && p.flag !== 'Revisar');
+  const fallbackList = (comodines.length > 0) ? comodines : candidates;
+  return fallbackList[Math.floor(Math.random() * fallbackList.length)];
 }
 
 /**
@@ -253,11 +289,29 @@ async function queryGeminiOracle(phrases, question, recentIds = []) {
   let candidates = phrases.filter(p => !safeRecent.includes(String(p.id)));
   if (candidates.length < 3) candidates = phrases;
 
-  // Lista compacta: ID + Frase + Tema
-  const compactList = candidates.map(p => `ID:${p.id} | Frase:"${p.frase}" | Tema:${p.tema || 'Publicidad'}`).join('\n');
+  // Lista compacta con Tags completos
+  const compactList = candidates.map(p => {
+    let line = `ID:${p.id} | Frase:"${p.frase}"`;
+    if (p.tema) line += ` | Tema:${p.tema}`;
+    if (p.funcion) line += ` | Función:${p.funcion}`;
+    if (p.tono) line += ` | Tono:${p.tono}`;
+    return line;
+  }).join('\n');
 
-  const systemPrompt = `Sos un oráculo de la creatividad iberoamericana. Te van a hacer una pregunta sobre el futuro. Elegí de la lista la frase que mejor funcione como respuesta poética, sorprendente o con humor, aunque la conexión sea lateral. Respondé SOLO con un JSON: {"id": "..."}`;
-  
+  const systemPrompt = `Sos el Oráculo de la Insightología (30 años de El Ojo de Iberoamérica).
+El consultante te hará una pregunta sobre su vida, amor, trabajo, futuro o dilemas personales.
+Tenés un catálogo de frases memorables de la creatividad iberoamericana clasificadas por TEMA, FUNCIÓN y TONO.
+
+CRITERIO DE ELECCIÓN:
+1. Detectá qué necesita el consultante:
+   - Si duda sobre si animarse o dar el paso → Elegí una frase con función "Empuja a actuar".
+   - Si expresa miedo, cansancio o angustia → Elegí una frase con función "Tranquiliza o relativiza".
+   - Si pregunta si algo sucederá o es binaria ("¿sí o no?") → Priorizá "Sí o no rotundo" o "Sentencia de oráculo".
+   - Si pregunta "¿qué va a pasar?" o sobre el sentido de las cosas → Elegí "Sentencia de oráculo" o tono "Profético".
+   - Si toca temas de amor, trabajo, riesgo o tecnología → Conectá con el TEMA correspondiente.
+2. La respuesta debe tener chispa oracular poética, reveladora o irónica.
+3. Respondé ÚNICAMENTE con un JSON con el ID elegido: {"id": "..."}`;
+
   const userContent = `PREGUNTA DEL CONSULTANTE: "${question}"\n\nLISTA DE FRASES DISPONIBLES:\n${compactList}`;
 
   const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash';

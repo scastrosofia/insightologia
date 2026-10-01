@@ -1,20 +1,4 @@
-// config.js - Insightología Configuration
-const CONFIG = {
-  // Google Sheet publicado como CSV
-  SHEET_CSV_URL: 'https://docs.google.com/spreadsheets/d/1iXTCqt8MevnbPK0Ng-BaV4rh1ci1rZNEV0UQoeJAiGY/export?format=csv',
-
-  // Endpoint del backend serverless en Vercel o local
-  API_ORACLE_URL: '/api/oracle',
-
-  // Timeout para respuesta de API (ms)
-  TIMEOUT_MS: 5000,
-
-  // Tiempo de visualización automática antes de ZOOM OUT (ms)
-  AUTO_RESET_MS: 20000,
-
-  // Catálogo completo enriquecido con tags de los 30 años de El Ojo de Iberoamérica (50 frases)
-  // Incluye: tema, funcion, tono, flag, comodin y premio_el_ojo
-  CATALOG_PHRASES: [
+[
   {
     "id": "1",
     "frase": "Para qué mentir, si podés teletransportarte",
@@ -816,12 +800,3 @@ const CONFIG = {
     "premio_el_ojo": "Bronce – El Ojo Promo (Promociones integradas)"
   }
 ]
-};
-
-// Alias de compatibilidad
-CONFIG.TEST_PHRASES = CONFIG.CATALOG_PHRASES;
-
-// Compatible con Node / ES Modules / Browser
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = CONFIG;
-}
