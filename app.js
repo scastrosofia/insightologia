@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
     { type: 'image', src: 'assets/escena.webp' },
     { type: 'image', src: 'assets/manos.png' },
     { type: 'image', src: 'assets/fondo-aterciopelado.jpeg' },
-    { type: 'video', src: 'assets/gato.webm' }
+    { type: 'image', src: 'assets/gato.webp' }
   ];
 
   let loadedAssets = 0;
