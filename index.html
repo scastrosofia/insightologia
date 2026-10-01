@@ -27,12 +27,42 @@
     </defs>
   </svg>
 
+  <!-- Pantalla de carga mística: Abriendo la mirada... -->
+  <aside id="preloader" class="preloader" aria-live="polite" aria-busy="true">
+    <div class="preloader-content">
+      <div class="preloader-eye-wrapper">
+        <div class="preloader-eye-glow"></div>
+        <svg class="preloader-eye-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="30" stroke="rgba(165,140,255,0.3)" stroke-width="1.5" />
+          <circle cx="32" cy="32" r="22" stroke="rgba(165,140,255,0.6)" stroke-width="2" stroke-dasharray="4 3" />
+          <circle cx="32" cy="32" r="14" fill="url(#eyeGrad)" />
+          <circle cx="32" cy="32" r="5" fill="#ffffff" />
+          <defs>
+            <radialGradient id="eyeGrad" cx="32" cy="32" r="14" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#C4B5FD" />
+              <stop offset="0.6" stop-color="#8B5CF6" />
+              <stop offset="1" stop-color="#3B1779" />
+            </radialGradient>
+          </defs>
+        </svg>
+      </div>
+
+      <h2 class="preloader-text">Abriendo la mirada...</h2>
+
+      <div class="preloader-bar-track">
+        <div id="preloader-bar-fill" class="preloader-bar-fill"></div>
+      </div>
+
+      <div id="preloader-percent" class="preloader-percent">0%</div>
+    </div>
+  </aside>
+
   <div id="viewport-wrapper">
     <!-- The 16:9 Stage -->
     <main id="stage" aria-label="Escenario del Oráculo Insightología">
       
       <!-- 1. Background scene (gentleman, table, crystal ball base) -->
-      <img id="layer-scene" class="stage-layer" src="assets/escena.png" alt="Escena del Oráculo" draggable="false">
+      <img id="layer-scene" class="stage-layer" src="assets/escena.webp" alt="Escena del Oráculo" draggable="false">
 
       <!-- Destello suave del tercer ojo (posicionado con --eye-x, --eye-y) -->
       <div id="third-eye-glow" aria-hidden="true"></div>
@@ -61,7 +91,7 @@
 
       <!-- 4. Left side UI: Logo, Title, Subtitle, Chat Pill Input -->
       <aside id="input-panel">
-        <img class="oracle-logo" src="assets/logo.png" alt="Insightología" draggable="false">
+        <img class="oracle-logo" src="assets/logo.webp" alt="Insightología" draggable="false">
         <h1 class="oracle-title">¿ESTÁS LISTO PARA<br>ABRIR TU MIRADA?</h1>
         <h2 class="oracle-subtitle">ESCRIBÍ TU PREGUNTA:</h2>
 
@@ -131,8 +161,8 @@
   </div>
 
   <!-- Pistas de audio para ambiente sonoro combinado -->
-  <audio id="audio-wind" src="assets/audio/mystic-wind.wav" loop preload="auto"></audio>
-  <audio id="audio-office" src="assets/audio/office-ambience.wav" loop preload="auto"></audio>
+  <audio id="audio-wind" src="assets/audio/mystic-wind.mp3" loop preload="auto"></audio>
+  <audio id="audio-office" src="assets/audio/office-ambience.mp3" loop preload="auto"></audio>
 
   <script src="config.js"></script>
   <script src="app.js"></script>

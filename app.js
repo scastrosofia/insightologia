@@ -64,6 +64,98 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ========================================================
+  // 0. PRELOADER MÍSTICO ("Abriendo la mirada...")
+  // ========================================================
+  const preloader = document.getElementById('preloader');
+  const preloaderBarFill = document.getElementById('preloader-bar-fill');
+  const preloaderPercent = document.getElementById('preloader-percent');
+  const viewportWrapper = document.getElementById('viewport-wrapper');
+
+  const assetsToPreload = [
+    'assets/escena.webp',
+    'assets/manos.png',
+    'assets/logo.webp',
+    'assets/fondo-aterciopelado.jpeg',
+    'assets/gato.gif'
+  ];
+
+  let loadedAssets = 0;
+  let targetProgress = 0;
+  let currentProgress = 0;
+  let progressRaf = null;
+
+  function updateProgressBar() {
+    currentProgress += (targetProgress - currentProgress) * 0.18;
+    const rounded = Math.round(currentProgress);
+    if (preloaderBarFill) preloaderBarFill.style.width = `${rounded}%`;
+    if (preloaderPercent) preloaderPercent.textContent = `${rounded}%`;
+
+    if (Math.abs(currentProgress - targetProgress) > 0.5 || currentProgress < 100) {
+      progressRaf = requestAnimationFrame(updateProgressBar);
+    } else {
+      currentProgress = 100;
+      if (preloaderBarFill) preloaderBarFill.style.width = '100%';
+      if (preloaderPercent) preloaderPercent.textContent = '100%';
+    }
+  }
+
+  function finishPreloader() {
+    targetProgress = 100;
+    setTimeout(() => {
+      if (progressRaf) cancelAnimationFrame(progressRaf);
+      if (preloaderBarFill) preloaderBarFill.style.width = '100%';
+      if (preloaderPercent) preloaderPercent.textContent = '100%';
+
+      if (viewportWrapper) viewportWrapper.classList.add('is-ready');
+
+      if (preloader) {
+        if (typeof gsap !== 'undefined') {
+          gsap.to(preloader, {
+            opacity: 0,
+            duration: 0.75,
+            ease: 'power2.out',
+            onComplete: () => {
+              preloader.classList.add('fade-out');
+              preloader.style.display = 'none';
+            }
+          });
+        } else {
+          preloader.classList.add('fade-out');
+          setTimeout(() => { preloader.style.display = 'none'; }, 600);
+        }
+      }
+    }, 380);
+  }
+
+  function onAssetDone() {
+    loadedAssets++;
+    targetProgress = Math.min(100, Math.round((loadedAssets / assetsToPreload.length) * 100));
+    if (!progressRaf) progressRaf = requestAnimationFrame(updateProgressBar);
+
+    if (loadedAssets >= assetsToPreload.length) {
+      finishPreloader();
+    }
+  }
+
+  // Iniciar descarga y rastreo de cada asset visual crítico
+  assetsToPreload.forEach(src => {
+    const img = new Image();
+    img.onload = onAssetDone;
+    img.onerror = onAssetDone; // Para que ningún recurso roto bloquee la aplicación
+    img.src = src;
+    if (img.complete) {
+      onAssetDone();
+    }
+  });
+
+  // Salvaguarda máxima de 5 segundos para dispositivos con conexiones lentas
+  setTimeout(() => {
+    if (preloader && !preloader.classList.contains('fade-out')) {
+      finishPreloader();
+    }
+  }, 5000);
+
+  // ========================================================
   // 1. INICIALIZACIÓN Y MODO KIOSCO
   // ========================================================
   if (isKiosk) {

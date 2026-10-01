@@ -19,6 +19,7 @@ const MIME_TYPES = {
   '.svg': 'image/svg+xml',
   '.ico': 'image/x-icon',
   '.gif': 'image/gif',
+  '.webp': 'image/webp',
   '.wav': 'audio/wav',
   '.mp3': 'audio/mpeg'
 };
