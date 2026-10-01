@@ -27,33 +27,16 @@
     </defs>
   </svg>
 
-  <!-- Pantalla de carga mística: Abriendo la mirada... -->
+  <!-- Pantalla de carga mística: Abriendo la mirada... (abriendo.webp) -->
   <aside id="preloader" class="preloader" aria-live="polite" aria-busy="true">
-    <div class="preloader-content">
-      <div class="preloader-eye-wrapper">
-        <div class="preloader-eye-glow"></div>
-        <svg class="preloader-eye-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="32" cy="32" r="30" stroke="rgba(165,140,255,0.3)" stroke-width="1.5" />
-          <circle cx="32" cy="32" r="22" stroke="rgba(165,140,255,0.6)" stroke-width="2" stroke-dasharray="4 3" />
-          <circle cx="32" cy="32" r="14" fill="url(#eyeGrad)" />
-          <circle cx="32" cy="32" r="5" fill="#ffffff" />
-          <defs>
-            <radialGradient id="eyeGrad" cx="32" cy="32" r="14" gradientUnits="userSpaceOnUse">
-              <stop stop-color="#C4B5FD" />
-              <stop offset="0.6" stop-color="#8B5CF6" />
-              <stop offset="1" stop-color="#3B1779" />
-            </radialGradient>
-          </defs>
-        </svg>
+    <div class="preloader-stage">
+      <img class="preloader-bg" src="assets/abriendo.webp" alt="Abriendo la mirada..." draggable="false">
+      <div class="preloader-controls">
+        <div class="preloader-bar-track">
+          <div id="preloader-bar-fill" class="preloader-bar-fill"></div>
+        </div>
+        <div id="preloader-percent" class="preloader-percent">0%</div>
       </div>
-
-      <h2 class="preloader-text">Abriendo la mirada...</h2>
-
-      <div class="preloader-bar-track">
-        <div id="preloader-bar-fill" class="preloader-bar-fill"></div>
-      </div>
-
-      <div id="preloader-percent" class="preloader-percent">0%</div>
     </div>
   </aside>
 
