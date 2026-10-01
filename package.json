@@ -1,0 +1,18 @@
+{
+  "name": "insightologia",
+  "version": "1.0.0",
+  "description": "Insightología - Oráculo interactivo por los 30 años de El Ojo de Iberoamérica",
+  "main": "api/oracle.js",
+  "scripts": {
+    "start": "node dev-server.js",
+    "dev": "node dev-server.js"
+  },
+  "keywords": [
+    "oracle",
+    "el-ojo-de-iberoamerica",
+    "gemini",
+    "gsap"
+  ],
+  "author": "El Ojo de Iberoamérica",
+  "license": "ISC"
+}

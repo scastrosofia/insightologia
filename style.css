@@ -1,0 +1,616 @@
+/* ========================================================
+   Insightología - El Ojo de Iberoamérica
+   Estilos principales y sistema de capas 16:9
+   ======================================================== */
+
+.svg-filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+:root {
+  /* Calibración precisa de la bola de cristal (% respecto al #stage 16:9) */
+  --ball-x: 44.8%;
+  --ball-y: 74.5%;
+  --ball-size: 13.2%;
+
+  /* Calibración del tercer ojo (% respecto al #stage) */
+  --eye-x: 48.9%;
+  --eye-y: 20.8%;
+  --eye-size: 8%;
+
+  /* Calibración de posición del gato (% de desplazamiento respecto a la mesa) */
+  --cat-offset-x: 28%; /* Más a la derecha sobre la mesa */
+  --cat-offset-y: 9.5%; /* Más abajo apoyado en la mesa */
+
+  /* Paleta cromática */
+  --color-primary-violet: #2B1E5C;
+  --color-pill-bg: #C9CFDA;
+  --color-pill-text: #1d1736;
+  --color-oracle-light: #F7F4FF;
+  --color-oracle-glow: rgba(165, 140, 255, 0.85);
+  --color-oracle-credit: rgba(220, 210, 255, 0.8);
+
+  /* Tipografía */
+  --font-family-base: 'Open Sans', system-ui, -apple-system, sans-serif;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #0d0a14;
+  font-family: var(--font-family-base);
+  color: #ffffff;
+}
+
+/* Modo Kiosco (?kiosk=1) */
+body.kiosk-mode {
+  cursor: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+}
+
+body.kiosk-mode * {
+  cursor: none !important;
+}
+
+/* Contenedor padre a pantalla completa que encuadra el stage en 16:9 */
+#viewport-wrapper {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d0a14 url('assets/fondo-aterciopelado.jpeg') center center / cover no-repeat;
+  overflow: hidden;
+}
+
+/* ========================================================
+   Stage 16:9 con contenedor de capas
+   ======================================================== */
+#stage {
+  position: relative;
+  width: min(100vw, calc(100vh * 16 / 9));
+  height: min(100vh, calc(100vw * 9 / 16));
+  aspect-ratio: 16 / 9;
+  margin: auto;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.85);
+  /* Origen de transformación anclado al centro de la bola */
+  transform-origin: var(--ball-x) var(--ball-y);
+  will-change: transform;
+}
+
+/* Capas comunes */
+.stage-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 1. Capa Fondo Escena */
+#layer-scene {
+  z-index: 1;
+}
+
+/* Destello sutil del Tercer Ojo */
+#third-eye-glow {
+  position: absolute;
+  top: var(--eye-y);
+  left: var(--eye-x);
+  width: var(--eye-size);
+  height: var(--eye-size);
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  border-radius: 50%;
+  pointer-events: none;
+  background: radial-gradient(circle, rgba(160, 220, 255, 0.95) 0%, rgba(99, 102, 241, 0.6) 45%, rgba(67, 56, 202, 0) 75%);
+  opacity: 0;
+  filter: blur(4px);
+  mix-blend-mode: screen;
+  will-change: opacity, transform, filter;
+}
+
+/* 2. Capa Contenido Bola de Cristal (#ball-content) */
+#ball-content {
+  position: absolute;
+  top: var(--ball-y);
+  left: var(--ball-x);
+  width: var(--ball-size);
+  aspect-ratio: 1 / 1;
+  transform: translate(-50%, -50%);
+  z-index: 3;
+  clip-path: circle(50% at 50% 50%);
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+  box-shadow: inset 0 0 15px rgba(180, 150, 255, 0.2);
+}
+
+/* Efectos de plasma y energía dentro de la bola */
+#ball-plasma {
+  position: absolute;
+  inset: -10%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(220, 195, 255, 0.4) 0%,
+    rgba(155, 105, 245, 0.28) 45%,
+    rgba(100, 60, 200, 0.12) 75%,
+    rgba(40, 20, 90, 0) 100%
+  );
+  filter: blur(4px);
+  mix-blend-mode: screen;
+  opacity: 0; /* Totalmente transparente en IDLE para que no se vea el círculo */
+  transition: opacity 0.8s ease;
+  pointer-events: none;
+}
+
+#ball-plasma-core {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.8) 0%, rgba(180, 150, 255, 0.4) 45%, rgba(90, 50, 180, 0) 80%);
+  filter: blur(8px);
+  opacity: 0; /* Totalmente transparente en IDLE */
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+/* Canvas de partículas mágicas dentro de la bola */
+#particles-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  mix-blend-mode: screen;
+}
+
+/* Contenedor de la frase del oráculo */
+.phrase-container {
+  position: relative;
+  z-index: 4;
+  width: 82%;
+  height: 82%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 8% 5%;
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+/* Frase del oráculo */
+.phrase-text {
+  color: var(--color-oracle-light);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  text-shadow: 
+    0 0 10px var(--color-oracle-glow),
+    0 0 25px rgba(138, 92, 246, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.8);
+  filter: url(#glass-distortion);
+  margin-bottom: 4px;
+  will-change: transform, opacity, filter;
+  max-width: 100%;
+  word-break: break-word;
+  hyphens: auto;
+}
+
+/* Cada palabra o fragmento de la frase */
+.phrase-word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(12px);
+  transform: translateY(6px);
+  margin: 0 2px;
+  will-change: opacity, filter, transform;
+}
+
+/* Crédito de la frase */
+.phrase-credit {
+  color: var(--color-oracle-credit);
+  font-size: 8px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-shadow: 0 0 8px rgba(147, 95, 240, 0.6);
+  opacity: 0;
+  margin-top: 4px;
+  max-width: 92%;
+  line-height: 1.25;
+}
+
+/* 3. Capa Manos y Gato */
+#layer-hands {
+  z-index: 4;
+}
+
+#layer-cat {
+  z-index: 4;
+  pointer-events: none;
+  transform: translate(var(--cat-offset-x), var(--cat-offset-y));
+  will-change: transform;
+}
+
+/* ========================================================
+   4. UI Lateral Izquierda (Panel de entrada)
+   ======================================================== */
+#input-panel {
+  position: absolute;
+  left: 6.5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 28%;
+  max-width: 440px;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.oracle-logo {
+  width: 100%;
+  max-width: 340px;
+  height: auto;
+  margin-bottom: 12px;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 3px 10px rgba(0, 0, 0, 0.35));
+}
+
+.oracle-title {
+  color: var(--color-primary-violet);
+  font-size: clamp(18px, 2.3vw, 36px);
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5);
+}
+
+.oracle-subtitle {
+  color: var(--color-primary-violet);
+  font-size: clamp(11px, 1.25vw, 18px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+  opacity: 0.95;
+}
+
+/* Chat Input Pill */
+.pill-form {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: var(--color-pill-bg);
+  border-radius: 9999px;
+  padding: 6px 10px 6px 18px;
+  box-shadow: 
+    0 4px 18px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  transition: box-shadow 0.25s ease, background-color 0.25s ease;
+}
+
+.pill-form:focus-within {
+  background-color: #d7dce5;
+  box-shadow: 
+    0 6px 24px rgba(43, 30, 92, 0.25),
+    0 0 0 2px rgba(43, 30, 92, 0.4);
+}
+
+.pill-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-family: var(--font-family-base);
+  font-size: clamp(12px, 1.15vw, 17px);
+  font-weight: 600;
+  color: var(--color-pill-text);
+  padding: 6px 4px;
+  min-width: 0;
+}
+
+.pill-input::placeholder {
+  color: rgba(43, 30, 92, 0.55);
+  font-weight: 500;
+}
+
+.pill-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 6px;
+}
+
+.pill-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.15s ease, background-color 0.2s ease, opacity 0.2s ease;
+}
+
+.pill-btn:active {
+  transform: scale(0.92);
+}
+
+/* Botón Micrófono */
+.btn-mic {
+  background-color: rgba(43, 30, 92, 0.12);
+  color: var(--color-primary-violet);
+}
+
+.btn-mic:hover {
+  background-color: rgba(43, 30, 92, 0.22);
+}
+
+.btn-mic.recording {
+  background-color: #ef4444;
+  color: #ffffff;
+  animation: pulse-recording 1.2s infinite ease-in-out;
+}
+
+.btn-mic.hidden-unsupported {
+  display: none !important;
+}
+
+@keyframes pulse-recording {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.6); }
+  50% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(239, 68, 68, 0); }
+}
+
+/* Botón Enviar */
+.btn-send {
+  background-color: var(--color-primary-violet);
+  color: #ffffff;
+  box-shadow: 0 2px 8px rgba(43, 30, 92, 0.35);
+}
+
+.btn-send:hover {
+  background-color: #3b2b78;
+  transform: scale(1.04);
+}
+
+/* Estado de dictado por voz */
+.mic-status {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-primary-violet);
+  min-height: 16px;
+  padding-left: 14px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.mic-status.active {
+  opacity: 1;
+}
+
+/* ========================================================
+   Animación de la pregunta flotando hacia la bola
+   ======================================================== */
+#floating-question {
+  position: absolute;
+  top: 50%;
+  left: 20%;
+  z-index: 6;
+  max-width: 320px;
+  font-size: clamp(14px, 1.4vw, 20px);
+  font-weight: 700;
+  color: #ffffff;
+  background: rgba(43, 30, 92, 0.75);
+  backdrop-filter: blur(8px);
+  padding: 10px 18px;
+  border-radius: 9999px;
+  border: 1px solid rgba(186, 172, 255, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+  text-align: center;
+  will-change: transform, opacity, filter;
+}
+
+/* ========================================================
+   Controles durante REVEAL (Botón "Hacer otra pregunta")
+   ======================================================== */
+#reveal-controls {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+#reveal-controls.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.btn-reset {
+  background: rgba(43, 30, 92, 0.85);
+  color: #ffffff;
+  border: 1px solid rgba(190, 175, 255, 0.45);
+  padding: 10px 24px;
+  border-radius: 9999px;
+  font-family: var(--font-family-base);
+  font-size: clamp(12px, 1.1vw, 15px);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 15px rgba(120, 80, 220, 0.3);
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-reset:hover {
+  background: rgba(60, 42, 128, 0.95);
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5), 0 0 25px rgba(150, 110, 255, 0.5);
+}
+
+.btn-reset:active {
+  transform: translateY(0) scale(0.98);
+}
+
+/* ========================================================
+   Control de Audio (Mute / Unmute)
+   ======================================================== */
+.btn-sound {
+  position: fixed;
+  top: 22px;
+  right: 24px;
+  z-index: 100;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid rgba(190, 175, 255, 0.35);
+  background: rgba(30, 20, 60, 0.65);
+  backdrop-filter: blur(10px);
+  color: #F7F4FF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4), 0 0 10px rgba(120, 80, 220, 0.25);
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-sound:hover {
+  background: rgba(50, 35, 95, 0.85);
+  transform: scale(1.08);
+  border-color: rgba(210, 195, 255, 0.6);
+}
+
+.btn-sound:active {
+  transform: scale(0.95);
+}
+
+.btn-sound.muted {
+  color: rgba(220, 210, 240, 0.45);
+  border-color: rgba(140, 130, 180, 0.25);
+  background: rgba(20, 15, 35, 0.55);
+}
+
+/* ========================================================
+   Mobile Layout Responsive
+   ======================================================== */
+@media (max-width: 768px), (orientation: portrait) {
+  #viewport-wrapper {
+    flex-direction: column;
+    justify-content: flex-start;
+  }
+
+  #stage {
+    width: 100vw;
+    height: 75vh;
+    max-width: none;
+    max-height: none;
+    aspect-ratio: auto;
+    /* En mobile, recortamos ligeramente hacia el centro del oráculo */
+    overflow: hidden;
+  }
+
+  .stage-layer {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top;
+  }
+
+  #input-panel {
+    position: fixed;
+    bottom: 12px;
+    left: 5%;
+    width: 90%;
+    max-width: none;
+    top: auto;
+    transform: none;
+    z-index: 20;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    padding: 16px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  }
+
+  .oracle-title {
+    font-size: 18px;
+    margin-bottom: 4px;
+    text-align: center;
+  }
+
+  .oracle-subtitle {
+    font-size: 11px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  #reveal-controls {
+    bottom: 24px;
+  }
+}
+
+/* ========================================================
+   Prefers-reduced-motion
+   ======================================================== */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  .phrase-text {
+    filter: none !important;
+  }
+}
