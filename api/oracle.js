@@ -5,6 +5,26 @@
 
 const CONFIG = require('../config.js');
 
+// Cargar variables de entorno desde .env local si existe (sin dependencias externas)
+try {
+  const fs = require('fs');
+  const path = require('path');
+  const envPath = path.resolve(__dirname, '../.env');
+  if (fs.existsSync(envPath)) {
+    const lines = fs.readFileSync(envPath, 'utf8').split(/\r?\n/);
+    lines.forEach(l => {
+      const match = l.match(/^\s*([\w.-]+)\s*=\s*(.*)?\s*$/);
+      if (match && !process.env[match[1]]) {
+        let val = (match[2] || '').trim();
+        if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+          val = val.slice(1, -1);
+        }
+        process.env[match[1]] = val;
+      }
+    });
+  }
+} catch (e) {}
+
 // Caché en memoria para la instancia serverless (5 minutos)
 let cachedPhrases = null;
 let lastCacheTime = 0;
@@ -94,7 +114,7 @@ function parseCSV(text) {
 }
 
 /**
- * Obtener frases activas desde Google Sheets con caché de 5 minutos
+ * Obtener frases activas desde Google Sheets (con timeout de 2.5s y fallback instantáneo al catálogo)
  */
 async function getSheetPhrases() {
   const now = Date.now();
@@ -103,19 +123,29 @@ async function getSheetPhrases() {
   }
 
   const csvUrl = process.env.SHEET_CSV_URL || CONFIG.SHEET_CSV_URL;
-  try {
-    const res = await fetch(csvUrl, { headers: { 'Accept': 'text/csv' } });
-    if (!res.ok) throw new Error(`HTTP Error ${res.status} al leer Google Sheet`);
-    const csvText = await res.text();
-    const parsed = parseCSV(csvText);
+  if (csvUrl) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 2500);
 
-    if (parsed.length > 0) {
-      cachedPhrases = parsed;
-      lastCacheTime = now;
-      return cachedPhrases;
+      const res = await fetch(csvUrl, { 
+        headers: { 'Accept': 'text/csv' },
+        signal: controller.signal 
+      });
+      clearTimeout(timeoutId);
+
+      if (res.ok) {
+        const csvText = await res.text();
+        const parsed = parseCSV(csvText);
+        if (parsed.length > 0) {
+          cachedPhrases = parsed;
+          lastCacheTime = now;
+          return cachedPhrases;
+        }
+      }
+    } catch (err) {
+      // Si superó timeout o no hay red, usar inmediatamente el catálogo precargado
     }
-  } catch (err) {
-    console.error('Error al descargar Google Sheet CSV:', err.message);
   }
 
   // Si falló el sheet y había caché previa, usarla
@@ -123,36 +153,89 @@ async function getSheetPhrases() {
     return cachedPhrases;
   }
 
-  // Si nada está disponible, devolver las frases por defecto del config
-  return CONFIG.TEST_PHRASES;
+  // Devolver el catálogo completo precargado de 49 frases en 0ms
+  return CONFIG.CATALOG_PHRASES || CONFIG.TEST_PHRASES;
 }
 
+// Diccionario de temas para enriquecer afinidades semánticas en fallback
+const BACKEND_THEMES = {
+  amor: {
+    triggers: ['amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'relacion', 'corazon', 'hombre', 'mujer', 'hombres', 'mujeres', 'divorcio', 'empatia', 'caring', 'enamorar', 'querer'],
+    phraseIds: ['4', '7', '24', '26', '33']
+  },
+  trabajo: {
+    triggers: ['trabajo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 'empresa', 'marca', 'negocio', 'exito', 'ascenso', 'cliente', 'jefe', 'banco', 'salchicha'],
+    phraseIds: ['15', '18', '21', '22', '25', '27', '38', '40', '41']
+  },
+  tecnologia: {
+    triggers: ['ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'futuro', 'computadora', 'chatgpt', 'digital', 'automatizar', 'innovar', 'mañana'],
+    phraseIds: ['30', '34', '49', '31']
+  },
+  creatividad: {
+    triggers: ['idea', 'ideas', 'crear', 'creativo', 'creatividad', 'inventar', 'campaña', 'publicidad', 'antidoto', 'desordenar', 'filosofia', 'fresco', 'original'],
+    phraseIds: ['23', '29', '35', '36', '37', '39', '42', '45', '46']
+  },
+  riesgo: {
+    triggers: ['miedo', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 'atreverse', 'cambiar', 'cambio', 'decision'],
+    phraseIds: ['32', '41', '43', '48']
+  },
+  existencial: {
+    triggers: ['verdad', 'mentir', 'mentira', 'vida', 'destino', 'sentido', 'porvenir', 'tiempo', 'conducir', 'agua', 'despeinar', 'casa', 'libertad'],
+    phraseIds: ['1', '2', '6', '8', '9', '10', '14', '44', '47']
+  }
+};
+
 /**
- * Fallback: selección por coincidencia semántica/palabras clave o al azar
+ * Fallback inteligente: selección semántica con rotación variada sobre las 49 frases
  */
 function pickFallbackPhrase(phrases, question, recentIds = []) {
   const safeRecent = recentIds.map(String);
   let candidates = phrases.filter(p => !safeRecent.includes(String(p.id)));
   if (candidates.length === 0) candidates = phrases;
 
-  const qLower = (question || '').toLowerCase();
-  const keywords = qLower.split(/[\s,?.!¡¿]+/).filter(w => w.length > 3);
+  const qLower = (question || '')
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 
-  // Intentar coincidencia en Tema
-  let match = candidates.find(item => {
-    const t = (item.tema || '').toLowerCase();
-    return keywords.some(k => t.includes(k));
+  const words = qLower
+    .split(/[\s,?.!¡¿;:]+/)
+    .filter(w => w.length > 2 && !['que', 'como', 'para', 'este', 'esta', 'los', 'las', 'del', 'por', 'con', 'sin', 'sobre', 'voy', 'va', 'sera', 'hacer'].includes(w));
+
+  const matchedIds = new Set();
+  Object.values(BACKEND_THEMES).forEach(theme => {
+    if (theme.triggers.some(tr => qLower.includes(tr))) {
+      theme.phraseIds.forEach(id => matchedIds.add(id));
+    }
   });
 
-  // Intentar coincidencia en Frase
-  if (!match) {
-    match = candidates.find(item => {
-      const f = (item.frase || '').toLowerCase();
-      return keywords.some(k => f.includes(k));
+  const scored = candidates.map(item => {
+    let score = 0;
+    const fNorm = (item.frase || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const tNorm = (item.tema || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const mNorm = (item.marca || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+    if (matchedIds.has(String(item.id))) score += 5;
+
+    words.forEach(w => {
+      if (fNorm.includes(w)) score += 3;
+      if (tNorm.includes(w)) score += 2;
+      if (mNorm.includes(w)) score += 1;
     });
+
+    return { item, score };
+  });
+
+  scored.sort((a, b) => b.score - a.score);
+  const topScore = scored[0]?.score || 0;
+
+  if (topScore > 0) {
+    const topTier = scored.filter(s => s.score >= Math.max(2, topScore * 0.7)).map(s => s.item);
+    return topTier[Math.floor(Math.random() * topTier.length)];
   }
 
-  return match || candidates[Math.floor(Math.random() * candidates.length)];
+  // Selección aleatoria entre los 49 ítems si la pregunta es abierta
+  return candidates[Math.floor(Math.random() * candidates.length)];
 }
 
 /**

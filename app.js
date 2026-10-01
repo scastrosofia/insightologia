@@ -546,65 +546,143 @@ document.addEventListener('DOMContentLoaded', () => {
     return await getLocalFallbackAnswer(question);
   }
 
-  let clientCachedSheet = null;
+  // Inicializar de inmediato con el catálogo completo de 49 frases de El Ojo
+  let clientCachedSheet = (typeof CONFIG !== 'undefined' && (CONFIG.CATALOG_PHRASES || CONFIG.TEST_PHRASES)) 
+    ? (CONFIG.CATALOG_PHRASES || CONFIG.TEST_PHRASES) 
+    : [];
 
-  async function getLocalFallbackAnswer(question) {
-    // Intentar leer las frases directamente del Google Sheet si estamos en un hosting estático (GitHub Pages)
-    if (!clientCachedSheet) {
-      try {
-        const csvUrl = (typeof CONFIG !== 'undefined' && CONFIG.SHEET_CSV_URL) ? CONFIG.SHEET_CSV_URL : '';
-        if (csvUrl) {
-          const res = await fetch(csvUrl);
-          if (res.ok) {
-            const text = await res.text();
-            const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
-            const parsed = [];
-            for (let i = 1; i < lines.length; i++) {
-              const cols = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
-              if (cols.length >= 2 && cols[1]) {
-                parsed.push({
-                  id: cols[0] || String(i),
-                  frase: cols[1],
-                  marca: cols[2] || '',
-                  agencia: cols[3] || '',
-                  pais: cols[4] || '',
-                  ano: cols[5] || '',
-                  tema: cols[6] || 'Creatividad'
-                });
-              }
-            }
-            if (parsed.length > 0) clientCachedSheet = parsed;
+  // Intento no bloqueante de sincronizar en segundo plano con Google Sheets si hay conexión
+  if (typeof CONFIG !== 'undefined' && CONFIG.SHEET_CSV_URL) {
+    fetch(CONFIG.SHEET_CSV_URL)
+      .then(res => res.ok ? res.text() : '')
+      .then(text => {
+        if (!text) return;
+        const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
+        const parsed = [];
+        for (let i = 1; i < lines.length; i++) {
+          const cols = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
+          if (cols.length >= 2 && cols[1]) {
+            parsed.push({
+              id: cols[0] || String(i),
+              frase: cols[1],
+              marca: cols[2] || '',
+              agencia: cols[3] || '',
+              pais: cols[4] || '',
+              ano: cols[5] || '',
+              tema: cols[6] || 'Creatividad'
+            });
           }
         }
-      } catch (err) {
-        console.warn('Fallback a frases de prueba locales:', err);
-      }
-    }
+        if (parsed.length > 0) clientCachedSheet = parsed;
+      })
+      .catch(() => {});
+  }
 
+  // Diccionario semántico para enriquecer coincidencias conceptuales
+  const SEMANTIC_THEMES = {
+    amor: {
+      triggers: ['amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'relacion', 'corazon', 'sentimiento', 'hombre', 'mujer', 'hombres', 'mujeres', 'divorcio', 'empatia', 'caring', 'enamorar', 'querer', 'gustar'],
+      phraseIds: ['4', '7', '24', '26', '33'] // igualismo, amo a laura, divorciarnos, empatía, caring
+    },
+    trabajo: {
+      triggers: ['trabajo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 'empresa', 'marca', 'negocio', 'exito', 'ascenso', 'cliente', 'jefe', 'agencia', 'banco', 'salchicha'],
+      phraseIds: ['15', '18', '21', '22', '25', '27', '38', '40', '41'] // trabajo real, palacio, sacamos petróleo, etc.
+    },
+    tecnologia: {
+      triggers: ['ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'futuro', 'computadora', 'chatgpt', 'digital', 'automatizar', 'innovar', 'mañana'],
+      phraseIds: ['30', '34', '49', '31'] // el AI concluye, caballo de troya, la IA acelera, innovar
+    },
+    creatividad: {
+      triggers: ['idea', 'ideas', 'crear', 'creativo', 'creatividad', 'inventar', 'campaña', 'publicidad', 'antidoto', 'desordenar', 'filosofia', 'fresco', 'original'],
+      phraseIds: ['23', '29', '35', '36', '37', '39', '42', '45', '46'] // la creatividad es el antídoto, la idea primero, etc.
+    },
+    riesgo: {
+      triggers: ['miedo', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 'atreverse', 'cambiar', 'cambio', 'decision', 'seguro'],
+      phraseIds: ['32', '41', '43', '48'] // valentía es contagiosa, había peligro, peor ellos o mejor tú
+    },
+    existencial: {
+      triggers: ['verdad', 'mentir', 'mentira', 'vida', 'destino', 'sentido', 'porvenir', 'tiempo', 'conducir', 'agua', 'despeinar', 'casa', 'libertad'],
+      phraseIds: ['1', '2', '6', '8', '9', '10', '14', '44', '47'] // teletransportarte, einstein, be water, despeine, etc.
+    }
+  };
+
+  async function getLocalFallbackAnswer(question) {
     const list = (clientCachedSheet && clientCachedSheet.length > 0) 
       ? clientCachedSheet 
-      : ((typeof CONFIG !== 'undefined' && CONFIG.TEST_PHRASES) ? CONFIG.TEST_PHRASES : [
-        { id: "1", frase: "Para qué mentir, si podés teletransportarte", marca: "Cerveza Andes", agencia: "Del Campo Nazca", pais: "Argentina", ano: "2010", tema: "Verdad" },
-        { id: "2", frase: "Einstein estaba equivocado.", marca: "Cerveza Andes", agencia: "Del Campo Nazca", pais: "Argentina", ano: "2010", tema: "Física" },
-        { id: "4", frase: "Cuando los hombres y las mujeres se encuentran, nace el igualismo", marca: "Quilmes", agencia: "Young & Rubicam", pais: "Argentina", ano: "2012", tema: "Igualdad" },
-        { id: "5", frase: "Tu cuerpo pide pasta", marca: "Lucchetti", agencia: "Madre", pais: "Argentina", ano: "2014", tema: "Deseo" },
-        { id: "9", frase: "¿Te gusta conducir?", marca: "BMW", agencia: "*S,C,P,F...", pais: "España", ano: "1999", tema: "Libertad" }
-      ]);
+      : ((typeof CONFIG !== 'undefined' && CONFIG.CATALOG_PHRASES) ? CONFIG.CATALOG_PHRASES : []);
 
-    // Filtrar para evitar repeticiones recientes
-    const candidates = list.filter(item => !recentIds.includes(String(item.id)));
-    const pool = candidates.length > 0 ? candidates : list;
+    if (!list || list.length === 0) {
+      return {
+        id: "1",
+        frase: "Para qué mentir, si podés teletransportarte",
+        marca: "Cerveza Andes",
+        agencia: "Del Campo Nazca Saatchi & Saatchi",
+        pais: "Argentina",
+        ano: "2010",
+        tema: "Publicidad"
+      };
+    }
 
-    // Búsqueda por coincidencia de palabras clave con el tema o la frase
-    const qLower = (question || '').toLowerCase();
-    const words = qLower.split(/[\s,?.!¡¿]+/).filter(w => w.length > 3);
-    const match = pool.find(item => {
-      const t = (item.tema || '').toLowerCase();
-      const f = (item.frase || '').toLowerCase();
-      return words.some(w => t.includes(w) || f.includes(w));
+    // Filtrar candidatos para evitar las últimas 5 frases mostradas en la sesión
+    const safeCandidates = list.filter(item => !recentIds.includes(String(item.id)));
+    const pool = safeCandidates.length > 0 ? safeCandidates : list;
+
+    // Normalizar texto de la pregunta
+    const qLower = (question || '')
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "");
+
+    const words = qLower
+      .split(/[\s,?.!¡¿;:]+/)
+      .filter(w => w.length > 2 && !['que', 'como', 'para', 'este', 'esta', 'estos', 'estas', 'los', 'las', 'del', 'por', 'con', 'sin', 'sobre', 'voy', 'va', 'sera', 'hacer'].includes(w));
+
+    // Evaluar afinidad temática conceptual
+    const matchedCategoryPhraseIds = new Set();
+    Object.values(SEMANTIC_THEMES).forEach(theme => {
+      const hasTrigger = theme.triggers.some(tr => qLower.includes(tr));
+      if (hasTrigger) {
+        theme.phraseIds.forEach(id => matchedCategoryPhraseIds.add(id));
+      }
     });
 
-    const selected = match || pool[Math.floor(Math.random() * pool.length)];
+    // Puntuar cada frase del pool
+    const scored = pool.map(item => {
+      let score = 0;
+      const fNorm = (item.frase || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const tNorm = (item.tema || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const mNorm = (item.marca || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+
+      // Si coincide con categoría temática conceptual (+5 pts)
+      if (matchedCategoryPhraseIds.has(String(item.id))) {
+        score += 5;
+      }
+
+      // Si contiene palabras clave de la pregunta
+      words.forEach(w => {
+        if (fNorm.includes(w)) score += 3;
+        if (tNorm.includes(w)) score += 2;
+        if (mNorm.includes(w)) score += 1;
+      });
+
+      return { item, score };
+    });
+
+    // Ordenar por afinidad
+    scored.sort((a, b) => b.score - a.score);
+
+    let selected;
+    const topScore = scored[0]?.score || 0;
+
+    if (topScore > 0) {
+      // Tomar las frases con mayor afinidad y seleccionar una al azar entre las mejores
+      const bestCandidates = scored.filter(s => s.score >= Math.max(2, topScore * 0.7)).map(s => s.item);
+      selected = bestCandidates[Math.floor(Math.random() * bestCandidates.length)];
+    } else {
+      // Si la pregunta es abierta o abstracta, seleccionar una al azar de todo el catálogo (sin repetir las últimas 5)
+      selected = pool[Math.floor(Math.random() * pool.length)];
+    }
+
     saveRecentId(selected.id);
     return selected;
   }
