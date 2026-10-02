@@ -205,6 +205,20 @@ body.kiosk-mode * {
   object-fit: cover;
   pointer-events: none;
   user-select: none;
+  display: block;
+}
+
+picture.stage-layer {
+  display: block;
+}
+
+.stage-layer-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+  display: block;
 }
 
 /* 1. Capa Fondo Escena */
@@ -626,61 +640,86 @@ body.kiosk-mode * {
 }
 
 /* ========================================================
-   Mobile Layout Responsive
+   Mobile Layout Responsive (9:16 Portrait)
    ======================================================== */
 @media (max-width: 768px), (orientation: portrait) {
+  :root {
+    /* Calibración precisa para la composición mobile 9:16 */
+    --ball-x: 40.28%;
+    --ball-y: 81.51%;
+    --ball-size: 31.94%;
+
+    --eye-x: 48.38%;
+    --eye-y: 43.75%;
+    --eye-size: 14%;
+  }
+
   #viewport-wrapper {
-    flex-direction: column;
-    justify-content: flex-start;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
   }
 
   #stage {
-    width: 100vw;
-    height: 75vh;
-    max-width: none;
-    max-height: none;
-    aspect-ratio: auto;
-    /* En mobile, recortamos ligeramente hacia el centro del oráculo */
+    position: relative;
+    width: min(100vw, calc(100vh * 9 / 16));
+    height: min(100vh, calc(100vw * 16 / 9));
+    aspect-ratio: 9 / 16;
+    max-width: 100vw;
+    max-height: 100vh;
+    margin: auto;
     overflow: hidden;
+    transform-origin: var(--ball-x) var(--ball-y);
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
   }
 
-  .stage-layer {
+  .stage-layer,
+  .stage-layer-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top;
+    object-position: center center;
   }
 
+  /* Ocultar gato en mobile según el mockup provisto */
+  #layer-cat {
+    display: none !important;
+  }
+
+  /* Posición exacta del input sobre la píldora dibujada en el fondo mobile */
   #input-panel {
-    position: fixed;
-    bottom: 12px;
-    left: 5%;
-    width: 90%;
+    position: absolute;
+    left: 21.06%;
+    top: 30.08%;
+    width: 57.50%;
+    height: 3.26%;
     max-width: none;
-    top: auto;
     transform: none;
-    z-index: 20;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    padding: 16px;
-    border-radius: 20px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    z-index: 5;
+    background: transparent;
+    padding: 0;
+    border-radius: 9999px;
+    box-shadow: none;
   }
 
-  .oracle-title {
-    font-size: 18px;
-    margin-bottom: 4px;
-    text-align: center;
+  .pill-input {
+    font-size: clamp(11px, 3.2vw, 15px);
   }
 
-  .oracle-subtitle {
-    font-size: 11px;
-    margin-bottom: 8px;
-    text-align: center;
+  .phrase-credit {
+    font-size: 7px;
+  }
+
+  .btn-sound {
+    top: max(16px, calc((100vh - (100vw * 16 / 9)) / 2 + 16px));
+    right: max(16px, calc((100vw - (100vh * 9 / 16)) / 2 + 16px));
+    width: 40px;
+    height: 40px;
   }
 
   #reveal-controls {
-    bottom: 24px;
+    bottom: max(20px, calc((100vh - (100vw * 16 / 9)) / 2 + 20px));
   }
 }
 

@@ -44,8 +44,11 @@
     <!-- The 16:9 Stage -->
     <main id="stage" aria-label="Escenario del Oráculo Insightología">
       
-      <!-- 1. Background scene (gentleman, table, crystal ball base) -->
-      <img id="layer-scene" class="stage-layer" src="assets/escena.webp" alt="Escena del Oráculo" draggable="false">
+      <!-- 1. Background scene (adaptable a desktop 16:9 y mobile 9:16) -->
+      <picture class="stage-layer">
+        <source media="(max-width: 768px), (orientation: portrait)" srcset="assets/escena-mobile.webp">
+        <img id="layer-scene" class="stage-layer-img" src="assets/escena.webp" alt="Escena del Oráculo" draggable="false">
+      </picture>
 
       <!-- Destello suave del tercer ojo (posicionado con --eye-x, --eye-y) -->
       <div id="third-eye-glow" aria-hidden="true"></div>
@@ -66,8 +69,11 @@
         </div>
       </div>
 
-      <!-- 3. Hands layer (transparent PNG positioned directly over the ball) -->
-      <img id="layer-hands" class="stage-layer" src="assets/manos.png" alt="Manos del Oráculo" draggable="false">
+      <!-- 3. Hands layer (adaptable a desktop 16:9 y mobile 9:16) -->
+      <picture class="stage-layer">
+        <source media="(max-width: 768px), (orientation: portrait)" srcset="assets/manos-mobile.png">
+        <img id="layer-hands" class="stage-layer-img" src="assets/manos.png" alt="Manos del Oráculo" draggable="false">
+      </picture>
 
       <!-- Capa del gato con transparencia alfa real, autoplay y loop continuo -->
       <img id="layer-cat" class="stage-layer" src="assets/gato.webp" alt="Gato místico" draggable="false">

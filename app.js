@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isKiosk = new URLSearchParams(window.location.search).get('kiosk') === '1';
 
+  function isMobilePortrait() {
+    return window.innerWidth <= 768 || window.matchMedia('(orientation: portrait)').matches;
+  }
+
   // Historial de IDs recientes en la sesión (para no repetir las últimas 5)
   let recentIds = [];
   try {
@@ -75,7 +79,9 @@ document.addEventListener('DOMContentLoaded', () => {
     { type: 'image', src: 'assets/escena.webp' },
     { type: 'image', src: 'assets/manos.png' },
     { type: 'image', src: 'assets/fondo-aterciopelado.jpeg' },
-    { type: 'image', src: 'assets/gato.webp' }
+    { type: 'image', src: 'assets/gato.webp' },
+    { type: 'image', src: 'assets/escena-mobile.webp' },
+    { type: 'image', src: 'assets/manos-mobile.png' }
   ];
 
   let loadedAssets = 0;
@@ -348,16 +354,22 @@ document.addEventListener('DOMContentLoaded', () => {
     if (question.length > 0) {
       floatingQuestion.textContent = `"${question}"`;
       
+      const isMob = isMobilePortrait();
+      const startX = isMob ? '50%' : '20%';
+      const startY = isMob ? '31.5%' : '57%';
+      const endX = isMob ? '40.3%' : '44.8%';
+      const endY = isMob ? '81.5%' : '74.5%';
+
       const tlFly = gsap.timeline();
       tlFly.fromTo(floatingQuestion, 
-        { opacity: 0, scale: 0.8, x: '20%', y: '57%' },
-        { opacity: 1, scale: 1, x: '20%', y: '57%', duration: 0.4, ease: 'back.out(1.5)' }
+        { opacity: 0, scale: 0.8, x: startX, y: startY },
+        { opacity: 1, scale: 1, x: startX, y: startY, duration: 0.4, ease: 'back.out(1.5)' }
       )
       .to(floatingQuestion, {
         opacity: 0,
         scale: 0.3,
-        x: '44.8%',
-        y: '74.5%',
+        x: endX,
+        y: endY,
         filter: 'blur(8px)',
         duration: 0.9,
         ease: 'power2.in'
@@ -399,11 +411,18 @@ document.addEventListener('DOMContentLoaded', () => {
   function runZoomInAnimation() {
     return new Promise((resolve) => {
       const zoomDuration = prefersReducedMotion ? 0.6 : 1.8;
-      // Escalar el stage (4.4x) y centrar la bola en X=50% e Y=48%
+      const isMob = isMobilePortrait();
+
+      // En mobile portrait la bola ya es más grande (31.94%) y está en (40.28%, 81.51%)
+      // Escala 2.8x con compensación xPercent: 9.7, yPercent: -31.5 para centrado en pantalla
+      const targetScale = isMob ? 2.8 : 4.4;
+      const targetX = isMob ? 9.7 : 5.2;
+      const targetY = isMob ? -31.5 : -26.5;
+
       gsap.to(stage, {
-        scale: 4.4,
-        xPercent: 5.2,
-        yPercent: -26.5,
+        scale: targetScale,
+        xPercent: targetX,
+        yPercent: targetY,
         duration: zoomDuration,
         ease: 'power3.inOut',
         onComplete: resolve
