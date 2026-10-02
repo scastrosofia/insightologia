@@ -694,58 +694,77 @@ document.addEventListener('DOMContentLoaded', () => {
     return await getLocalFallbackAnswer(question);
   }
 
-  // Inicializar de inmediato con el catálogo completo de 49 frases de El Ojo
-  let clientCachedSheet = (typeof CONFIG !== 'undefined' && (CONFIG.CATALOG_PHRASES || CONFIG.TEST_PHRASES)) 
-    ? (CONFIG.CATALOG_PHRASES || CONFIG.TEST_PHRASES) 
+  // Catálogo completo de 50 frases enriquecidas con tags de El Ojo de Iberoamérica
+  const clientCachedSheet = (typeof CONFIG !== 'undefined' && CONFIG.CATALOG_PHRASES) 
+    ? CONFIG.CATALOG_PHRASES 
     : [];
-
-  // Intento no bloqueante de sincronizar en segundo plano con Google Sheets si hay conexión
-  if (typeof CONFIG !== 'undefined' && CONFIG.SHEET_CSV_URL) {
-    fetch(CONFIG.SHEET_CSV_URL)
-      .then(res => res.ok ? res.text() : '')
-      .then(text => {
-        if (!text) return;
-        const lines = text.split(/\r?\n/).filter(l => l.trim().length > 0);
-        const parsed = [];
-        for (let i = 1; i < lines.length; i++) {
-          const cols = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
-          if (cols.length >= 2 && cols[1]) {
-            parsed.push({
-              id: cols[0] || String(i),
-              frase: cols[1],
-              marca: cols[2] || '',
-              agencia: cols[3] || '',
-              pais: cols[4] || '',
-              ano: cols[5] || '',
-              tema: cols[6] || 'Creatividad'
-            });
-          }
-        }
-        if (parsed.length > 0) clientCachedSheet = parsed;
-      })
-      .catch(() => {});
-  }
 
   // ========================================================
   // 6. MOTOR SEMÁNTICO LOCAL INTELIGENTE (Basado en Tags)
   // ========================================================
   const THEME_TRIGGERS = {
-    'Amor y vínculos': ['amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'separacion', 'divorcio', 'relacion', 'corazon', 'enamorar', 'querer', 'gustar', 'empatia', 'amigo', 'amigos', 'amistad', 'sentimiento', 'hombre', 'mujer'],
-    'Trabajo y creatividad': ['trabajo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 'empresa', 'marca', 'negocio', 'exito', 'ascenso', 'cliente', 'jefe', 'agencia', 'idea', 'ideas', 'crear', 'creativo', 'creatividad', 'campana', 'publicidad', 'aviso', 'oficio'],
-    'Futuro y tecnología': ['ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'futuro', 'computadora', 'chatgpt', 'digital', 'automatizar', 'innovar', 'manana', 'destino', 'chip', 'data', 'inteligencia', 'artificial'],
-    'Riesgo y valentía': ['miedo', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 'atreverse', 'cambiar', 'cambio', 'decision', 'saltar', 'coraje', 'avanzar', 'tirarme'],
-    'Identidad': ['quien soy', 'estilo', 'edad', 'grande', 'viejo', 'ser yo', 'autoestima', 'identidad', 'dudas', 'autentico', 'comparar', 'sentido', 'propio'],
-    'Placer y vida cotidiana': ['comer', 'pasta', 'hambre', 'sed', 'cerveza', 'birra', 'comida', 'cuerpo', 'casa', 'disfrutar', 'cotidiano', 'dormir', 'desayuno'],
-    'Tiempo y país': ['tiempo', 'nostalgia', 'anos', 'pais', 'argentina', 'epoca', 'antes', 'pasado', 'recuerdo']
+    'Amor y vínculos': [
+      'amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'separacion', 'divorcio', 
+      'relacion', 'relaciones', 'corazon', 'enamorar', 'enamorado', 'enamorada', 'querer', 
+      'gustar', 'gusto', 'empatia', 'amigo', 'amigos', 'amiga', 'amistad', 'sentimiento', 
+      'hombre', 'mujer', 'chico', 'chica', 'volver', 'ex', 'cita', 'conocer'
+    ],
+    'Trabajo y creatividad': [
+      'trabajo', 'laburo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 
+      'sueldos', 'empresa', 'marca', 'negocio', 'negocios', 'exito', 'ascenso', 'ascender', 
+      'renunciar', 'emprender', 'emprendimiento', 'cliente', 'jefe', 'jefa', 'agencia', 
+      'idea', 'ideas', 'crear', 'creativo', 'creatividad', 'campana', 'publicidad', 
+      'aviso', 'oficio', 'estudiar', 'estudio', 'profesion', 'proyecto'
+    ],
+    'Futuro y tecnología': [
+      'ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'robots', 'futuro', 'computadora', 
+      'chatgpt', 'digital', 'automatizar', 'innovar', 'manana', 'destino', 'chip', 
+      'data', 'inteligencia', 'artificial', 'reemplazar', 'progreso', 'ciencia'
+    ],
+    'Riesgo y valentía': [
+      'miedo', 'miedos', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 
+      'arriesgo', 'atreverse', 'atrevo', 'animo', 'animarme', 'cambiar', 'cambio', 
+      'decision', 'saltar', 'coraje', 'avanzar', 'tirarme', 'jugarmela', 'jugarme', 'pileta'
+    ],
+    'Identidad': [
+      'quien soy', 'como soy', 'estilo', 'edad', 'grande', 'viejo', 'ser yo', 
+      'autoestima', 'identidad', 'dudas', 'autentico', 'comparar', 'sentido', 
+      'propio', 'proposito', 'vida', 'existencia', 'personalidad'
+    ],
+    'Placer y vida cotidiana': [
+      'comer', 'pasta', 'hambre', 'sed', 'cerveza', 'birra', 'vino', 'comida', 
+      'cuerpo', 'casa', 'disfrutar', 'cotidiano', 'dormir', 'desayuno', 'fiesta', 
+      'salida', 'descansar', 'vacaciones', 'placer', 'vivir'
+    ],
+    'Tiempo y país': [
+      'tiempo', 'nostalgia', 'anos', 'pais', 'argentina', 'epoca', 'antes', 
+      'pasado', 'recuerdo', 'historia', 'recuerdos'
+    ]
   };
 
   const FUNCTION_TRIGGERS = {
-    'Empuja a actuar': ['debo', 'tengo que', 'hago', 'hacerlo', 'me animo', 'avanzo', 'empiezo', 'tiro', 'arriesgo', 'comienzo', 'deberia', 'puedo', 'voy a'],
-    'Tranquiliza o relativiza': ['miedo', 'cansado', 'cansada', 'angustia', 'estres', 'preocupado', 'preocupada', 'duda', 'dudas', 'perder', 'sola', 'solo', 'triste', 'pasa nada'],
-    'Sí o no rotundo': ['si o no', 'va a pasar', 'sera que', 'es verdad', 'triunfare', 'lo lograre', 'va a salir', 'saldra bien', 'va a funcionar'],
-    'Sentencia de oráculo': ['que va a pasar', 'cual es el', 'hacia donde', 'que pasara', 'que significa', 'que sentido', 'por que', 'para que'],
-    'Desafía o cuestiona': ['seguro', 'verdad', 'enserio', 'crees', 'pensas', 'te parece', 'tonto', 'loco'],
-    'Humor o absurdo': ['jaja', 'chiste', 'mentira', 'locura', 'broma', 'ridiculo']
+    'Empuja a actuar': [
+      'debo', 'tengo que', 'hago', 'hacerlo', 'me animo', 'avanzo', 'empiezo', 
+      'tiro', 'arriesgo', 'comienzo', 'deberia', 'puedo', 'voy a', 'conviene'
+    ],
+    'Tranquiliza o relativiza': [
+      'miedo', 'cansado', 'cansada', 'angustia', 'estres', 'preocupado', 'preocupada', 
+      'duda', 'dudas', 'perder', 'sola', 'solo', 'triste', 'pasa nada', 'calma', 'paz'
+    ],
+    'Sí o no rotundo': [
+      'si o no', 'va a pasar', 'sera que', 'es verdad', 'triunfare', 'lo lograre', 
+      'va a salir', 'saldra bien', 'va a funcionar', 'si', 'no'
+    ],
+    'Sentencia de oráculo': [
+      'que va a pasar', 'cual es el', 'hacia donde', 'que pasara', 'que significa', 
+      'que sentido', 'por que', 'para que', 'cual es'
+    ],
+    'Desafía o cuestiona': [
+      'seguro', 'verdad', 'enserio', 'crees', 'pensas', 'te parece', 'tonto', 'loco'
+    ],
+    'Humor o absurdo': [
+      'jaja', 'chiste', 'mentira', 'locura', 'broma', 'ridiculo'
+    ]
   };
 
   function matchesTrigger(text, wordsSet, trigger) {
@@ -810,37 +829,37 @@ document.addEventListener('DOMContentLoaded', () => {
       const funcNorm = (item.funcion || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       const mNorm = (item.marca || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
 
-      // 1. Afinidad temática por Tag (+6 pts)
+      // 1. Afinidad temática por Tag (+8 pts)
       let hasThemeMatch = false;
       for (const t of matchedThemes) {
         if (tNorm.includes(t)) {
-          score += 6;
+          score += 8;
           hasThemeMatch = true;
           break;
         }
       }
 
-      // 2. Afinidad funcional por Tag (+5 pts)
+      // 2. Afinidad funcional por Tag (+6 pts)
       for (const fn of matchedFunctions) {
         if (funcNorm.includes(fn)) {
-          score += 5;
+          score += 6;
           break;
         }
       }
 
-      // 3. Coincidencia léxica directa (+3 pts por palabra de la pregunta)
+      // 3. Coincidencia léxica directa (+4 pts por palabra de la pregunta)
       words.forEach(w => {
-        if (fNorm.includes(w)) score += 3;
-        if (tNorm.includes(w)) score += 2;
+        if (fNorm.includes(w)) score += 4;
+        if (tNorm.includes(w)) score += 3;
         if (mNorm.includes(w)) score += 1;
       });
 
       // 4. Modificadores de Tag: Flag y Comodín
       if (item.flag === 'Depende de contexto' && !hasThemeMatch) {
-        score -= 10; // Solo entra si el tema de la pregunta coincide explícitamente
+        score -= 12; // Solo entra si el tema de la pregunta coincide explícitamente
       }
       if (item.flag === 'Revisar') {
-        score -= 10; // Evitar frases sensibles salvo match intencional explícito
+        score -= 12; // Evitar frases sensibles salvo match intencional explícito
       }
       if (item.comodin && score <= 3) {
         score += 2; // Si la pregunta es abierta o abstracta, dar prioridad al comodín
@@ -855,16 +874,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let selected;
     const topScore = scored[0]?.score || 0;
 
-    if (topScore > 3) {
-      // Tomar las frases con mayor afinidad y seleccionar una al azar entre el grupo líder
-      const bestCandidates = scored.filter(s => s.score >= Math.max(3, topScore * 0.75)).map(s => s.item);
+    if (topScore >= 5) {
+      // Tomar las frases con mayor afinidad semántica (score máximo o muy cercano)
+      const bestCandidates = scored.filter(s => s.score >= Math.max(5, topScore - 3)).map(s => s.item);
       selected = bestCandidates[Math.floor(Math.random() * bestCandidates.length)];
     } else {
-      // Si la pregunta es abierta, dar prioridad a frases Comodín o aleatorias del catálogo
+      // Si la pregunta es abierta o abstracta, priorizar frases Comodín
       const comodines = pool.filter(p => p.comodin && p.flag !== 'Revisar');
       const fallbackList = (comodines.length > 0) ? comodines : pool;
       selected = fallbackList[Math.floor(Math.random() * fallbackList.length)];
     }
+
+    console.log('🔮 Oráculo Semántico:', {
+      pregunta: question,
+      temasDetectados: Array.from(matchedThemes),
+      funcionesDetectadas: Array.from(matchedFunctions),
+      scoreMaximo: topScore,
+      fraseElegida: selected.frase,
+      temaFrase: selected.tema,
+      funcionFrase: selected.funcion,
+      id: selected.id
+    });
 
     saveRecentId(selected.id);
     return selected;
