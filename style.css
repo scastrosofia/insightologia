@@ -1000,10 +1000,10 @@ picture.stage-layer {
   /* Posición exacta del input sobre la píldora dibujada en el fondo mobile */
   #input-panel {
     position: absolute;
-    left: 21.06%;
-    top: 30.04%;
+    left: 22.55%;
+    top: 30.91%;
     width: 57.50%;
-    height: 3.38%;
+    height: 3.26%;
     max-width: none;
     transform: none;
     z-index: 5;
