@@ -357,8 +357,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const isMob = isMobilePortrait();
       const startX = isMob ? '50%' : '20%';
       const startY = isMob ? '32.5%' : '57%';
-      const endX = isMob ? '40.35%' : '44.8%';
-      const endY = isMob ? '82.5%' : '74.5%';
+      const endX = isMob ? '40.28%' : '44.8%';
+      const endY = isMob ? '82.81%' : '74.5%';
 
       const tlFly = gsap.timeline();
       tlFly.fromTo(floatingQuestion, 
@@ -413,11 +413,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const zoomDuration = prefersReducedMotion ? 0.6 : 1.8;
       const isMob = isMobilePortrait();
 
-      // En mobile portrait la bola ya es más grande (32%) y está en (40.35%, 82.5%)
-      // Escala 2.8x con compensación xPercent: 9.65, yPercent: -32.5 para centrado en pantalla
-      const targetScale = isMob ? 2.8 : 4.4;
-      const targetX = isMob ? 9.65 : 5.2;
-      const targetY = isMob ? -32.5 : -26.5;
+      // En mobile portrait la bola mide 27.31% y su centro exacto es (40.28%, 82.81%)
+      // Escala 3.0x con compensación para centrado armónico
+      const targetScale = isMob ? 3.0 : 4.4;
+      const targetX = isMob ? 9.72 : 5.2;
+      const targetY = isMob ? -33.8 : -26.5;
 
       gsap.to(stage, {
         scale: targetScale,
@@ -591,20 +591,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function adjustAdaptiveFontSize(frase) {
     const len = (frase || '').length;
-    // Dimensionamiento proporcional al círculo de 11.8%
-    // Al escalarse por 4.6x durante ZOOM IN, 10px equivale a ~46px visuales en pantalla
-    let fontSize = 10;
+    const isMob = isMobilePortrait();
+
+    // Dimensionamiento proporcional adaptativo
+    // En mobile se reduce ~25% para no ser tapado por los dedos y calzar en el centro de la bola
+    let fontSize = isMob ? 7.2 : 10;
 
     if (len < 25) {
-      fontSize = 13;
+      fontSize = isMob ? 8.6 : 13;
     } else if (len < 45) {
-      fontSize = 11;
+      fontSize = isMob ? 7.6 : 11;
     } else if (len < 75) {
-      fontSize = 9.2;
+      fontSize = isMob ? 6.6 : 9.2;
     } else if (len < 110) {
-      fontSize = 8.2;
+      fontSize = isMob ? 5.8 : 8.2;
     } else {
-      fontSize = 7.4;
+      fontSize = isMob ? 5.0 : 7.4;
     }
 
     phraseText.style.fontSize = `${fontSize}px`;

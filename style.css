@@ -647,9 +647,9 @@ picture.stage-layer {
 @media (max-width: 768px), (orientation: portrait) {
   :root {
     /* Calibración precisa para la composición mobile 9:16 */
-    --ball-x: 40.35%;
-    --ball-y: 82.50%;
-    --ball-size: 32%;
+    --ball-x: 40.28%;
+    --ball-y: 82.81%;
+    --ball-size: 27.31%;
 
     --eye-x: 48.33%;
     --eye-y: 40.26%;
@@ -715,8 +715,24 @@ picture.stage-layer {
     font-size: clamp(12px, 3.4vw, 16px);
   }
 
+  /* Respuestas más compactas en mobile para que no las tapen los dedos de las manos */
+  .phrase-container {
+    width: 66%;
+    height: 75%;
+    padding: 4% 6%;
+  }
+
+  .phrase-text {
+    line-height: 1.24;
+    margin-bottom: 2px;
+  }
+
   .phrase-credit {
-    font-size: 7px;
+    font-size: 4.8px;
+    line-height: 1.25;
+    margin-top: 4px;
+    max-width: 90%;
+    letter-spacing: 0.05em;
   }
 
   .btn-sound {
