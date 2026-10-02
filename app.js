@@ -386,7 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const isMob = isMobilePortrait();
       const startX = isMob ? '50%' : '20%';
-      const startY = isMob ? '32.5%' : '57%';
+      const startY = isMob ? '31.7%' : '57%';
       const endX = isMob ? '40.28%' : '44.8%';
       const endY = isMob ? '82.81%' : '74.5%';
 
