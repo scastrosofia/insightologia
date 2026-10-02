@@ -6,6 +6,9 @@ const CONFIG = {
   // Endpoint del backend serverless en Vercel o local
   API_ORACLE_URL: '/api/oracle',
 
+  // Webhook de Google Apps Script para guardar preguntas en Google Sheets
+  GOOGLE_SHEETS_WEBHOOK_URL: '',
+
   // Timeout para respuesta de API (ms)
   TIMEOUT_MS: 5000,
 

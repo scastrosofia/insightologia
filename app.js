@@ -337,6 +337,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4. Transicionar a REVEAL
     transitionReveal(oracleData);
+
+    // 5. Registro automático en Google Sheets (si está configurado el webhook)
+    sendQuestionToGoogleDrive(question, oracleData);
+  }
+
+  function sendQuestionToGoogleDrive(pregunta, respuesta) {
+    if (!pregunta || pregunta.trim().length === 0) return;
+    const webhookUrl = (typeof CONFIG !== 'undefined' && CONFIG.GOOGLE_SHEETS_WEBHOOK_URL) 
+      ? CONFIG.GOOGLE_SHEETS_WEBHOOK_URL.trim() 
+      : '';
+    if (!webhookUrl) return;
+
+    try {
+      const payload = {
+        pregunta: pregunta,
+        respuesta: (respuesta && respuesta.frase) 
+          ? `[ID ${respuesta.id || ''}] "${respuesta.frase}" (${respuesta.marca || ''} - ${respuesta.ano || ''})` 
+          : String(respuesta || ''),
+        dispositivo: isMobilePortrait() ? 'Mobile' : 'Desktop'
+      };
+
+      fetch(webhookUrl, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'text/plain;charset=utf-8'
+        },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    } catch (e) {}
   }
 
   // --- Fase THINKING: Pulso y vuelo de la pregunta ---
