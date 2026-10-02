@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Tera:wght@400;500;600;700&family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css?v=20261002-6">
+  <link rel="stylesheet" href="style.css?v=20261002-7">
   
   <!-- GSAP 3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -33,10 +33,14 @@
     </defs>
   </svg>
 
-  <!-- Pantalla de carga mística: Abriendo la mirada... (abriendo.webp) -->
+  <!-- Pantalla de carga mística: Abriendo la mirada... (abriendo.webp / abriendo-mobile.webp) -->
   <aside id="preloader" class="preloader" aria-live="polite" aria-busy="true">
     <div class="preloader-stage">
-      <img class="preloader-bg" src="assets/abriendo.webp" alt="Abriendo la mirada..." draggable="false">
+      <picture class="preloader-picture">
+        <source media="(max-width: 768px)" srcset="assets/abriendo-mobile.webp?v=20261002-1">
+        <source media="(orientation: portrait)" srcset="assets/abriendo-mobile.webp?v=20261002-1">
+        <img class="preloader-bg" src="assets/abriendo.webp" alt="Abriendo la mirada..." draggable="false">
+      </picture>
       <div class="preloader-controls">
         <div class="preloader-bar-track">
           <div id="preloader-bar-fill" class="preloader-bar-fill"></div>
@@ -222,6 +226,6 @@
   <audio id="audio-office" src="assets/audio/office-ambience.mp3" loop preload="auto"></audio>
 
   <script src="config.js?v=20261002-5"></script>
-  <script src="app.js?v=20261002-5"></script>
+  <script src="app.js?v=20261002-7"></script>
 </body>
 </html>

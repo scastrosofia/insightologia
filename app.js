@@ -88,11 +88,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewportWrapper = document.getElementById('viewport-wrapper');
 
   const assetsToPreload = [
-    { type: 'image', src: 'assets/escena.webp' },
+    { type: 'image', src: 'assets/escena-sin-pupila.webp' },
+    { type: 'image', src: 'assets/escena-mobile-sin-pupila.webp' },
+    { type: 'image', src: 'assets/pupila.png' },
+    { type: 'image', src: 'assets/abriendo.webp' },
+    { type: 'image', src: 'assets/abriendo-mobile.webp' },
     { type: 'image', src: 'assets/manos.png' },
     { type: 'image', src: 'assets/fondo-aterciopelado.jpeg' },
     { type: 'image', src: 'assets/gato.webp' },
-    { type: 'image', src: 'assets/escena-mobile.webp' },
     { type: 'image', src: 'assets/manos-mobile.png' }
   ];
 
@@ -1205,9 +1208,18 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentZ = 0;
 
     let isTrackingActive = false;
+    let isSaccadeActive = false;
+    let currentLerp = 0.10;
     let rafId = null;
     let gyroActive = false;
     let baselineBeta = 45; // Ángulo promedio de sostener el celular en la mano
+
+    // Posición base móvil (giroscopio o touch) y offset por sacádicos aleatorios independientes
+    let baseGyroTargetX = 0;
+    let baseGyroTargetY = 0;
+    const saccadeOffset = { x: 0, y: 0 };
+    let saccadeTimeoutId = null;
+    let saccadeTween = null;
 
     // Obtener centro y dimensiones actuales del ojo en el viewport
     function getEyeCenter() {
@@ -1254,6 +1266,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function onMouseLeave() {
+      if (isMobilePortrait()) return;
       targetX = 0;
       targetY = 0;
       targetRotX = 0;
@@ -1262,6 +1275,105 @@ document.addEventListener('DOMContentLoaded', () => {
       targetScaleY = 1;
       targetZ = 0;
       isTrackingActive = false;
+    }
+
+    // --- Mobile: Fusión de inclinación del móvil + sacádico aleatorio ---
+    function updateMobilePupilTarget() {
+      if (!isMobilePortrait()) return;
+      const eye = getEyeCenter();
+      if (!eye.w || !eye.h) return;
+
+      const maxRadiusX = eye.w * 0.38;
+      const maxRadiusY = eye.h * 0.25;
+
+      let combinedX = baseGyroTargetX + saccadeOffset.x;
+      let combinedY = baseGyroTargetY + saccadeOffset.y;
+
+      // Restricción elíptica para que la pupila nunca escape de la cuenca ocular
+      const normX = maxRadiusX > 0 ? combinedX / maxRadiusX : 0;
+      const normY = maxRadiusY > 0 ? combinedY / maxRadiusY : 0;
+      const dist = Math.hypot(normX, normY);
+      if (dist > 1) {
+        combinedX = (normX / dist) * maxRadiusX;
+        combinedY = (normY / dist) * maxRadiusY;
+      }
+
+      targetX = combinedX;
+      targetY = combinedY;
+
+      apply3DTransforms(targetX, targetY, maxRadiusX, maxRadiusY);
+      isTrackingActive = true;
+      ensureRenderLoop();
+    }
+
+    // --- Mobile: Movimientos sacádicos aleatorios e independientes ---
+    function triggerRandomSaccade() {
+      if (!isMobilePortrait()) return;
+
+      const eye = getEyeCenter();
+      if (!eye.w || !eye.h) {
+        scheduleNextSaccade();
+        return;
+      }
+
+      const maxRadiusX = eye.w * 0.38;
+      const maxRadiusY = eye.h * 0.25;
+
+      // Ángulo aleatorio en 360°
+      const angle = Math.random() * Math.PI * 2;
+      // Amplitud del golpe de vista (60% a 92% de la cuenca ocular)
+      const magnitude = 0.60 + Math.random() * 0.32;
+      const destX = Math.cos(angle) * maxRadiusX * magnitude;
+      const destY = Math.sin(angle) * maxRadiusY * magnitude;
+
+      // Duración rápida del latigazo visual (movimiento rápido: 130ms a 210ms)
+      const dartDuration = 0.13 + Math.random() * 0.08;
+      // Tiempo que mantiene la mirada clavada fija (300ms a 600ms)
+      const holdDuration = 0.30 + Math.random() * 0.30;
+      // Retorno fluido a la posición del teléfono (360ms a 500ms)
+      const returnDuration = 0.36 + Math.random() * 0.14;
+
+      if (saccadeTween) saccadeTween.kill();
+      isSaccadeActive = true;
+      currentLerp = 0.18; // Mayor reactividad para el golpe rápido
+
+      saccadeTween = gsap.timeline({
+        onComplete: () => {
+          isSaccadeActive = false;
+          currentLerp = 0.10;
+          scheduleNextSaccade();
+        }
+      })
+      // 1. Latigazo rápido al azar hacia el punto destino
+      .to(saccadeOffset, {
+        x: destX,
+        y: destY,
+        duration: dartDuration,
+        ease: 'power3.out',
+        onUpdate: updateMobilePupilTarget
+      })
+      // 2. Clava la mirada en ese punto
+      .to({}, { duration: holdDuration })
+      // 3. Regresa suavemente a alinearse con la inclinación del móvil
+      .to(saccadeOffset, {
+        x: 0,
+        y: 0,
+        duration: returnDuration,
+        ease: 'power2.inOut',
+        onStart: () => {
+          currentLerp = 0.12;
+        },
+        onUpdate: updateMobilePupilTarget
+      });
+    }
+
+    function scheduleNextSaccade() {
+      clearTimeout(saccadeTimeoutId);
+      if (!isMobilePortrait()) return;
+
+      // Intervalo aleatorio entre golpes de mirada (3.5 a 7 segundos)
+      const nextDelay = 3500 + Math.random() * 3500;
+      saccadeTimeoutId = setTimeout(triggerRandomSaccade, nextDelay);
     }
 
     // --- Mobile: Giroscopio y Acelerómetro (DeviceOrientation) ---
@@ -1288,12 +1400,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const normX = Math.max(-1, Math.min(1, deltaGamma / maxTilt));
       const normY = Math.max(-1, Math.min(1, deltaBeta / maxTilt));
 
-      targetX = normX * maxRadiusX;
-      targetY = normY * maxRadiusY;
+      baseGyroTargetX = normX * maxRadiusX;
+      baseGyroTargetY = normY * maxRadiusY;
 
-      apply3DTransforms(targetX, targetY, maxRadiusX, maxRadiusY);
-      isTrackingActive = true;
-      ensureRenderLoop();
+      updateMobilePupilTarget();
     }
 
     // --- Mobile: Fallback / Toque táctil ---
@@ -1316,12 +1426,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const screenDiagonal = Math.hypot(window.innerWidth, window.innerHeight);
       const strength = Math.min(1, Math.pow(dist / (screenDiagonal * 0.45), 0.75));
 
-      targetX = Math.cos(angle) * maxRadiusX * strength;
-      targetY = Math.sin(angle) * maxRadiusY * strength;
+      baseGyroTargetX = Math.cos(angle) * maxRadiusX * strength;
+      baseGyroTargetY = Math.sin(angle) * maxRadiusY * strength;
 
-      apply3DTransforms(targetX, targetY, maxRadiusX, maxRadiusY);
-      isTrackingActive = true;
-      ensureRenderLoop();
+      updateMobilePupilTarget();
     }
 
     // --- Transformaciones esféricas y de perspectiva 3D ---
@@ -1342,15 +1450,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function renderLoop() {
-      // Física de inercia y suavizado orgánico (lerp damping: 0.10)
-      const lerp = 0.10;
-      currentX += (targetX - currentX) * lerp;
-      currentY += (targetY - currentY) * lerp;
-      currentRotX += (targetRotX - currentRotX) * lerp;
-      currentRotY += (targetRotY - currentRotY) * lerp;
-      currentScaleX += (targetScaleX - currentScaleX) * lerp;
-      currentScaleY += (targetScaleY - currentScaleY) * lerp;
-      currentZ += (targetZ - currentZ) * lerp;
+      // Física de inercia y suavizado orgánico
+      currentX += (targetX - currentX) * currentLerp;
+      currentY += (targetY - currentY) * currentLerp;
+      currentRotX += (targetRotX - currentRotX) * currentLerp;
+      currentRotY += (targetRotY - currentRotY) * currentLerp;
+      currentScaleX += (targetScaleX - currentScaleX) * currentLerp;
+      currentScaleY += (targetScaleY - currentScaleY) * currentLerp;
+      currentZ += (targetZ - currentZ) * currentLerp;
 
       // Aplicar transformación 3D combinada a la pupila
       thirdEyePupil.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, ${currentZ.toFixed(2)}px) rotateX(${currentRotX.toFixed(2)}deg) rotateY(${currentRotY.toFixed(2)}deg) scale(${currentScaleX.toFixed(3)}, ${currentScaleY.toFixed(3)})`;
@@ -1361,7 +1468,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       const delta = Math.abs(targetX - currentX) + Math.abs(targetY - currentY) + Math.abs(targetRotX - currentRotX);
-      if (delta > 0.02 || isTrackingActive) {
+      if (delta > 0.02 || isTrackingActive || isSaccadeActive) {
         rafId = requestAnimationFrame(renderLoop);
       } else {
         rafId = null;
@@ -1394,6 +1501,20 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }
 
+    function handlePlatformChange() {
+      checkMobileGyroSupport();
+      if (isMobilePortrait()) {
+        scheduleNextSaccade();
+      } else {
+        clearTimeout(saccadeTimeoutId);
+        if (saccadeTween) saccadeTween.kill();
+        saccadeOffset.x = 0;
+        saccadeOffset.y = 0;
+        isSaccadeActive = false;
+        currentLerp = 0.10;
+      }
+    }
+
     if (btnGyroPermission) {
       btnGyroPermission.addEventListener('click', () => {
         if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -1419,9 +1540,9 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     document.addEventListener('mouseleave', onMouseLeave);
     window.addEventListener('touchmove', onTouchMove, { passive: true });
-    window.addEventListener('resize', checkMobileGyroSupport);
+    window.addEventListener('resize', handlePlatformChange);
 
-    checkMobileGyroSupport();
+    handlePlatformChange();
   }
 
   initEyeTracking();
