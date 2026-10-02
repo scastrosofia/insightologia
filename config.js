@@ -33,7 +33,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.adlatina.com/publicidad/del-campo-nazca-saatchi-saatchi-presenta-el-caso-andes-teletransporter"
+    "link": "https://www.adlatina.com/publicidad/del-campo-nazca-saatchi-saatchi-presenta-el-caso-andes-teletransporter",
+    "frase_es": "Para qué mentir, si podés teletransportarte",
+    "frase_pt": "Pra que mentir, se você pode se teletransportar",
+    "pais_pt": "Argentina"
   },
   {
     "id": "2",
@@ -50,7 +53,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.adlatina.com/publicidad/del-campo-nazca-saatchi-saatchi-presenta-el-caso-andes-teletransporter"
+    "link": "https://www.adlatina.com/publicidad/del-campo-nazca-saatchi-saatchi-presenta-el-caso-andes-teletransporter",
+    "frase_es": "Einstein estaba equivocado.",
+    "frase_pt": "Einstein estava errado.",
+    "pais_pt": "Argentina"
   },
   {
     "id": "4",
@@ -67,7 +73,10 @@ const CONFIG = {
     "motivo_flag": "Remate original modificado tras críticas (ver Notas)",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.cronista.com/negocios/quilmes-obligado-a-modificar-el-spot-publicitario-igualismo/"
+    "link": "https://www.cronista.com/negocios/quilmes-obligado-a-modificar-el-spot-publicitario-igualismo/",
+    "frase_es": "Cuando los hombres y las mujeres se encuentran, nace el igualismo",
+    "frase_pt": "Quando os homens e as mulheres se encontram, nasce o igualismo",
+    "pais_pt": "Argentina"
   },
   {
     "id": "5",
@@ -84,7 +93,10 @@ const CONFIG = {
     "motivo_flag": "Literal: solo funciona con comida/cuerpo",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.totalmedios.com/nota/22999/tu-cuerpo-pide-pasta-de-madre-para-mama-lucchetti"
+    "link": "https://www.totalmedios.com/nota/22999/tu-cuerpo-pide-pasta-de-madre-para-mama-lucchetti",
+    "frase_es": "Tu cuerpo pide pasta",
+    "frase_pt": "Seu corpo pede massa",
+    "pais_pt": "Argentina"
   },
   {
     "id": "6",
@@ -101,7 +113,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/noticia/deja-que-la-vida-te-despeine/9108"
+    "link": "https://www.latinspots.com/noticia/deja-que-la-vida-te-despeine/9108",
+    "frase_es": "Dejá que la vida te despeine",
+    "frase_pt": "Deixe a vida te despentear",
+    "pais_pt": "Argentina"
   },
   {
     "id": "8",
@@ -118,7 +133,10 @@ const CONFIG = {
     "motivo_flag": "Habla de la casa (IKEA)",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.marketingdirecto.com/especiales/premios-eficacia/campanas-mas-eficaces-publicidad-espanola"
+    "link": "https://www.marketingdirecto.com/especiales/premios-eficacia/campanas-mas-eficaces-publicidad-espanola",
+    "frase_es": "Bienvenido a la república independiente de tu casa",
+    "frase_pt": "Bem-vindo à república independente da sua casa",
+    "pais_pt": "Espanha"
   },
   {
     "id": "9",
@@ -135,7 +153,10 @@ const CONFIG = {
     "motivo_flag": "Funciona como contrapregunta; depende de BMW/manejar",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.marketingdirecto.com/especiales/premios-eficacia/campanas-mas-eficaces-publicidad-espanola"
+    "link": "https://www.marketingdirecto.com/especiales/premios-eficacia/campanas-mas-eficaces-publicidad-espanola",
+    "frase_es": "¿Te gusta conducir?",
+    "frase_pt": "Você gosta de dirigir?",
+    "pais_pt": "Espanha"
   },
   {
     "id": "13",
@@ -152,7 +173,10 @@ const CONFIG = {
     "motivo_flag": "La 'Z' pierde sentido sin el contexto de la marca",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.merca20.com/el-palacio-de-hierro-presenta-su-nueva-imagen-te-sorprendera/"
+    "link": "https://www.merca20.com/el-palacio-de-hierro-presenta-su-nueva-imagen-te-sorprendera/",
+    "frase_es": "Mi estilo se escribe con Z",
+    "frase_pt": "Meu estilo se escreve com Z",
+    "pais_pt": "México"
   },
   {
     "id": "14",
@@ -169,7 +193,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://www.merca20.com/el-palacio-de-hierro-presenta-su-nueva-imagen-te-sorprendera/"
+    "link": "https://www.merca20.com/el-palacio-de-hierro-presenta-su-nueva-imagen-te-sorprendera/",
+    "frase_es": "Ser grande no es cuestión de edad",
+    "frase_pt": "Ser grande não é questão de idade",
+    "pais_pt": "México"
   },
   {
     "id": "17",
@@ -186,7 +213,10 @@ const CONFIG = {
     "motivo_flag": "Portugués + marca de electrodomésticos",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.ifd.com.br/publicidade-e-propaganda/50-slogans-mais-lembrados/"
+    "link": "https://www.ifd.com.br/publicidade-e-propaganda/50-slogans-mais-lembrados/",
+    "frase_es": "Tem coisas que só a Philco faz pra você [Hay cosas que solo Philco hace por vos]",
+    "frase_pt": "Tem coisas que só a Philco faz pra você",
+    "pais_pt": "Brasil"
   },
   {
     "id": "19",
@@ -203,7 +233,10 @@ const CONFIG = {
     "motivo_flag": "Portugués (traducción entre corchetes)",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://www.ifd.com.br/publicidade-e-propaganda/50-slogans-mais-lembrados/"
+    "link": "https://www.ifd.com.br/publicidade-e-propaganda/50-slogans-mais-lembrados/",
+    "frase_es": "Não tem comparação [No tiene comparación]",
+    "frase_pt": "Não tem comparação",
+    "pais_pt": "Brasil"
   },
   {
     "id": "21",
@@ -220,7 +253,10 @@ const CONFIG = {
     "motivo_flag": "Lenguaje fuerte ('hijo de puta')",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.ifd.com.br/publicidade-e-propaganda/50-slogans-mais-lembrados/"
+    "link": "https://www.ifd.com.br/publicidade-e-propaganda/50-slogans-mais-lembrados/",
+    "frase_es": "no creérsela, no ser hijo de puta, escuchar a los demás",
+    "frase_pt": "não se achar, não ser filho da puta, escutar os outros",
+    "pais_pt": "Regional"
   },
   {
     "id": "22",
@@ -237,7 +273,10 @@ const CONFIG = {
     "motivo_flag": "Fragmento con '…'; habla de publicidad",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/",
+    "frase_es": "…me gustaría ver más anuncios de cerveza, de bancos, de salchichas, porque ese es nuestro trabajo real",
+    "frase_pt": "…eu gostaria de ver mais anúncios de cerveja, de bancos, de salsichas, porque esse é o nosso trabalho de verdade",
+    "pais_pt": "Espanha"
   },
   {
     "id": "23",
@@ -254,7 +293,10 @@ const CONFIG = {
     "motivo_flag": "Habla de publicidad",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/noticia/as-vivi-toni-segarra-su-ingreso-al-saln-de-honor-del-talento-latino/68216"
+    "link": "https://www.latinspots.com/noticia/as-vivi-toni-segarra-su-ingreso-al-saln-de-honor-del-talento-latino/68216",
+    "frase_es": "La publicidad no ha cambiado sino envejecido, hagámosla nuevamente sexy",
+    "frase_pt": "A publicidade não mudou, e sim envelheceu, vamos torná-la sexy de novo",
+    "pais_pt": "Global"
   },
   {
     "id": "24",
@@ -271,7 +313,10 @@ const CONFIG = {
     "motivo_flag": "Fragmento con '…'",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.elojodeiberoamerica.com/review-ojo-2017-20-anos-pensamiento-creativo-iberoamerica/"
+    "link": "https://www.elojodeiberoamerica.com/review-ojo-2017-20-anos-pensamiento-creativo-iberoamerica/",
+    "frase_es": "…caemos en la rutina y, más de una vez, pensamos en divorciarnos",
+    "frase_pt": "…caímos na rotina e, mais de uma vez, pensamos em nos divorciar",
+    "pais_pt": "Argentina"
   },
   {
     "id": "26",
@@ -288,7 +333,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/noticia/el-ojo-de-iberoamrica-2021-cultura-emociones-e-inclusin/61138"
+    "link": "https://www.latinspots.com/noticia/el-ojo-de-iberoamrica-2021-cultura-emociones-e-inclusin/61138",
+    "frase_es": "la empatía es el mejor GPS",
+    "frase_pt": "a empatia é o melhor GPS",
+    "pais_pt": "s/d"
   },
   {
     "id": "27",
@@ -305,7 +353,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/noticia/latinspots185-creatividad-para-un-mundo-incierto/91670"
+    "link": "https://www.latinspots.com/noticia/latinspots185-creatividad-para-un-mundo-incierto/91670",
+    "frase_es": "Yo creo que sacamos petróleo debajo de una piedra.",
+    "frase_pt": "Eu acho que tiramos petróleo de debaixo de uma pedra.",
+    "pais_pt": "Espanha"
   },
   {
     "id": "28",
@@ -322,7 +373,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/noticia/popai-argentina-invita-a-participar-del-taller-shopper-marketing/6491?section=negocios"
+    "link": "https://www.latinspots.com/noticia/popai-argentina-invita-a-participar-del-taller-shopper-marketing/6491?section=negocios",
+    "frase_es": "Las personas son más inteligentes de lo que las marcas piensan",
+    "frase_pt": "As pessoas são mais inteligentes do que as marcas pensam",
+    "pais_pt": "México"
   },
   {
     "id": "29",
@@ -339,7 +393,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/noticia/el-ojo-de-iberoamrica-2021-cultura-emociones-e-inclusin/61138"
+    "link": "https://www.latinspots.com/noticia/el-ojo-de-iberoamrica-2021-cultura-emociones-e-inclusin/61138",
+    "frase_es": "Original es una trampa. Lo fresco es libertad",
+    "frase_pt": "Original é uma armadilha. O fresco é liberdade",
+    "pais_pt": "Brasil"
   },
   {
     "id": "30",
@@ -356,7 +413,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/",
+    "frase_es": "El AI concluye. La creatividad humana desordena, es curiosa, explora.",
+    "frase_pt": "A IA conclui. A criatividade humana bagunça, é curiosa, explora.",
+    "pais_pt": "Argentina"
   },
   {
     "id": "31",
@@ -373,7 +433,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/",
+    "frase_es": "La única forma de innovar, es no pretenderlo.",
+    "frase_pt": "A única forma de inovar é não ter essa pretensão.",
+    "pais_pt": "Espanha"
   },
   {
     "id": "32",
@@ -390,7 +453,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://www.infobae.com/espacio-no-editorial/2018/11/06/la-celebracion-de-la-creatividad-regional-todos-los-ganadores-de-el-ojo-de-iberoamerica/"
+    "link": "https://www.infobae.com/espacio-no-editorial/2018/11/06/la-celebracion-de-la-creatividad-regional-todos-los-ganadores-de-el-ojo-de-iberoamerica/",
+    "frase_es": "la valentía es contagiosa",
+    "frase_pt": "a coragem é contagiosa",
+    "pais_pt": "México"
   },
   {
     "id": "34",
@@ -407,7 +473,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/",
+    "frase_es": "el algoritmo es nuestro caballo de Troya para hacer una revolución",
+    "frase_pt": "o algoritmo é o nosso cavalo de Troia para fazer uma revolução",
+    "pais_pt": "España (?)"
   },
   {
     "id": "35",
@@ -424,7 +493,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/",
+    "frase_es": "la idea siempre está primero",
+    "frase_pt": "a ideia sempre vem primeiro",
+    "pais_pt": "Argentina"
   },
   {
     "id": "37",
@@ -441,7 +513,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/",
+    "frase_es": "ser creativo hoy no es solo hacer cosas lindas, es tomar posición",
+    "frase_pt": "ser criativo hoje não é só fazer coisas bonitas, é tomar posição",
+    "pais_pt": "Porto Rico"
   },
   {
     "id": "39",
@@ -458,7 +533,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/noticia/el-ojo-de-iberoamrica-2025-ia-creatividad-humana-y-nuevas-fronteras/95096"
+    "link": "https://www.latinspots.com/noticia/el-ojo-de-iberoamrica-2025-ia-creatividad-humana-y-nuevas-fronteras/95096",
+    "frase_es": "La creatividad es el antídoto",
+    "frase_pt": "A criatividade é o antídoto",
+    "pais_pt": "Espanha"
   },
   {
     "id": "40",
@@ -475,7 +553,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/noticia/latinspots185-creatividad-para-un-mundo-incierto/91670"
+    "link": "https://www.latinspots.com/noticia/latinspots185-creatividad-para-un-mundo-incierto/91670",
+    "frase_es": "Lo más importante de las ideas es hacerlas",
+    "frase_pt": "O mais importante das ideias é fazê-las",
+    "pais_pt": "Espanha"
   },
   {
     "id": "41",
@@ -492,7 +573,10 @@ const CONFIG = {
     "motivo_flag": "Jerga de data/ventas",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/sp/noticia/ranking-las-ideas-ms-premiadas-de-el-ojo-2018/49257"
+    "link": "https://www.latinspots.com/sp/noticia/ranking-las-ideas-ms-premiadas-de-el-ojo-2018/49257",
+    "frase_es": "Cuando tienes data, puedes vender creatividad más arriesgada con menos riesgo",
+    "frase_pt": "Quando você tem dados, pode vender criatividade mais arriscada com menos risco",
+    "pais_pt": "EUA"
   },
   {
     "id": "44",
@@ -509,7 +593,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.elojodeiberoamerica.com/review-ojo-2017-20-anos-pensamiento-creativo-iberoamerica/"
+    "link": "https://www.elojodeiberoamerica.com/review-ojo-2017-20-anos-pensamiento-creativo-iberoamerica/",
+    "frase_es": "el talento camina en todas direcciones",
+    "frase_pt": "o talento caminha em todas as direções",
+    "pais_pt": "Espanha"
   },
   {
     "id": "45",
@@ -526,7 +613,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/noticia/popai-argentina-invita-a-participar-del-taller-shopper-marketing/6491?section=negocios"
+    "link": "https://www.latinspots.com/noticia/popai-argentina-invita-a-participar-del-taller-shopper-marketing/6491?section=negocios",
+    "frase_es": "las ideas deben ser más grandes que avisos",
+    "frase_pt": "as ideias devem ser maiores que anúncios",
+    "pais_pt": "Argentina"
   },
   {
     "id": "48",
@@ -543,7 +633,10 @@ const CONFIG = {
     "motivo_flag": "Fragmento con '…'",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.elojodeiberoamerica.com/pablo-del-campo-ingresa-en-el-salon-de-honor-del-talento-latino/"
+    "link": "https://www.elojodeiberoamerica.com/pablo-del-campo-ingresa-en-el-salon-de-honor-del-talento-latino/",
+    "frase_es": "Es la primera idea con la que realmente sentimos que había peligro a la hora de hacerla…",
+    "frase_pt": "É a primeira ideia com a qual realmente sentimos que havia perigo na hora de fazê-la…",
+    "pais_pt": "Espanha"
   },
   {
     "id": "53",
@@ -560,7 +653,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.marketingdirecto.com/imprescindibles/historia-marcas/historia-campofrio-anuncios-navidad"
+    "link": "https://www.marketingdirecto.com/imprescindibles/historia-marcas/historia-campofrio-anuncios-navidad",
+    "frase_es": "Tenemos que vernos más",
+    "frase_pt": "Temos que nos ver mais",
+    "pais_pt": "Espanha"
   },
   {
     "id": "55",
@@ -577,7 +673,10 @@ const CONFIG = {
     "motivo_flag": "Portugués + leche; solo funciona con comida/bebida",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.latinspots.com/noticia/leo-burnett-espaa-propone-volver-a-las-amistades-autnticas-con-licores-ruavieja/45730"
+    "link": "https://www.latinspots.com/noticia/leo-burnett-espaa-propone-volver-a-las-amistades-autnticas-con-licores-ruavieja/45730",
+    "frase_es": "Tomou? [¿Tomaste?]",
+    "frase_pt": "Tomou?",
+    "pais_pt": "Brasil"
   },
   {
     "id": "57",
@@ -594,7 +693,10 @@ const CONFIG = {
     "motivo_flag": "Estacional (Navidad)",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://exame.com/marketing/parmalat-e-os-mamiferos-que-marcaram-o-brasil/"
+    "link": "https://exame.com/marketing/parmalat-e-os-mamiferos-que-marcaram-o-brasil/",
+    "frase_es": "En navidad todo es posible.",
+    "frase_pt": "No Natal tudo é possível.",
+    "pais_pt": "Colômbia"
   },
   {
     "id": "60",
@@ -611,7 +713,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.semana.com/pais/articulo/colombia-mercadeo-navidad-para-ganar-guerra/141091/"
+    "link": "https://www.semana.com/pais/articulo/colombia-mercadeo-navidad-para-ganar-guerra/141091/",
+    "frase_es": "¿Es muy tonto lo que estoy diciendo?",
+    "frase_pt": "É muito bobo o que estou dizendo?",
+    "pais_pt": "Chile"
   },
   {
     "id": "63",
@@ -628,7 +733,10 @@ const CONFIG = {
     "motivo_flag": "Literal: nombre de producto",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.produ.com/mercadeo/noticias/leo-burnett-mexico-y-corona-senalan-que-america-siempre-ha-sido-grande-en-un-nuevo-spot/"
+    "link": "https://www.produ.com/mercadeo/noticias/leo-burnett-mexico-y-corona-senalan-que-america-siempre-ha-sido-grande-en-un-nuevo-spot/",
+    "frase_es": "Huevo estrellado",
+    "frase_pt": "Ovo estrelado",
+    "pais_pt": "México"
   },
   {
     "id": "66",
@@ -645,7 +753,10 @@ const CONFIG = {
     "motivo_flag": "Literal: nombre de producto",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.elfinanciero.com.mx/food-and-drink/2025/09/21/hoy-toca-pollo-quien-es-dueno-de-bachoco-marca-que-innovo-con-la-venta-de-huevos-por-docena/"
+    "link": "https://www.elfinanciero.com.mx/food-and-drink/2025/09/21/hoy-toca-pollo-quien-es-dueno-de-bachoco-marca-que-innovo-con-la-venta-de-huevos-por-docena/",
+    "frase_es": "Canelón de Pollo",
+    "frase_pt": "Canelone de Frango",
+    "pais_pt": "México"
   },
   {
     "id": "68",
@@ -662,7 +773,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://naranti.com/noticias/anuncios-espectaculares-bachoco"
+    "link": "https://naranti.com/noticias/anuncios-espectaculares-bachoco",
+    "frase_es": "Todos somos expertos",
+    "frase_pt": "Todos somos especialistas",
+    "pais_pt": "Uruguai"
   },
   {
     "id": "69",
@@ -679,7 +793,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://www.adlatina.com/publicidad/publicis-%C3%ADmpetu-y-banca-de-quinielas-de-uruguay-se-consagraron-con-el-gran-effie"
+    "link": "https://www.adlatina.com/publicidad/publicis-%C3%ADmpetu-y-banca-de-quinielas-de-uruguay-se-consagraron-con-el-gran-effie",
+    "frase_es": "Seguí moviéndote",
+    "frase_pt": "Continue se movendo",
+    "pais_pt": "Argentina"
   },
   {
     "id": "70",
@@ -696,7 +813,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.lanacion.com.ar/economia/la-publicidad-debe-ser-amigable-y-respetuosa-del-consumidor-nid1423265/"
+    "link": "https://www.lanacion.com.ar/economia/la-publicidad-debe-ser-amigable-y-respetuosa-del-consumidor-nid1423265/",
+    "frase_es": "Para abrir caminos se necesita maquinaria pesada",
+    "frase_pt": "Para abrir caminhos é preciso maquinário pesado",
+    "pais_pt": "Equador"
   },
   {
     "id": "72",
@@ -713,7 +833,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://www.eluniverso.com/larevista/sociedad/effie-awards-ecuador-cumplio-dos-decadas-de-premiar-a-las-ideas-que-funcionan-nota/"
+    "link": "https://www.eluniverso.com/larevista/sociedad/effie-awards-ecuador-cumplio-dos-decadas-de-premiar-a-las-ideas-que-funcionan-nota/",
+    "frase_es": "Naturalmente impredecible",
+    "frase_pt": "Naturalmente imprevisível",
+    "pais_pt": "Equador"
   },
   {
     "id": "74",
@@ -730,7 +853,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.adlatina.com/publicidad/%E2%80%9Chimno%E2%80%9D-un-homenaje-al-f%C3%BAtbol"
+    "link": "https://www.adlatina.com/publicidad/%E2%80%9Chimno%E2%80%9D-un-homenaje-al-f%C3%BAtbol",
+    "frase_es": "Eran otros tiempos",
+    "frase_pt": "Eram outros tempos",
+    "pais_pt": "Argentina"
   },
   {
     "id": "75",
@@ -747,7 +873,10 @@ const CONFIG = {
     "motivo_flag": "Habla de un chip/celular (CTI)",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.youtube.com/watch?v=VWkkWe8U_n8"
+    "link": "https://www.youtube.com/watch?v=VWkkWe8U_n8",
+    "frase_es": "Lo importante es el chip",
+    "frase_pt": "O importante é o chip",
+    "pais_pt": "Argentina"
   },
   {
     "id": "76",
@@ -764,7 +893,10 @@ const CONFIG = {
     "motivo_flag": "Tema sensible; evaluar si va en un oráculo público",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.youtube.com/watch?v=Sz48pFGybzc"
+    "link": "https://www.youtube.com/watch?v=Sz48pFGybzc",
+    "frase_es": "Uno de cada 10 hombres es gay",
+    "frase_pt": "Um em cada 10 homens é gay",
+    "pais_pt": "Argentina"
   },
   {
     "id": "77",
@@ -781,7 +913,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": false,
     "premio_el_ojo": "",
-    "link": "https://www.youtube.com/watch?v=iFQFw6vAxtA"
+    "link": "https://www.youtube.com/watch?v=iFQFw6vAxtA",
+    "frase_es": "Hacele caso a tu sed",
+    "frase_pt": "Obedeça a sua sede",
+    "pais_pt": "Argentina"
   },
   {
     "id": "78",
@@ -798,7 +933,10 @@ const CONFIG = {
     "motivo_flag": "",
     "comodin": true,
     "premio_el_ojo": "",
-    "link": "https://www.adlatina.com/publicidad/preestreno-de-la-comunidad-para-el-bafici"
+    "link": "https://www.adlatina.com/publicidad/preestreno-de-la-comunidad-para-el-bafici",
+    "frase_es": "Si no es para vos, no es para vos",
+    "frase_pt": "Se não é pra você, não é pra você",
+    "pais_pt": "Argentina"
   },
   {
     "id": "79",
@@ -815,7 +953,10 @@ const CONFIG = {
     "motivo_flag": "Nombre de la pieza premiada; confirmar que funciona como frase al aire",
     "comodin": true,
     "premio_el_ojo": "Plata – El Ojo Innovador, Radio",
-    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica"
+    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica",
+    "frase_es": "No es para ti",
+    "frase_pt": "Não é para você",
+    "pais_pt": "Porto Rico"
   },
   {
     "id": "82",
@@ -832,7 +973,10 @@ const CONFIG = {
     "motivo_flag": "Nombre de la pieza premiada; confirmar que funciona como frase al aire; argentinismo (guita)",
     "comodin": true,
     "premio_el_ojo": "Bronce – El Ojo Promo, Activación",
-    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica"
+    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica",
+    "frase_es": "Devolvele la guita al taxista",
+    "frase_pt": "Devolve a grana pro taxista",
+    "pais_pt": "Argentina"
   },
   {
     "id": "83",
@@ -849,7 +993,10 @@ const CONFIG = {
     "motivo_flag": "Nombre de la pieza premiada; confirmar que funciona como frase al aire",
     "comodin": false,
     "premio_el_ojo": "Oro – El Ojo Campañas Integradas (Productos)",
-    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica"
+    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica",
+    "frase_es": "Que vuelvan los lentos",
+    "frase_pt": "Que voltem as lentas",
+    "pais_pt": "Argentina"
   },
   {
     "id": "86",
@@ -866,7 +1013,10 @@ const CONFIG = {
     "motivo_flag": "Nombre de la pieza premiada; confirmar que funciona como frase al aire; expresión española",
     "comodin": false,
     "premio_el_ojo": "Bronce – El Ojo Promo (Promociones integradas)",
-    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica"
+    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica",
+    "frase_es": "Con poco me lo monto",
+    "frase_pt": "Com pouco eu me viro",
+    "pais_pt": "Espanha"
   }
 ]
 };

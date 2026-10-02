@@ -41,6 +41,166 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalAbout = document.getElementById('modal-about');
   const modalAboutStage = document.getElementById('modal-about-stage');
   const modalAboutClose = document.getElementById('modal-about-close');
+  const langBtnEs = document.getElementById('lang-btn-es');
+  const langBtnPt = document.getElementById('lang-btn-pt');
+  const langLabelText = document.getElementById('lang-label-text');
+
+  // Idioma activo y textos localizados (ES / PT)
+  let currentLang = 'es';
+  try {
+    currentLang = localStorage.getItem('insightologia_lang') || 'es';
+  } catch (e) {
+    currentLang = 'es';
+  }
+  let currentRevealedData = null;
+
+  const I18N = {
+    es: {
+      langLabel: 'Idioma',
+      aboutMenu: '¿Qué estoy viendo?',
+      inputPlaceholder: '¿Qué querés saber del futuro?',
+      btnMicTitle: 'Dictar pregunta (Voz)',
+      btnMicAria: 'Dictar por voz',
+      btnSendTitle: 'Consultar al oráculo',
+      btnSendAria: 'Consultar al oráculo',
+      btnReset: 'Hacer otra pregunta',
+      phraseLink: 'VER MÁS ALLÁ',
+      gyroPermission: 'Permitir experiencia inmersiva',
+      listening: 'Escuchando tu pregunta...',
+      aboutTitle: '¿QUÉ ESTOY VIENDO?',
+      aboutP1: 'Hace 30 años, El Ojo reúne las ideas que abrieron la mirada de Iberoamérica. Hoy, imaginar los próximos 30 parece casi imposible: el futuro de la creatividad cambia tan rápido que hasta los que más saben a veces también lo describen como un horóscopo.',
+      aboutP2: 'Este es el primer oráculo de la creatividad iberoamericana, hecho con 30 años del archivo de El Ojo. Si el futuro todavía no está escrito, ¿Por qué no usar todo lo que ya hicimos para tener una pista de cómo empezar a imaginarlo?',
+      aboutP3: 'Llegaste a una web accesible desde cualquier parte del mundo, alimentada con 30 años de frases, jingles, titulares y piezas de la publicidad iberoamericana. Hacés una pregunta sobre el futuro y el insightólogo de turno (te puede tocar Pérez, Papón, Mercado, Vega Olmos, Del Campo y muchos más) te responde con una frase del pasado para pensar lo que viene. Además, podés sugerir nuevas frases, para seguir construyendo entre todos el gran acervo de sabiduría creativa insightológica.',
+      soundMute: 'Silenciar sonido',
+      soundUnmute: 'Activar sonido',
+      menuTitle: 'Menú',
+      modalCloseTitle: 'Cerrar'
+    },
+    pt: {
+      langLabel: 'Idioma',
+      aboutMenu: 'O que estou vendo?',
+      inputPlaceholder: 'O que você quer saber do futuro?',
+      btnMicTitle: 'Ditar pergunta (Voz)',
+      btnMicAria: 'Ditar por voz',
+      btnSendTitle: 'Consultar o oráculo',
+      btnSendAria: 'Consultar o oráculo',
+      btnReset: 'Fazer outra pergunta',
+      phraseLink: 'VER MAIS ALÉM',
+      gyroPermission: 'Permitir experiência imersiva',
+      listening: 'Ouvindo sua pergunta...',
+      aboutTitle: 'O QUE ESTOU VENDO?',
+      aboutP1: 'Há 30 anos, El Ojo reúne as ideias que abriram o olhar da Ibero-América. Hoje, imaginar os próximos 30 parece quase impossível: o futuro da criatividade muda tão rápido que até quem mais entende às vezes também o descreve como um horóscopo.',
+      aboutP2: 'Este é o primeiro oráculo da criatividade ibero-americana, feito com 30 anos do acervo de El Ojo. Se o futuro ainda não foi escrito, por que não usar tudo o que já fizemos para ter uma pista de como começar a imaginá-lo?',
+      aboutP3: 'Você chegou a um site acessível de cualquier lugar do mundo, alimentado com 30 anos de frases, jingles, títulos e peças da publicidade ibero-americana. Você faz uma pergunta sobre o futuro e o insightólogo da vez (pode sair Pérez, Papón, Mercado, Vega Olmos, Del Campo e muitos outros) responde com uma frase do passado para pensar no que está por vir. Além disso, você pode sugerir novas frases, para continuarmos construindo juntos o grande acervo de sabedoria criativa insightológica.',
+      soundMute: 'Silenciar som',
+      soundUnmute: 'Ativar som',
+      menuTitle: 'Menu',
+      modalCloseTitle: 'Fechar'
+    }
+  };
+
+  function setLanguage(lang) {
+    if (lang !== 'es' && lang !== 'pt') lang = 'es';
+    currentLang = lang;
+    try {
+      localStorage.setItem('insightologia_lang', lang);
+    } catch (e) {}
+
+    // Botones del toggle
+    if (langBtnEs) {
+      langBtnEs.classList.toggle('is-active', lang === 'es');
+      langBtnEs.setAttribute('aria-pressed', lang === 'es' ? 'true' : 'false');
+    }
+    if (langBtnPt) {
+      langBtnPt.classList.toggle('is-active', lang === 'pt');
+      langBtnPt.setAttribute('aria-pressed', lang === 'pt' ? 'true' : 'false');
+    }
+    if (langLabelText) {
+      langLabelText.textContent = I18N[lang].langLabel;
+    }
+
+    const t = I18N[lang];
+
+    if (menuBtnAbout) menuBtnAbout.textContent = t.aboutMenu;
+    if (userInput) userInput.placeholder = t.inputPlaceholder;
+
+    if (btnMic) {
+      btnMic.title = t.btnMicTitle;
+      btnMic.setAttribute('aria-label', t.btnMicAria);
+    }
+    if (btnSend) {
+      btnSend.title = t.btnSendTitle;
+      btnSend.setAttribute('aria-label', t.btnSendAria);
+    }
+    if (btnReset) btnReset.textContent = t.btnReset;
+    if (phraseLink) phraseLink.textContent = t.phraseLink;
+
+    const gyroSpan = document.querySelector('#btn-gyro-permission span');
+    if (gyroSpan) gyroSpan.textContent = t.gyroPermission;
+
+    const modalTitleEl = document.querySelector('.modal-about-title');
+    if (modalTitleEl) modalTitleEl.textContent = t.aboutTitle;
+
+    const modalBodyEl = document.querySelector('.modal-about-body');
+    if (modalBodyEl) {
+      modalBodyEl.innerHTML = `
+        <p>${t.aboutP1}</p>
+        <p>${t.aboutP2}</p>
+        <p>${t.aboutP3}</p>
+      `;
+    }
+
+    if (btnSound) {
+      const soundLabel = isMuted ? t.soundUnmute : t.soundMute;
+      btnSound.setAttribute('title', soundLabel);
+      btnSound.setAttribute('aria-label', soundLabel);
+    }
+    if (btnMenu) {
+      btnMenu.setAttribute('title', t.menuTitle);
+    }
+    if (modalAboutClose) {
+      modalAboutClose.setAttribute('title', t.modalCloseTitle);
+      modalAboutClose.setAttribute('aria-label', t.modalCloseTitle);
+    }
+    if (modalAbout) {
+      modalAbout.setAttribute('aria-label', t.aboutTitle);
+    }
+
+    if (recognition) {
+      try {
+        recognition.lang = lang === 'pt' ? 'pt-BR' : 'es-AR';
+      } catch (e) {}
+    }
+
+    // Si hay una frase revelada en este momento, actualizar su texto y crédito de inmediato
+    if (state === 'REVEAL' && currentRevealedData) {
+      if (currentRevealedData.id && typeof CONFIG !== 'undefined' && CONFIG.CATALOG_PHRASES) {
+        const catalogMatch = CONFIG.CATALOG_PHRASES.find(item => String(item.id) === String(currentRevealedData.id));
+        if (catalogMatch) {
+          if (!currentRevealedData.frase_pt && catalogMatch.frase_pt) currentRevealedData.frase_pt = catalogMatch.frase_pt;
+          if (!currentRevealedData.pais_pt && catalogMatch.pais_pt) currentRevealedData.pais_pt = catalogMatch.pais_pt;
+          if (!currentRevealedData.link && catalogMatch.link) currentRevealedData.link = catalogMatch.link;
+        }
+      }
+
+      const phraseContent = (lang === 'pt' && currentRevealedData.frase_pt) ? currentRevealedData.frase_pt : (currentRevealedData.frase_es || currentRevealedData.frase);
+      
+      // Renderizar con palabras visibles inmediatamente
+      renderPhraseText(phraseContent, true);
+      phraseCredit.textContent = formatPhraseCredit(currentRevealedData, lang);
+      adjustAdaptiveFontSize(phraseContent);
+
+      // Animación suave de transición en vivo (crossfade de las palabras)
+      const words = phraseText.querySelectorAll('.phrase-word');
+      if (typeof gsap !== 'undefined' && words.length > 0 && !prefersReducedMotion) {
+        gsap.killTweensOf(words);
+        gsap.fromTo(words, 
+          { opacity: 0.2, filter: 'blur(5px)', y: 3 },
+          { opacity: 1, filter: 'blur(0px)', y: 0, duration: 0.35, stagger: 0.02, ease: 'power2.out' }
+        );
+      }
+    }
+  }
 
   // Estado del sistema
   let state = 'IDLE'; // IDLE | THINKING | REVEAL | ZOOM_OUT
@@ -96,7 +256,8 @@ document.addEventListener('DOMContentLoaded', () => {
     { type: 'image', src: 'assets/manos.png' },
     { type: 'image', src: 'assets/fondo-aterciopelado.jpeg' },
     { type: 'image', src: 'assets/gato.webp' },
-    { type: 'image', src: 'assets/manos-mobile.png' }
+    { type: 'image', src: 'assets/manos-mobile.png' },
+    { type: 'image', src: 'assets/cursor.png' }
   ];
 
   let loadedAssets = 0;
@@ -212,7 +373,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (SpeechRecognition && btnMic) {
     try {
       recognition = new SpeechRecognition();
-      recognition.lang = 'es-AR';
+      recognition.lang = currentLang === 'pt' ? 'pt-BR' : 'es-AR';
       recognition.continuous = false;
       recognition.interimResults = false;
       recognition.maxAlternatives = 1;
@@ -221,7 +382,7 @@ document.addEventListener('DOMContentLoaded', () => {
         isRecording = true;
         btnMic.classList.add('recording');
         if (micStatus) {
-          micStatus.textContent = 'Escuchando tu pregunta...';
+          micStatus.textContent = I18N[currentLang]?.listening || 'Escuchando tu pregunta...';
           micStatus.classList.add('active');
         }
       };
@@ -487,13 +648,28 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.to(ballPlasma, { opacity: 0.7, scale: 1, duration: 0.8 });
     gsap.to(ballPlasmaCore, { opacity: 0.6, scale: 1, duration: 0.8 });
 
+    // Enriquecer con los datos completos del catálogo local (frase_pt, pais_pt, link) si existen
+    if (data && data.id && typeof CONFIG !== 'undefined' && CONFIG.CATALOG_PHRASES) {
+      const catalogMatch = CONFIG.CATALOG_PHRASES.find(item => String(item.id) === String(data.id));
+      if (catalogMatch) {
+        data = Object.assign({}, catalogMatch, data);
+        if (!data.frase_pt && catalogMatch.frase_pt) data.frase_pt = catalogMatch.frase_pt;
+        if (!data.pais_pt && catalogMatch.pais_pt) data.pais_pt = catalogMatch.pais_pt;
+        if (!data.link && catalogMatch.link) data.link = catalogMatch.link;
+      }
+    }
+
+    // Guardar referencia de la frase actual para cambio dinámico de idioma
+    currentRevealedData = data;
+    const phraseContent = (currentLang === 'pt' && data.frase_pt) ? data.frase_pt : (data.frase_es || data.frase);
+    const countryContent = (currentLang === 'pt' && data.pais_pt) ? data.pais_pt : (data.pais || '');
+
     // Preparar el texto y el crédito
-    renderPhraseText(data.frase);
-    phraseCredit.textContent = `${data.marca || ''} · ${data.agencia || ''} · ${data.pais || ''} · ${data.ano || ''}`
-      .replace(/^[\s·]+|[\s·]+$/g, '');
+    renderPhraseText(phraseContent);
+    phraseCredit.textContent = formatPhraseCredit(data, currentLang);
 
     // Calcular tamaño adaptable de fuente según longitud de la frase
-    adjustAdaptiveFontSize(data.frase);
+    adjustAdaptiveFontSize(phraseContent);
 
     // Timeline de aparición
     const tlReveal = gsap.timeline();
@@ -590,6 +766,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if (phraseLink) phraseLink.removeAttribute('href');
         }
         userInput.value = '';
+        currentRevealedData = null;
         state = 'IDLE';
         userInput.focus();
       }
@@ -646,14 +823,47 @@ document.addEventListener('DOMContentLoaded', () => {
   // 5. RENDER Y ADAPTACIÓN TIPOGRÁFICA
   // ========================================================
 
-  function renderPhraseText(frase) {
+  function formatPhraseCredit(data, lang) {
+    if (!data) return '';
+    let brand = (data.marca || '').trim();
+    let agency = (data.agencia || '').trim();
+    const country = ((lang === 'pt' && data.pais_pt) ? data.pais_pt : (data.pais || '')).trim();
+    const year = (data.ano || '').trim();
+
+    // Normalizar guiones en marca y agencia para evitar dobles guiones
+    brand = brand.replace(/\s*[-–—]\s*/g, ' - ');
+    agency = agency.replace(/\s*[-–—]\s*/g, ' - ');
+
+    const parts = [];
+    if (brand) parts.push(brand);
+    if (agency) parts.push(agency);
+    // Evitar duplicar país si la agencia ya lo incluye al final (ej: "JWT Argentina" + "Argentina")
+    if (country && !agency.toLowerCase().endsWith(country.toLowerCase())) {
+      parts.push(country);
+    }
+    if (year) parts.push(year);
+    return parts.join(' - ');
+  }
+
+  function formatPhraseWithQuotes(frase) {
+    if (!frase) return '';
+    const trimmed = frase.trim().replace(/^["“'”]+|["“'”]+$/g, '').trim();
+    return `“${trimmed}”`;
+  }
+
+  function renderPhraseText(frase, isVisible = false) {
     phraseText.innerHTML = '';
-    const cleanFrase = (frase || '').trim();
-    const words = cleanFrase.split(/\s+/);
+    const cleanFrase = formatPhraseWithQuotes(frase);
+    const words = cleanFrase.split(/\s+/).filter(w => w.length > 0);
 
     words.forEach(word => {
       const span = document.createElement('span');
       span.className = 'phrase-word';
+      if (isVisible) {
+        span.style.opacity = '1';
+        span.style.filter = 'blur(0px)';
+        span.style.transform = 'translateY(0)';
+      }
       span.textContent = word + ' ';
       phraseText.appendChild(span);
     });
@@ -663,20 +873,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const len = (frase || '').length;
     const isMob = isMobilePortrait();
 
-    // Dimensionamiento proporcional adaptativo
-    // En mobile se reduce ~25% para no ser tapado por los dedos y calzar en el centro de la bola
-    let fontSize = isMob ? 7.2 : 10;
+    // Dimensionamiento proporcional calibrado exactamente a la referencia
+    // En desktop el stage escala 4.4x; en mobile portrait escala 3.0x
+    let fontSize = isMob ? 4.0 : 4.8;
 
     if (len < 25) {
-      fontSize = isMob ? 8.6 : 13;
+      fontSize = isMob ? 4.8 : 5.6;
     } else if (len < 45) {
-      fontSize = isMob ? 7.6 : 11;
+      fontSize = isMob ? 4.0 : 4.8;
     } else if (len < 75) {
-      fontSize = isMob ? 6.6 : 9.2;
+      fontSize = isMob ? 3.4 : 4.1;
     } else if (len < 110) {
-      fontSize = isMob ? 5.8 : 8.2;
+      fontSize = isMob ? 3.0 : 3.5;
     } else {
-      fontSize = isMob ? 5.0 : 7.4;
+      fontSize = isMob ? 2.6 : 3.0;
     }
 
     phraseText.style.fontSize = `${fontSize}px`;
@@ -747,38 +957,45 @@ document.addEventListener('DOMContentLoaded', () => {
       'amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'separacion', 'divorcio', 
       'relacion', 'relaciones', 'corazon', 'enamorar', 'enamorado', 'enamorada', 'querer', 
       'gustar', 'gusto', 'empatia', 'amigo', 'amigos', 'amiga', 'amistad', 'sentimiento', 
-      'hombre', 'mujer', 'chico', 'chica', 'volver', 'ex', 'cita', 'conocer'
+      'hombre', 'mujer', 'chico', 'chica', 'volver', 'ex', 'cita', 'conocer',
+      'namorado', 'namorada', 'casamento', 'relacionamento', 'amizade', 'homem', 'mulher'
     ],
     'Trabajo y creatividad': [
       'trabajo', 'laburo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 
       'sueldos', 'empresa', 'marca', 'negocio', 'negocios', 'exito', 'ascenso', 'ascender', 
       'renunciar', 'emprender', 'emprendimiento', 'cliente', 'jefe', 'jefa', 'agencia', 
       'idea', 'ideas', 'crear', 'creativo', 'creatividad', 'campana', 'publicidad', 
-      'aviso', 'oficio', 'estudiar', 'estudio', 'profesion', 'proyecto'
+      'aviso', 'oficio', 'estudiar', 'estudio', 'profesion', 'proyecto',
+      'trabalho', 'carreira', 'dinheiro', 'grana', 'salario', 'sucesso', 'ideia', 'ideias', 'criatividade', 'anuncio'
     ],
     'Futuro y tecnología': [
       'ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'robots', 'futuro', 'computadora', 
       'chatgpt', 'digital', 'automatizar', 'innovar', 'manana', 'destino', 'chip', 
-      'data', 'inteligencia', 'artificial', 'reemplazar', 'progreso', 'ciencia'
+      'data', 'inteligencia', 'artificial', 'reemplazar', 'progreso', 'ciencia',
+      'computador', 'inovacao', 'dados'
     ],
     'Riesgo y valentía': [
       'miedo', 'miedos', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 
       'arriesgo', 'atreverse', 'atrevo', 'animo', 'animarme', 'cambiar', 'cambio', 
-      'decision', 'saltar', 'coraje', 'avanzar', 'tirarme', 'jugarmela', 'jugarme', 'pileta'
+      'decision', 'saltar', 'coraje', 'avanzar', 'tirarme', 'jugarmela', 'jugarme', 'pileta',
+      'coragem', 'arriscar', 'medo', 'perigo', 'decisao'
     ],
     'Identidad': [
       'quien soy', 'como soy', 'estilo', 'edad', 'grande', 'viejo', 'ser yo', 
       'autoestima', 'identidad', 'dudas', 'autentico', 'comparar', 'sentido', 
-      'propio', 'proposito', 'vida', 'existencia', 'personalidad'
+      'propio', 'proposito', 'vida', 'existencia', 'personalidad',
+      'quem sou', 'idade', 'identidade'
     ],
     'Placer y vida cotidiana': [
       'comer', 'pasta', 'hambre', 'sed', 'cerveza', 'birra', 'vino', 'comida', 
       'cuerpo', 'casa', 'disfrutar', 'cotidiano', 'dormir', 'desayuno', 'fiesta', 
-      'salida', 'descansar', 'vacaciones', 'placer', 'vivir'
+      'salida', 'descansar', 'vacaciones', 'placer', 'vivir',
+      'massa', 'fome', 'sede', 'corpo', 'beber'
     ],
     'Tiempo y país': [
       'tiempo', 'nostalgia', 'anos', 'pais', 'argentina', 'epoca', 'antes', 
-      'pasado', 'recuerdo', 'historia', 'recuerdos'
+      'pasado', 'recuerdo', 'historia', 'recuerdos',
+      'tempo', 'lembranca'
     ]
   };
 
@@ -865,6 +1082,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const scored = pool.map(item => {
       let score = 0;
       const fNorm = (item.frase || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+      const fPtNorm = (item.frase_pt || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       const tNorm = (item.tema || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       const funcNorm = (item.funcion || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
       const mNorm = (item.marca || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -889,7 +1107,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 3. Coincidencia léxica directa (+4 pts por palabra de la pregunta)
       words.forEach(w => {
-        if (fNorm.includes(w)) score += 4;
+        if (fNorm.includes(w) || fPtNorm.includes(w)) score += 4;
         if (tNorm.includes(w)) score += 3;
         if (mNorm.includes(w)) score += 1;
       });
@@ -1076,16 +1294,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function updateSoundUI() {
     if (!btnSound) return;
+    const t = I18N[currentLang] || I18N.es;
     if (isMuted) {
       btnSound.classList.add('muted');
-      btnSound.setAttribute('title', 'Activar sonido');
-      btnSound.setAttribute('aria-label', 'Activar sonido');
+      btnSound.setAttribute('title', t.soundUnmute);
+      btnSound.setAttribute('aria-label', t.soundUnmute);
       if (iconSoundOn) iconSoundOn.style.display = 'none';
       if (iconSoundOff) iconSoundOff.style.display = 'block';
     } else {
       btnSound.classList.remove('muted');
-      btnSound.setAttribute('title', 'Silenciar sonido');
-      btnSound.setAttribute('aria-label', 'Silenciar sonido');
+      btnSound.setAttribute('title', t.soundMute);
+      btnSound.setAttribute('aria-label', t.soundMute);
       if (iconSoundOn) iconSoundOn.style.display = 'block';
       if (iconSoundOff) iconSoundOff.style.display = 'none';
     }
@@ -1146,6 +1365,20 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    if (langBtnEs) {
+      langBtnEs.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setLanguage('es');
+      });
+    }
+
+    if (langBtnPt) {
+      langBtnPt.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setLanguage('pt');
+      });
+    }
+
     if (menuBtnAbout) {
       menuBtnAbout.addEventListener('click', () => {
         openModalAbout();
@@ -1179,6 +1412,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   initMenuAndModal();
+  setLanguage(currentLang);
 
   // ========================================================
   // MOTOR DE SEGUIMIENTO Y TILT 3D DEL TERCER OJO (Desktop y Mobile)
@@ -1486,7 +1720,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function checkMobileGyroSupport() {
-      if (!isMobilePortrait()) return;
+      if (!isMobilePortrait()) {
+        if (gyroPermissionPrompt) {
+          gyroPermissionPrompt.classList.remove('is-visible');
+        }
+        return;
+      }
 
       // Caso iOS 13+: Requiere permiso explícito mediante toque de usuario
       if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
@@ -1502,8 +1741,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handlePlatformChange() {
-      checkMobileGyroSupport();
       if (isMobilePortrait()) {
+        checkMobileGyroSupport();
         scheduleNextSaccade();
       } else {
         clearTimeout(saccadeTimeoutId);
@@ -1512,6 +1751,9 @@ document.addEventListener('DOMContentLoaded', () => {
         saccadeOffset.y = 0;
         isSaccadeActive = false;
         currentLerp = 0.10;
+        if (gyroPermissionPrompt) {
+          gyroPermissionPrompt.classList.remove('is-visible');
+        }
       }
     }
 

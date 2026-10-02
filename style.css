@@ -61,6 +61,35 @@ html, body {
   color: #ffffff;
 }
 
+/* ========================================================
+   Cursor personalizado en Desktop (Mística El Ojo)
+   ======================================================== */
+@media (hover: hover) and (pointer: fine) {
+  html,
+  body {
+    cursor: url('assets/cursor.png') 1 1, url('assets/cursor.webp') 1 1, auto;
+  }
+
+  /* Elementos interactivos */
+  a,
+  button,
+  .pill-btn,
+  .btn-reset,
+  .btn-sound,
+  .btn-menu,
+  .lang-btn,
+  .menu-item-link,
+  .modal-about-close,
+  .phrase-link {
+    cursor: url('assets/cursor.png') 1 1, url('assets/cursor.webp') 1 1, pointer;
+  }
+
+  input,
+  textarea {
+    cursor: text;
+  }
+}
+
 /* Modo Kiosco (?kiosk=1) */
 body.kiosk-mode {
   cursor: none !important;
@@ -366,32 +395,34 @@ picture.stage-layer {
 .phrase-container {
   position: relative;
   z-index: 4;
-  width: 82%;
-  height: 82%;
+  width: 76%;
+  height: 76%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding: 8% 5%;
+  padding: 0 4%;
   pointer-events: none;
   will-change: transform, opacity;
 }
 
-/* Frase del oráculo */
+/* Frase del oráculo: Lexend Tera, All Caps, sutil glow violeta */
 .phrase-text {
-  color: var(--color-oracle-light);
-  font-weight: 700;
-  line-height: 1.22;
-  letter-spacing: -0.01em;
+  font-family: 'Lexend Tera', sans-serif;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-align: center;
+  color: #FFFFFF;
+  line-height: 1.25;
+  letter-spacing: 0.035em;
   text-shadow: 
-    0 0 10px var(--color-oracle-glow),
-    0 0 25px rgba(138, 92, 246, 0.7),
-    0 2px 4px rgba(0, 0, 0, 0.8);
+    0 0 5px rgba(185, 145, 245, 0.85),
+    0 0 14px rgba(145, 95, 235, 0.5);
   filter: url(#glass-distortion);
-  margin-bottom: 4px;
+  margin-bottom: 0;
   will-change: transform, opacity, filter;
-  max-width: 100%;
+  max-width: 54%;
   word-break: break-word;
   hyphens: auto;
 }
@@ -402,30 +433,29 @@ picture.stage-layer {
   opacity: 0;
   filter: blur(12px);
   transform: translateY(6px);
-  margin: 0 2px;
+  margin: 0 1.5px;
   will-change: opacity, filter, transform;
 }
 
-/* Crédito de la frase (Violeta oscuro nítido y legible) */
+/* Crédito de la frase (Helvetica violeta oscuro nítido y centrado) */
 .phrase-credit {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: var(--color-oracle-credit);
-  font-size: 8.5px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-size: 2.7px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  text-shadow: 
-    0 0 3px rgba(255, 255, 255, 0.95),
-    0 0 8px rgba(230, 215, 255, 0.7),
-    0 1px 2px rgba(255, 255, 255, 0.5);
+  text-align: center;
+  text-shadow: none;
+  line-height: 1.35;
+  margin-top: 3.5px;
+  max-width: 68%;
   opacity: 0;
-  margin-top: 6px;
-  max-width: 92%;
-  line-height: 1.3;
 }
 
-/* Enlace "Quiero ver más allá" debajo del crédito */
+/* Enlace "VER MÁS ALLÁ" debajo del crédito */
 .phrase-link-wrapper {
-  margin-top: 7px;
+  margin-top: 3.0px;
   display: none;
   align-items: center;
   justify-content: center;
@@ -441,35 +471,28 @@ picture.stage-layer {
 
 .phrase-link {
   color: var(--color-oracle-credit);
-  font-family: var(--font-family-base);
-  font-size: 8px;
-  font-weight: 800;
-  letter-spacing: 0.07em;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 2.8px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   text-decoration: underline;
-  text-underline-offset: 2.5px;
-  text-shadow: 
-    0 0 3px rgba(255, 255, 255, 0.95),
-    0 0 8px rgba(230, 215, 255, 0.75),
-    0 1px 2px rgba(255, 255, 255, 0.6);
+  text-underline-offset: 1px;
+  text-decoration-thickness: 0.6px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  text-shadow: none;
+  padding: 0;
   cursor: pointer;
   pointer-events: auto;
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  padding: 3px 7px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: transform 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+  display: inline-block;
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
 .phrase-link:hover {
-  transform: scale(1.06);
-  background: rgba(255, 255, 255, 0.35);
-  color: #1a0f40;
-  box-shadow: 0 0 10px rgba(180, 140, 255, 0.6);
+  opacity: 0.8;
+  transform: scale(1.03);
 }
 
 .phrase-link:active {
@@ -480,7 +503,6 @@ picture.stage-layer {
 #layer-hands-picture,
 #layer-hands {
   z-index: 4;
-  filter: drop-shadow(0 0 2px rgba(35, 18, 65, 0.3));
 }
 
 #layer-cat {
@@ -777,6 +799,66 @@ picture.stage-layer {
   padding: 0;
 }
 
+.menu-item-lang {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px 10px 12px;
+  border-bottom: 1px solid rgba(190, 175, 255, 0.2);
+  margin-bottom: 4px;
+}
+
+.lang-label {
+  font-family: var(--font-family-base);
+  font-size: 11px;
+  font-weight: 700;
+  color: rgba(220, 205, 255, 0.65);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lang-toggle-group {
+  display: inline-flex;
+  align-items: center;
+  background: rgba(14, 9, 30, 0.7);
+  border: 1px solid rgba(190, 175, 255, 0.35);
+  border-radius: 9999px;
+  padding: 2px 4px;
+  gap: 2px;
+}
+
+.lang-divider {
+  color: rgba(190, 175, 255, 0.35);
+  font-size: 10px;
+  user-select: none;
+}
+
+.lang-btn {
+  background: transparent;
+  border: none;
+  color: rgba(220, 210, 245, 0.6);
+  font-family: 'Lexend Tera', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+  outline: none;
+}
+
+.lang-btn:hover {
+  color: #FFFFFF;
+}
+
+.lang-btn.is-active {
+  background: linear-gradient(135deg, rgba(140, 100, 240, 0.95), rgba(95, 55, 205, 0.95));
+  color: #FFFFFF;
+  box-shadow: 0 0 10px rgba(160, 120, 255, 0.55);
+  font-weight: 700;
+}
+
 .menu-item-link {
   width: 100%;
   display: flex;
@@ -834,11 +916,11 @@ picture.stage-layer {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  padding-top: 18.5%;
+  justify-content: center;
+  padding-top: clamp(20px, 3vh, 35px);
+  padding-bottom: clamp(40px, 9vh, 80px);
   padding-left: clamp(20px, 4vw, 40px);
   padding-right: clamp(20px, 4vw, 40px);
-  padding-bottom: 24px;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -849,7 +931,7 @@ picture.stage-layer {
   align-items: center;
   width: 100%;
   max-width: clamp(340px, 39vw, 680px);
-  margin: 0 auto;
+  margin: auto;
 }
 
 .modal-about-close {
@@ -944,6 +1026,17 @@ picture.stage-layer {
   color: rgba(220, 210, 240, 0.45);
   border-color: rgba(140, 130, 180, 0.3);
   background: rgba(20, 15, 35, 0.65);
+}
+
+/* Prompt para permiso de giroscopio en mobile / iOS (completamente oculto en desktop) */
+.gyro-permission-prompt {
+  display: none !important;
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1200;
+  pointer-events: none;
 }
 
 /* ========================================================
@@ -1065,30 +1158,39 @@ picture.stage-layer {
   .phrase-container {
     width: 66%;
     height: 75%;
-    padding: 4% 6%;
+    padding: 0 4%;
   }
 
   .phrase-text {
-    line-height: 1.24;
-    margin-bottom: 2px;
+    line-height: 1.25;
+    margin-bottom: 0;
+    letter-spacing: 0.03em;
+    max-width: 82%;
   }
 
   .phrase-credit {
-    font-size: 4.8px;
-    line-height: 1.25;
-    margin-top: 4px;
-    max-width: 90%;
-    letter-spacing: 0.05em;
+    font-size: 2.3px;
+    line-height: 1.32;
+    margin-top: 3.0px;
+    max-width: 80%;
+    letter-spacing: 0.03em;
+    text-shadow: none;
   }
 
   .phrase-link-wrapper {
-    margin-top: 4px;
+    margin-top: 2.6px;
   }
 
   .phrase-link {
-    font-size: 4.6px;
+    font-size: 2.4px;
     letter-spacing: 0.05em;
-    padding: 2px 5px;
+    text-underline-offset: 1px;
+    text-decoration-thickness: 0.5px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    text-shadow: none;
+    padding: 0;
   }
 
   .btn-menu {
@@ -1139,19 +1241,21 @@ picture.stage-layer {
 
   /* Prompt para permiso de giroscopio en mobile / iOS */
   .gyro-permission-prompt {
+    display: none !important;
     position: fixed;
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 1200;
-    display: none;
     align-items: center;
     justify-content: center;
+    pointer-events: none;
     animation: gyroPillFloat 3s ease-in-out infinite alternate;
   }
 
   .gyro-permission-prompt.is-visible {
-    display: flex;
+    display: flex !important;
+    pointer-events: auto;
   }
 
   .btn-gyro-permission {

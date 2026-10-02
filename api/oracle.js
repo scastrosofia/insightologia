@@ -107,7 +107,16 @@ function parseCSV(text) {
     const ano = (row[anoIdx >= 0 ? anoIdx : 5] || '').trim();
     const tema = (row[temaIdx >= 0 ? temaIdx : 6] || '').trim();
 
-    rows.push({ id, frase, marca, agencia, pais, ano, tema });
+    const catalogMatch = (CONFIG.CATALOG_PHRASES || []).find(p => String(p.id) === String(id));
+    const mergedRow = Object.assign({}, catalogMatch || {}, { id, frase, marca, agencia, pais, ano, tema });
+    if (catalogMatch) {
+      if (catalogMatch.frase_pt) mergedRow.frase_pt = catalogMatch.frase_pt;
+      if (catalogMatch.frase_es) mergedRow.frase_es = catalogMatch.frase_es;
+      if (catalogMatch.pais_pt) mergedRow.pais_pt = catalogMatch.pais_pt;
+      if (catalogMatch.link) mergedRow.link = catalogMatch.link;
+    }
+
+    rows.push(mergedRow);
   }
 
   return rows;
@@ -159,13 +168,13 @@ async function getSheetPhrases() {
 
 // Diccionario semántico por Tags para fallback del backend
 const BACKEND_THEMES = {
-  'Amor y vínculos': ['amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'separacion', 'divorcio', 'relacion', 'corazon', 'enamorar', 'querer', 'gustar', 'empatia', 'amigo', 'amigos', 'amistad', 'sentimiento', 'hombre', 'mujer'],
-  'Trabajo y creatividad': ['trabajo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 'empresa', 'marca', 'negocio', 'exito', 'ascenso', 'cliente', 'jefe', 'agencia', 'idea', 'ideas', 'crear', 'creativo', 'creatividad', 'campana', 'publicidad', 'aviso', 'oficio'],
-  'Futuro y tecnología': ['ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'futuro', 'computadora', 'chatgpt', 'digital', 'automatizar', 'innovar', 'manana', 'destino', 'chip', 'data', 'inteligencia', 'artificial'],
-  'Riesgo y valentía': ['miedo', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 'atreverse', 'cambiar', 'cambio', 'decision', 'saltar', 'coraje', 'avanzar', 'tirarme'],
-  'Identidad': ['quien soy', 'estilo', 'edad', 'grande', 'viejo', 'ser yo', 'autoestima', 'identidad', 'dudas', 'autentico', 'comparar', 'sentido', 'propio'],
-  'Placer y vida cotidiana': ['comer', 'pasta', 'hambre', 'sed', 'cerveza', 'birra', 'comida', 'cuerpo', 'casa', 'disfrutar', 'cotidiano', 'dormir', 'desayuno'],
-  'Tiempo y país': ['tiempo', 'nostalgia', 'anos', 'pais', 'argentina', 'epoca', 'antes', 'pasado', 'recuerdo']
+  'Amor y vínculos': ['amor', 'pareja', 'novio', 'novia', 'casar', 'casarme', 'separacion', 'divorcio', 'relacion', 'corazon', 'enamorar', 'querer', 'gustar', 'empatia', 'amigo', 'amigos', 'amistad', 'sentimiento', 'hombre', 'mujer', 'namorado', 'namorada', 'casamento', 'relacionamento', 'amizade', 'homem', 'mulher'],
+  'Trabajo y creatividad': ['trabajo', 'empleo', 'carrera', 'plata', 'dinero', 'guita', 'sueldo', 'empresa', 'marca', 'negocio', 'exito', 'ascenso', 'cliente', 'jefe', 'agencia', 'idea', 'ideas', 'crear', 'creativo', 'creatividad', 'campana', 'publicidad', 'aviso', 'oficio', 'trabalho', 'carreira', 'dinheiro', 'grana', 'salario', 'sucesso', 'ideia', 'ideias', 'criatividade', 'anuncio'],
+  'Futuro y tecnología': ['ia', 'ai', 'tecnologia', 'algoritmo', 'robot', 'futuro', 'computadora', 'chatgpt', 'digital', 'automatizar', 'innovar', 'manana', 'destino', 'chip', 'data', 'inteligencia', 'artificial', 'computador', 'inovacao', 'dados'],
+  'Riesgo y valentía': ['miedo', 'riesgo', 'peligro', 'valiente', 'valentia', 'arriesgar', 'atreverse', 'cambiar', 'cambio', 'decision', 'saltar', 'coraje', 'avanzar', 'tirarme', 'coragem', 'arriscar', 'medo', 'perigo', 'decisao'],
+  'Identidad': ['quien soy', 'estilo', 'edad', 'grande', 'viejo', 'ser yo', 'autoestima', 'identidad', 'dudas', 'autentico', 'comparar', 'sentido', 'propio', 'quem sou', 'idade', 'identidade'],
+  'Placer y vida cotidiana': ['comer', 'pasta', 'hambre', 'sed', 'cerveza', 'birra', 'comida', 'cuerpo', 'casa', 'disfrutar', 'cotidiano', 'dormir', 'desayuno', 'massa', 'fome', 'sede', 'corpo', 'beber'],
+  'Tiempo y país': ['tiempo', 'nostalgia', 'anos', 'pais', 'argentina', 'epoca', 'antes', 'pasado', 'recuerdo', 'tempo', 'lembranca']
 };
 
 const BACKEND_FUNCTIONS = {
@@ -219,6 +228,7 @@ function pickFallbackPhrase(phrases, question, recentIds = []) {
   const scored = candidates.map(item => {
     let score = 0;
     const fNorm = (item.frase || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const fPtNorm = (item.frase_pt || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const tNorm = (item.tema || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const funcNorm = (item.funcion || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const mNorm = (item.marca || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
@@ -243,7 +253,7 @@ function pickFallbackPhrase(phrases, question, recentIds = []) {
 
     // Coincidencias léxicas
     words.forEach(w => {
-      if (fNorm.includes(w)) score += 3;
+      if (fNorm.includes(w) || fPtNorm.includes(w)) score += 3;
       if (tNorm.includes(w)) score += 2;
       if (mNorm.includes(w)) score += 1;
     });
@@ -417,14 +427,28 @@ module.exports = async function handler(req, res) {
       chosenPhrase = pickFallbackPhrase(phrases, pregunta, recentIds);
     }
 
+    if (chosenPhrase && chosenPhrase.id && CONFIG.CATALOG_PHRASES) {
+      const catalogMatch = CONFIG.CATALOG_PHRASES.find(p => String(p.id) === String(chosenPhrase.id));
+      if (catalogMatch) {
+        chosenPhrase = Object.assign({}, catalogMatch, chosenPhrase);
+        if (!chosenPhrase.frase_pt && catalogMatch.frase_pt) chosenPhrase.frase_pt = catalogMatch.frase_pt;
+        if (!chosenPhrase.pais_pt && catalogMatch.pais_pt) chosenPhrase.pais_pt = catalogMatch.pais_pt;
+        if (!chosenPhrase.link && catalogMatch.link) chosenPhrase.link = catalogMatch.link;
+      }
+    }
+
     return res.status(200).json({
       id: chosenPhrase.id,
       frase: chosenPhrase.frase,
+      frase_es: chosenPhrase.frase_es || chosenPhrase.frase,
+      frase_pt: chosenPhrase.frase_pt || '',
       marca: chosenPhrase.marca,
       agencia: chosenPhrase.agencia,
       pais: chosenPhrase.pais,
+      pais_pt: chosenPhrase.pais_pt || chosenPhrase.pais || '',
       ano: chosenPhrase.ano,
-      tema: chosenPhrase.tema
+      tema: chosenPhrase.tema,
+      link: chosenPhrase.link || ''
     });
 
   } catch (err) {
