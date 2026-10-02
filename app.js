@@ -915,7 +915,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     try {
       const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 6000);
+      const timeoutId = setTimeout(() => controller.abort(), 9000);
 
       const res = await fetch(apiUrl, {
         method: 'POST',

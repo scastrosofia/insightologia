@@ -4,7 +4,9 @@ const CONFIG = {
   SHEET_CSV_URL: 'https://docs.google.com/spreadsheets/d/1iXTCqt8MevnbPK0Ng-BaV4rh1ci1rZNEV0UQoeJAiGY/export?format=csv',
 
   // Endpoint del backend serverless en Vercel o local
-  API_ORACLE_URL: '/api/oracle',
+  API_ORACLE_URL: (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+    ? '/api/oracle'
+    : 'https://insightologia.vercel.app/api/oracle',
 
   // Webhook de Google Apps Script para guardar preguntas en Google Sheets
   GOOGLE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbzAGTO9dy8O3H3Sd5c29D9F5Kt3QdooamOIu5R4j59skATtjIuo67B5xVtwzxUkIHI4zw/exec',

@@ -25,10 +25,10 @@ try {
   }
 } catch (e) {}
 
-// Caché en memoria para la instancia serverless (5 minutos)
-let cachedPhrases = null;
-let lastCacheTime = 0;
-const CACHE_TTL_MS = 5 * 60 * 1000;
+// Caché en memoria pre-sembrada con el catálogo para respuesta en 0ms
+let cachedPhrases = (CONFIG && CONFIG.CATALOG_PHRASES) ? CONFIG.CATALOG_PHRASES : null;
+let lastCacheTime = Date.now();
+const CACHE_TTL_MS = 10 * 60 * 1000;
 
 /**
  * Parser de CSV robusto para Google Sheets (soporta comillas, saltos y comas internas)
@@ -324,11 +324,11 @@ CRITERIO DE ELECCIÓN:
 
   const userContent = `PREGUNTA DEL CONSULTANTE: "${question}"\n\nLISTA DE FRASES DISPONIBLES:\n${compactList}`;
 
-  const model = process.env.GEMINI_MODEL || 'gemini-2.0-flash';
+  const model = process.env.GEMINI_MODEL || 'gemini-2.5-flash';
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 6000);
+  const timeoutId = setTimeout(() => controller.abort(), 8500);
 
   try {
     const response = await fetch(url, {
@@ -346,7 +346,10 @@ CRITERIO DE ELECCIÓN:
         ],
         generationConfig: {
           temperature: 0.7,
-          responseMimeType: 'application/json'
+          responseMimeType: 'application/json',
+          thinkingConfig: {
+            thinkingBudget: 0
+          }
         }
       }),
       signal: controller.signal
