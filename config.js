@@ -7,7 +7,7 @@ const CONFIG = {
   API_ORACLE_URL: '/api/oracle',
 
   // Webhook de Google Apps Script para guardar preguntas en Google Sheets
-  GOOGLE_SHEETS_WEBHOOK_URL: '',
+  GOOGLE_SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/AKfycbzAGTO9dy8O3H3Sd5c29D9F5Kt3QdooamOIu5R4j59skATtjIuo67B5xVtwzxUkIHI4zw/exec',
 
   // Timeout para respuesta de API (ms)
   TIMEOUT_MS: 5000,
