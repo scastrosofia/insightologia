@@ -16,7 +16,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lexend+Tera:wght@400;500;600;700&family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css?v=20261002-4">
+  <link rel="stylesheet" href="style.css?v=20261002-5">
   
   <!-- GSAP 3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -52,8 +52,8 @@
       
       <!-- 1. Background scene (adaptable a desktop 16:9 y mobile 9:16) -->
       <picture id="layer-scene-picture" class="stage-layer">
-        <source media="(max-width: 768px)" srcset="assets/escena-mobile.webp">
-        <source media="(orientation: portrait)" srcset="assets/escena-mobile.webp">
+        <source media="(max-width: 768px)" srcset="assets/escena-mobile-sin-pupila.webp">
+        <source media="(orientation: portrait)" srcset="assets/escena-mobile-sin-pupila.webp">
         <img id="layer-scene" class="stage-layer-img" src="assets/escena-sin-pupila.webp" alt="Escena del Oráculo" draggable="false">
       </picture>
 
@@ -203,13 +203,25 @@
         Hacer otra pregunta
       </button>
     </div>
+
+    <!-- Prompt para permiso de giroscopio en mobile / iOS -->
+    <div id="gyro-permission-prompt" class="gyro-permission-prompt" aria-hidden="true">
+      <button id="btn-gyro-permission" class="btn-gyro-permission" type="button">
+        <svg class="icon-gyro" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"></path>
+          <path d="M2 12h20"></path>
+        </svg>
+        <span>Permitir experiencia inmersiva</span>
+      </button>
+    </div>
   </div>
 
   <!-- Pistas de audio para ambiente sonoro combinado -->
   <audio id="audio-wind" src="assets/audio/mystic-wind.mp3" loop preload="auto"></audio>
   <audio id="audio-office" src="assets/audio/office-ambience.mp3" loop preload="auto"></audio>
 
-  <script src="config.js?v=20261002-4"></script>
-  <script src="app.js?v=20261002-4"></script>
+  <script src="config.js?v=20261002-5"></script>
+  <script src="app.js?v=20261002-5"></script>
 </body>
 </html>

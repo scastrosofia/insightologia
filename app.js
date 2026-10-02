@@ -1178,10 +1178,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initMenuAndModal();
 
   // ========================================================
-  // MOTOR DE SEGUIMIENTO Y TILT 3D DEL TERCER OJO (Desktop)
+  // MOTOR DE SEGUIMIENTO Y TILT 3D DEL TERCER OJO (Desktop y Mobile)
   // ========================================================
   function initEyeTracking() {
     if (!thirdEyeInteractive || !thirdEyePupil) return;
+
+    const gyroPermissionPrompt = document.getElementById('gyro-permission-prompt');
+    const btnGyroPermission = document.getElementById('btn-gyro-permission');
 
     let targetX = 0;
     let targetY = 0;
@@ -1201,8 +1204,10 @@ document.addEventListener('DOMContentLoaded', () => {
     let targetZ = 0;
     let currentZ = 0;
 
-    let isMouseActive = false;
+    let isTrackingActive = false;
     let rafId = null;
+    let gyroActive = false;
+    let baselineBeta = 45; // Ángulo promedio de sostener el celular en la mano
 
     // Obtener centro y dimensiones actuales del ojo en el viewport
     function getEyeCenter() {
@@ -1215,6 +1220,13 @@ document.addEventListener('DOMContentLoaded', () => {
       };
     }
 
+    function ensureRenderLoop() {
+      if (!rafId) {
+        rafId = requestAnimationFrame(renderLoop);
+      }
+    }
+
+    // --- Desktop: Seguimiento con Mouse ---
     function onMouseMove(e) {
       if (isMobilePortrait()) return;
 
@@ -1227,41 +1239,21 @@ document.addEventListener('DOMContentLoaded', () => {
       const angle = Math.atan2(dy, dx);
 
       // Límites de recorrido elípticos acotados a la cuenca ocular
-      // Para evitar que la pupila se salga sobre los párpados
       const maxRadiusX = eye.w * 0.40;
       const maxRadiusY = eye.h * 0.26;
 
-      // Sensibilidad suave no-lineal según la distancia en pantalla
       const screenDiagonal = Math.hypot(window.innerWidth, window.innerHeight);
       const strength = Math.min(1, Math.pow(dist / (screenDiagonal * 0.52), 0.75));
 
-      // Desplazamiento 2D
       targetX = Math.cos(angle) * maxRadiusX * strength;
       targetY = Math.sin(angle) * maxRadiusY * strength;
 
-      // Normalizado (-1 a 1) para perspectiva y proyección esférica 3D
-      const normX = targetX / maxRadiusX;
-      const normY = targetY / maxRadiusY;
-
-      // 1. Rotación y Tilt 3D esférico
-      targetRotY = normX * 24;  // Gira hacia el cursor en el eje Y
-      targetRotX = -normY * 18; // Gira hacia el cursor en el eje X
-
-      // 2. Achatamiento por proyección esférica (el iris se ve más angosto de perfil)
-      targetScaleX = 1 - Math.abs(normX) * 0.14;
-      targetScaleY = 1 - Math.abs(normY) * 0.08;
-
-      // 3. Hundimiento corneal en Z (curvatura esférica interna)
-      targetZ = -Math.hypot(normX, normY) * 3.2;
-
-      isMouseActive = true;
-      if (!rafId) {
-        rafId = requestAnimationFrame(renderLoop);
-      }
+      apply3DTransforms(targetX, targetY, maxRadiusX, maxRadiusY);
+      isTrackingActive = true;
+      ensureRenderLoop();
     }
 
     function onMouseLeave() {
-      // Regreso suave al centro
       targetX = 0;
       targetY = 0;
       targetRotX = 0;
@@ -1269,12 +1261,89 @@ document.addEventListener('DOMContentLoaded', () => {
       targetScaleX = 1;
       targetScaleY = 1;
       targetZ = 0;
-      isMouseActive = false;
+      isTrackingActive = false;
+    }
+
+    // --- Mobile: Giroscopio y Acelerómetro (DeviceOrientation) ---
+    function onDeviceOrientation(e) {
+      if (!isMobilePortrait()) return;
+      if (e.gamma === null && e.beta === null) return;
+
+      const eye = getEyeCenter();
+      if (!eye.w || !eye.h) return;
+
+      const maxRadiusX = eye.w * 0.38;
+      const maxRadiusY = eye.h * 0.25;
+
+      // Inclinación lateral (gamma: -90 a 90) e inclinación frontal (beta: -180 a 180)
+      const gamma = e.gamma || 0;
+      const beta = e.beta || baselineBeta;
+
+      // Desviación respecto al ángulo natural de reposo de la mano (~45°)
+      const deltaGamma = gamma;
+      const deltaBeta = beta - baselineBeta;
+
+      // Sensibilidad angular: ±22° de inclinación da el 100% del rango de la pupila
+      const maxTilt = 22;
+      const normX = Math.max(-1, Math.min(1, deltaGamma / maxTilt));
+      const normY = Math.max(-1, Math.min(1, deltaBeta / maxTilt));
+
+      targetX = normX * maxRadiusX;
+      targetY = normY * maxRadiusY;
+
+      apply3DTransforms(targetX, targetY, maxRadiusX, maxRadiusY);
+      isTrackingActive = true;
+      ensureRenderLoop();
+    }
+
+    // --- Mobile: Fallback / Toque táctil ---
+    function onTouchMove(e) {
+      if (!isMobilePortrait()) return;
+      const touch = e.touches[0];
+      if (!touch) return;
+
+      const eye = getEyeCenter();
+      if (!eye.w || !eye.h) return;
+
+      const dx = touch.clientX - eye.x;
+      const dy = touch.clientY - eye.y;
+      const dist = Math.hypot(dx, dy);
+      const angle = Math.atan2(dy, dx);
+
+      const maxRadiusX = eye.w * 0.38;
+      const maxRadiusY = eye.h * 0.25;
+
+      const screenDiagonal = Math.hypot(window.innerWidth, window.innerHeight);
+      const strength = Math.min(1, Math.pow(dist / (screenDiagonal * 0.45), 0.75));
+
+      targetX = Math.cos(angle) * maxRadiusX * strength;
+      targetY = Math.sin(angle) * maxRadiusY * strength;
+
+      apply3DTransforms(targetX, targetY, maxRadiusX, maxRadiusY);
+      isTrackingActive = true;
+      ensureRenderLoop();
+    }
+
+    // --- Transformaciones esféricas y de perspectiva 3D ---
+    function apply3DTransforms(tx, ty, mrx, mry) {
+      const normX = mrx > 0 ? tx / mrx : 0;
+      const normY = mry > 0 ? ty / mry : 0;
+
+      // 1. Rotación y Tilt 3D esférico
+      targetRotY = normX * 24;  // Gira sobre eje Y
+      targetRotX = -normY * 18; // Gira sobre eje X
+
+      // 2. Achatamiento por proyección esférica
+      targetScaleX = 1 - Math.abs(normX) * 0.14;
+      targetScaleY = 1 - Math.abs(normY) * 0.08;
+
+      // 3. Hundimiento corneal en Z
+      targetZ = -Math.hypot(normX, normY) * 3.2;
     }
 
     function renderLoop() {
-      // Física de inercia y suavizado orgánico (lerp damping: 0.09)
-      const lerp = 0.09;
+      // Física de inercia y suavizado orgánico (lerp damping: 0.10)
+      const lerp = 0.10;
       currentX += (targetX - currentX) * lerp;
       currentY += (targetY - currentY) * lerp;
       currentRotX += (targetRotX - currentRotX) * lerp;
@@ -1291,17 +1360,68 @@ document.addEventListener('DOMContentLoaded', () => {
         thirdEyeGlow.style.transform = `translate(-50%, -50%) translate3d(${(currentX * 0.25).toFixed(2)}px, ${(currentY * 0.25).toFixed(2)}px, 0)`;
       }
 
-      // Continuar renderLoop si sigue en movimiento o el mouse está activo
       const delta = Math.abs(targetX - currentX) + Math.abs(targetY - currentY) + Math.abs(targetRotX - currentRotX);
-      if (delta > 0.02 || isMouseActive) {
+      if (delta > 0.02 || isTrackingActive) {
         rafId = requestAnimationFrame(renderLoop);
       } else {
         rafId = null;
       }
     }
 
+    // --- Inicialización y Permisos de Giroscopio ---
+    function activateGyroTracking() {
+      if (gyroActive) return;
+      window.addEventListener('deviceorientation', onDeviceOrientation, { passive: true });
+      gyroActive = true;
+      if (gyroPermissionPrompt) {
+        gyroPermissionPrompt.classList.remove('is-visible');
+      }
+    }
+
+    function checkMobileGyroSupport() {
+      if (!isMobilePortrait()) return;
+
+      // Caso iOS 13+: Requiere permiso explícito mediante toque de usuario
+      if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+        if (sessionStorage.getItem('gyro_permission_granted') === 'true') {
+          activateGyroTracking();
+        } else if (gyroPermissionPrompt) {
+          gyroPermissionPrompt.classList.add('is-visible');
+        }
+      } else if (typeof DeviceOrientationEvent !== 'undefined') {
+        // Caso Android y navegadores estándar: Activar directamente
+        activateGyroTracking();
+      }
+    }
+
+    if (btnGyroPermission) {
+      btnGyroPermission.addEventListener('click', () => {
+        if (typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function') {
+          DeviceOrientationEvent.requestPermission()
+            .then(perm => {
+              if (perm === 'granted') {
+                sessionStorage.setItem('gyro_permission_granted', 'true');
+                activateGyroTracking();
+              } else {
+                if (gyroPermissionPrompt) gyroPermissionPrompt.classList.remove('is-visible');
+              }
+            })
+            .catch(() => {
+              if (gyroPermissionPrompt) gyroPermissionPrompt.classList.remove('is-visible');
+            });
+        } else {
+          activateGyroTracking();
+        }
+      });
+    }
+
+    // Escuchar eventos según la plataforma
     window.addEventListener('mousemove', onMouseMove, { passive: true });
     document.addEventListener('mouseleave', onMouseLeave);
+    window.addEventListener('touchmove', onTouchMove, { passive: true });
+    window.addEventListener('resize', checkMobileGyroSupport);
+
+    checkMobileGyroSupport();
   }
 
   initEyeTracking();

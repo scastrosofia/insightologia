@@ -950,6 +950,12 @@ picture.stage-layer {
     --eye-x: 48.33%;
     --eye-y: 40.26%;
     --eye-size: 14%;
+
+    /* Pupila en mobile 9:16 */
+    --pupil-x: 49.144%;
+    --pupil-y: 44.635%;
+    --pupil-w: 3.009%;
+    --pupil-h: 1.406%;
   }
 
   #viewport-wrapper {
@@ -1098,7 +1104,57 @@ picture.stage-layer {
   }
 
   .third-eye-interactive {
-    display: none !important;
+    display: flex !important;
+    top: var(--pupil-y);
+    left: var(--pupil-x);
+    width: var(--pupil-w);
+    height: var(--pupil-h);
+  }
+
+  /* Prompt para permiso de giroscopio en mobile / iOS */
+  .gyro-permission-prompt {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1200;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    animation: gyroPillFloat 3s ease-in-out infinite alternate;
+  }
+
+  .gyro-permission-prompt.is-visible {
+    display: flex;
+  }
+
+  .btn-gyro-permission {
+    background: rgba(43, 30, 92, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(190, 175, 255, 0.55);
+    color: #FFFFFF;
+    font-family: var(--font-family-base);
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 10px 20px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.55), 0 0 16px rgba(140, 100, 240, 0.45);
+    letter-spacing: 0.02em;
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .btn-gyro-permission:active {
+    transform: scale(0.96);
+  }
+
+  @keyframes gyroPillFloat {
+    0% { transform: translateX(-50%) translateY(0); }
+    100% { transform: translateX(-50%) translateY(-5px); }
   }
 
   .btn-sound {
