@@ -356,9 +356,9 @@ document.addEventListener('DOMContentLoaded', () => {
       
       const isMob = isMobilePortrait();
       const startX = isMob ? '50%' : '20%';
-      const startY = isMob ? '31.5%' : '57%';
-      const endX = isMob ? '40.3%' : '44.8%';
-      const endY = isMob ? '81.5%' : '74.5%';
+      const startY = isMob ? '32.5%' : '57%';
+      const endX = isMob ? '40.35%' : '44.8%';
+      const endY = isMob ? '82.5%' : '74.5%';
 
       const tlFly = gsap.timeline();
       tlFly.fromTo(floatingQuestion, 
@@ -413,11 +413,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const zoomDuration = prefersReducedMotion ? 0.6 : 1.8;
       const isMob = isMobilePortrait();
 
-      // En mobile portrait la bola ya es más grande (31.94%) y está en (40.28%, 81.51%)
-      // Escala 2.8x con compensación xPercent: 9.7, yPercent: -31.5 para centrado en pantalla
+      // En mobile portrait la bola ya es más grande (32%) y está en (40.35%, 82.5%)
+      // Escala 2.8x con compensación xPercent: 9.65, yPercent: -32.5 para centrado en pantalla
       const targetScale = isMob ? 2.8 : 4.4;
-      const targetX = isMob ? 9.7 : 5.2;
-      const targetY = isMob ? -31.5 : -26.5;
+      const targetX = isMob ? 9.65 : 5.2;
+      const targetY = isMob ? -32.5 : -26.5;
 
       gsap.to(stage, {
         scale: targetScale,

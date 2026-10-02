@@ -10,7 +10,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=20261001-3">
   
   <!-- GSAP 3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -45,8 +45,9 @@
     <main id="stage" aria-label="Escenario del Oráculo Insightología">
       
       <!-- 1. Background scene (adaptable a desktop 16:9 y mobile 9:16) -->
-      <picture class="stage-layer">
-        <source media="(max-width: 768px), (orientation: portrait)" srcset="assets/escena-mobile.webp">
+      <picture id="layer-scene-picture" class="stage-layer">
+        <source media="(max-width: 768px)" srcset="assets/escena-mobile.webp">
+        <source media="(orientation: portrait)" srcset="assets/escena-mobile.webp">
         <img id="layer-scene" class="stage-layer-img" src="assets/escena.webp" alt="Escena del Oráculo" draggable="false">
       </picture>
 
@@ -70,8 +71,9 @@
       </div>
 
       <!-- 3. Hands layer (adaptable a desktop 16:9 y mobile 9:16) -->
-      <picture class="stage-layer">
-        <source media="(max-width: 768px), (orientation: portrait)" srcset="assets/manos-mobile.png">
+      <picture id="layer-hands-picture" class="stage-layer">
+        <source media="(max-width: 768px)" srcset="assets/manos-mobile.png">
+        <source media="(orientation: portrait)" srcset="assets/manos-mobile.png">
         <img id="layer-hands" class="stage-layer-img" src="assets/manos.png" alt="Manos del Oráculo" draggable="false">
       </picture>
 
@@ -149,7 +151,7 @@
   <audio id="audio-wind" src="assets/audio/mystic-wind.mp3" loop preload="auto"></audio>
   <audio id="audio-office" src="assets/audio/office-ambience.mp3" loop preload="auto"></audio>
 
-  <script src="config.js"></script>
-  <script src="app.js"></script>
+  <script src="config.js?v=20261001-3"></script>
+  <script src="app.js?v=20261001-3"></script>
 </body>
 </html>
