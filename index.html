@@ -11,12 +11,12 @@
   <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png?v=20261002-1">
   <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=20261002-1">
 
-  <!-- Google Fonts: Open Sans 400, 600, 700, 800 -->
+  <!-- Google Fonts: Lexend Tera 400, 500, 600, 700 & Open Sans 400, 600, 700, 800 -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lexend+Tera:wght@400;500;600;700&family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="style.css?v=20261001-6">
+  <link rel="stylesheet" href="style.css?v=20261002-3">
   
   <!-- GSAP 3 -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
@@ -54,8 +54,15 @@
       <picture id="layer-scene-picture" class="stage-layer">
         <source media="(max-width: 768px)" srcset="assets/escena-mobile.webp">
         <source media="(orientation: portrait)" srcset="assets/escena-mobile.webp">
-        <img id="layer-scene" class="stage-layer-img" src="assets/escena.webp" alt="Escena del Oráculo" draggable="false">
+        <img id="layer-scene" class="stage-layer-img" src="assets/escena-sin-pupila.webp" alt="Escena del Oráculo" draggable="false">
       </picture>
+
+      <!-- Tercer Ojo Interactivo y Pupila 3D (Desktop) -->
+      <div id="third-eye-interactive" class="third-eye-interactive" aria-hidden="true">
+        <div id="third-eye-pupil" class="third-eye-pupil">
+          <img src="assets/pupila.png" alt="" draggable="false">
+        </div>
+      </div>
 
       <!-- Destello suave del tercer ojo (posicionado con --eye-x, --eye-y) -->
       <div id="third-eye-glow" aria-hidden="true"></div>
@@ -135,6 +142,46 @@
 
     </main>
 
+    <!-- Botón de Menú Hamburguesa (arriba a la izquierda) -->
+    <button id="btn-menu" class="btn-menu" type="button" aria-label="Abrir menú" aria-expanded="false" title="Menú">
+      <svg class="icon-hamburger" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+        <line x1="4" y1="6" x2="20" y2="6"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="18" x2="20" y2="18"></line>
+      </svg>
+    </button>
+
+    <!-- Menú Desplegable -->
+    <nav id="menu-dropdown" class="menu-dropdown" aria-label="Menú principal">
+      <ul class="menu-list">
+        <li>
+          <button id="menu-btn-about" class="menu-item-link" type="button">
+            ¿Qué estoy viendo?
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Pop up / Vista: ¿Qué estoy viendo? -->
+    <div id="modal-about" class="modal-about" aria-hidden="true" role="dialog" aria-modal="true" aria-label="¿Qué estoy viendo?">
+      <div id="modal-about-stage" class="modal-about-stage">
+        <div class="modal-about-content">
+          <button id="modal-about-close" class="modal-about-close" type="button" aria-label="Cerrar modal" title="Cerrar">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <h2 class="modal-about-title">¿QUÉ ESTOY VIENDO?</h2>
+          <div class="modal-about-body">
+            <p>Hace 30 años, El Ojo reúne las ideas que abrieron la mirada de Iberoamérica. Hoy, imaginar los próximos 30 parece casi imposible: el futuro de la creatividad cambia tan rápido que hasta los que más saben a veces también lo describen como un horóscopo.</p>
+            <p>Este es el primer oráculo de la creatividad iberoamericana, hecho con 30 años del archivo de El Ojo. Si el futuro todavía no está escrito, ¿Por qué no usar todo lo que ya hicimos para tener una pista de cómo empezar a imaginarlo?</p>
+            <p>Llegaste a una web accesible desde cualquier parte del mundo, alimentada con 30 años de frases, jingles, titulares y piezas de la publicidad iberoamericana. Hacés una pregunta sobre el futuro y el insightólogo de turno (te puede tocar Pérez, Papón, Mercado, Vega Olmos, Del Campo y muchos más) te responde con una frase del pasado para pensar lo que viene. Además, podés sugerir nuevas frases, para seguir construyendo entre todos el gran acervo de sabiduría creativa insightológica.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Botón de Mute/Unmute fijo en el viewport -->
     <button id="btn-sound" class="btn-sound" type="button" aria-label="Silenciar sonido" title="Silenciar sonido">
       <svg class="icon-sound-on" viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
@@ -158,6 +205,6 @@
   <audio id="audio-office" src="assets/audio/office-ambience.mp3" loop preload="auto"></audio>
 
   <script src="config.js?v=20261001-7"></script>
-  <script src="app.js?v=20261001-7"></script>
+  <script src="app.js?v=20261002-3"></script>
 </body>
 </html>

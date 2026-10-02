@@ -13,6 +13,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnMic = document.getElementById('btn-mic');
   const micStatus = document.getElementById('mic-status');
   const thirdEyeGlow = document.getElementById('third-eye-glow');
+  const thirdEyeInteractive = document.getElementById('third-eye-interactive');
+  const thirdEyePupil = document.getElementById('third-eye-pupil');
   const ballContent = document.getElementById('ball-content');
   const ballPlasma = document.getElementById('ball-plasma');
   const ballPlasmaCore = document.getElementById('ball-plasma-core');
@@ -29,6 +31,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const iconSoundOff = btnSound ? btnSound.querySelector('.icon-sound-off') : null;
   const audioWind = document.getElementById('audio-wind');
   const audioOffice = document.getElementById('audio-office');
+
+  // Menú Hamburguesa y Modal "¿Qué estoy viendo?"
+  const btnMenu = document.getElementById('btn-menu');
+  const menuDropdown = document.getElementById('menu-dropdown');
+  const menuBtnAbout = document.getElementById('menu-btn-about');
+  const modalAbout = document.getElementById('modal-about');
+  const modalAboutStage = document.getElementById('modal-about-stage');
+  const modalAboutClose = document.getElementById('modal-about-close');
 
   // Estado del sistema
   let state = 'IDLE'; // IDLE | THINKING | REVEAL | ZOOM_OUT
@@ -1050,4 +1060,222 @@ document.addEventListener('DOMContentLoaded', () => {
       if (iconSoundOff) iconSoundOff.style.display = 'none';
     }
   }
+
+  // ========================================================
+  // LÓGICA DE MENÚ HAMBURGUESA Y MODAL "¿QUÉ ESTOY VIENDO?"
+  // ========================================================
+  function initMenuAndModal() {
+    function openModalAbout() {
+      if (!modalAbout) return;
+      closeMenuDropdown();
+      modalAbout.classList.add('is-active');
+      modalAbout.setAttribute('aria-hidden', 'false');
+      if (btnMenu) {
+        btnMenu.style.opacity = '0';
+        btnMenu.style.pointerEvents = 'none';
+      }
+      if (btnSound) {
+        btnSound.style.opacity = '0';
+        btnSound.style.pointerEvents = 'none';
+      }
+    }
+
+    function closeModalAbout() {
+      if (!modalAbout) return;
+      modalAbout.classList.remove('is-active');
+      modalAbout.setAttribute('aria-hidden', 'true');
+      if (btnMenu) {
+        btnMenu.style.opacity = '';
+        btnMenu.style.pointerEvents = '';
+      }
+      if (btnSound) {
+        btnSound.style.opacity = '';
+        btnSound.style.pointerEvents = '';
+      }
+    }
+
+    function closeMenuDropdown() {
+      if (!menuDropdown) return;
+      menuDropdown.classList.remove('is-open');
+      if (btnMenu) {
+        btnMenu.setAttribute('aria-expanded', 'false');
+      }
+    }
+
+    if (btnMenu && menuDropdown) {
+      btnMenu.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = menuDropdown.classList.toggle('is-open');
+        btnMenu.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+
+      document.addEventListener('click', (e) => {
+        if (menuDropdown.classList.contains('is-open') && !menuDropdown.contains(e.target) && !btnMenu.contains(e.target)) {
+          closeMenuDropdown();
+        }
+      });
+    }
+
+    if (menuBtnAbout) {
+      menuBtnAbout.addEventListener('click', () => {
+        openModalAbout();
+      });
+    }
+
+    if (modalAboutClose) {
+      modalAboutClose.addEventListener('click', () => {
+        closeModalAbout();
+      });
+    }
+
+    if (modalAbout) {
+      modalAbout.addEventListener('click', (e) => {
+        // Cerrar si se cliquea en el backdrop
+        if (e.target === modalAbout || e.target === modalAboutStage) {
+          closeModalAbout();
+        }
+      });
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        if (modalAbout && modalAbout.classList.contains('is-active')) {
+          closeModalAbout();
+        } else if (menuDropdown && menuDropdown.classList.contains('is-open')) {
+          closeMenuDropdown();
+        }
+      }
+    });
+  }
+
+  initMenuAndModal();
+
+  // ========================================================
+  // MOTOR DE SEGUIMIENTO Y TILT 3D DEL TERCER OJO (Desktop)
+  // ========================================================
+  function initEyeTracking() {
+    if (!thirdEyeInteractive || !thirdEyePupil) return;
+
+    let targetX = 0;
+    let targetY = 0;
+    let currentX = 0;
+    let currentY = 0;
+
+    let targetRotX = 0;
+    let targetRotY = 0;
+    let currentRotX = 0;
+    let currentRotY = 0;
+
+    let targetScaleX = 1;
+    let targetScaleY = 1;
+    let currentScaleX = 1;
+    let currentScaleY = 1;
+
+    let targetZ = 0;
+    let currentZ = 0;
+
+    let isMouseActive = false;
+    let rafId = null;
+
+    // Obtener centro y dimensiones actuales del ojo en el viewport
+    function getEyeCenter() {
+      const rect = thirdEyeInteractive.getBoundingClientRect();
+      return {
+        x: rect.left + rect.width / 2,
+        y: rect.top + rect.height / 2,
+        w: rect.width,
+        h: rect.height
+      };
+    }
+
+    function onMouseMove(e) {
+      if (isMobilePortrait()) return;
+
+      const eye = getEyeCenter();
+      if (!eye.w || !eye.h) return;
+
+      const dx = e.clientX - eye.x;
+      const dy = e.clientY - eye.y;
+      const dist = Math.hypot(dx, dy);
+      const angle = Math.atan2(dy, dx);
+
+      // Límites de recorrido elípticos acotados a la cuenca ocular
+      // Para evitar que la pupila se salga sobre los párpados
+      const maxRadiusX = eye.w * 0.40;
+      const maxRadiusY = eye.h * 0.26;
+
+      // Sensibilidad suave no-lineal según la distancia en pantalla
+      const screenDiagonal = Math.hypot(window.innerWidth, window.innerHeight);
+      const strength = Math.min(1, Math.pow(dist / (screenDiagonal * 0.52), 0.75));
+
+      // Desplazamiento 2D
+      targetX = Math.cos(angle) * maxRadiusX * strength;
+      targetY = Math.sin(angle) * maxRadiusY * strength;
+
+      // Normalizado (-1 a 1) para perspectiva y proyección esférica 3D
+      const normX = targetX / maxRadiusX;
+      const normY = targetY / maxRadiusY;
+
+      // 1. Rotación y Tilt 3D esférico
+      targetRotY = normX * 24;  // Gira hacia el cursor en el eje Y
+      targetRotX = -normY * 18; // Gira hacia el cursor en el eje X
+
+      // 2. Achatamiento por proyección esférica (el iris se ve más angosto de perfil)
+      targetScaleX = 1 - Math.abs(normX) * 0.14;
+      targetScaleY = 1 - Math.abs(normY) * 0.08;
+
+      // 3. Hundimiento corneal en Z (curvatura esférica interna)
+      targetZ = -Math.hypot(normX, normY) * 3.2;
+
+      isMouseActive = true;
+      if (!rafId) {
+        rafId = requestAnimationFrame(renderLoop);
+      }
+    }
+
+    function onMouseLeave() {
+      // Regreso suave al centro
+      targetX = 0;
+      targetY = 0;
+      targetRotX = 0;
+      targetRotY = 0;
+      targetScaleX = 1;
+      targetScaleY = 1;
+      targetZ = 0;
+      isMouseActive = false;
+    }
+
+    function renderLoop() {
+      // Física de inercia y suavizado orgánico (lerp damping: 0.09)
+      const lerp = 0.09;
+      currentX += (targetX - currentX) * lerp;
+      currentY += (targetY - currentY) * lerp;
+      currentRotX += (targetRotX - currentRotX) * lerp;
+      currentRotY += (targetRotY - currentRotY) * lerp;
+      currentScaleX += (targetScaleX - currentScaleX) * lerp;
+      currentScaleY += (targetScaleY - currentScaleY) * lerp;
+      currentZ += (targetZ - currentZ) * lerp;
+
+      // Aplicar transformación 3D combinada a la pupila
+      thirdEyePupil.style.transform = `translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, ${currentZ.toFixed(2)}px) rotateX(${currentRotX.toFixed(2)}deg) rotateY(${currentRotY.toFixed(2)}deg) scale(${currentScaleX.toFixed(3)}, ${currentScaleY.toFixed(3)})`;
+
+      // Micro-parallax dinámico en el destello corneal si está encendido
+      if (thirdEyeGlow && thirdEyeGlow.style.opacity > 0) {
+        thirdEyeGlow.style.transform = `translate(-50%, -50%) translate3d(${(currentX * 0.25).toFixed(2)}px, ${(currentY * 0.25).toFixed(2)}px, 0)`;
+      }
+
+      // Continuar renderLoop si sigue en movimiento o el mouse está activo
+      const delta = Math.abs(targetX - currentX) + Math.abs(targetY - currentY) + Math.abs(targetRotX - currentRotX);
+      if (delta > 0.02 || isMouseActive) {
+        rafId = requestAnimationFrame(renderLoop);
+      } else {
+        rafId = null;
+      }
+    }
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    document.addEventListener('mouseleave', onMouseLeave);
+  }
+
+  initEyeTracking();
 });
