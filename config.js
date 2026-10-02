@@ -32,7 +32,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.adlatina.com/publicidad/del-campo-nazca-saatchi-saatchi-presenta-el-caso-andes-teletransporter"
   },
   {
     "id": "2",
@@ -48,7 +49,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.adlatina.com/publicidad/del-campo-nazca-saatchi-saatchi-presenta-el-caso-andes-teletransporter"
   },
   {
     "id": "4",
@@ -64,7 +66,8 @@ const CONFIG = {
     "flag": "Revisar",
     "motivo_flag": "Remate original modificado tras críticas (ver Notas)",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.cronista.com/negocios/quilmes-obligado-a-modificar-el-spot-publicitario-igualismo/"
   },
   {
     "id": "5",
@@ -80,7 +83,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Literal: solo funciona con comida/cuerpo",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.totalmedios.com/nota/22999/tu-cuerpo-pide-pasta-de-madre-para-mama-lucchetti"
   },
   {
     "id": "6",
@@ -96,7 +100,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/noticia/deja-que-la-vida-te-despeine/9108"
   },
   {
     "id": "8",
@@ -112,7 +117,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Habla de la casa (IKEA)",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.marketingdirecto.com/especiales/premios-eficacia/campanas-mas-eficaces-publicidad-espanola"
   },
   {
     "id": "9",
@@ -128,7 +134,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Funciona como contrapregunta; depende de BMW/manejar",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.marketingdirecto.com/especiales/premios-eficacia/campanas-mas-eficaces-publicidad-espanola"
   },
   {
     "id": "13",
@@ -144,7 +151,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "La 'Z' pierde sentido sin el contexto de la marca",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.merca20.com/el-palacio-de-hierro-presenta-su-nueva-imagen-te-sorprendera/"
   },
   {
     "id": "14",
@@ -160,7 +168,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.merca20.com/el-palacio-de-hierro-presenta-su-nueva-imagen-te-sorprendera/"
   },
   {
     "id": "17",
@@ -176,7 +185,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Portugués + marca de electrodomésticos",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.ifd.com.br/publicidade-e-propaganda/50-slogans-mais-lembrados/"
   },
   {
     "id": "19",
@@ -192,7 +202,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "Portugués (traducción entre corchetes)",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.ifd.com.br/publicidade-e-propaganda/50-slogans-mais-lembrados/"
   },
   {
     "id": "21",
@@ -208,7 +219,8 @@ const CONFIG = {
     "flag": "Revisar",
     "motivo_flag": "Lenguaje fuerte ('hijo de puta')",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.ifd.com.br/publicidade-e-propaganda/50-slogans-mais-lembrados/"
   },
   {
     "id": "22",
@@ -224,7 +236,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Fragmento con '…'; habla de publicidad",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
   },
   {
     "id": "23",
@@ -240,7 +253,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "Habla de publicidad",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/noticia/as-vivi-toni-segarra-su-ingreso-al-saln-de-honor-del-talento-latino/68216"
   },
   {
     "id": "24",
@@ -256,7 +270,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Fragmento con '…'",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.elojodeiberoamerica.com/review-ojo-2017-20-anos-pensamiento-creativo-iberoamerica/"
   },
   {
     "id": "26",
@@ -272,7 +287,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/noticia/el-ojo-de-iberoamrica-2021-cultura-emociones-e-inclusin/61138"
   },
   {
     "id": "27",
@@ -288,7 +304,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/noticia/latinspots185-creatividad-para-un-mundo-incierto/91670"
   },
   {
     "id": "28",
@@ -304,7 +321,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/noticia/popai-argentina-invita-a-participar-del-taller-shopper-marketing/6491?section=negocios"
   },
   {
     "id": "29",
@@ -320,7 +338,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/noticia/el-ojo-de-iberoamrica-2021-cultura-emociones-e-inclusin/61138"
   },
   {
     "id": "30",
@@ -336,7 +355,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
   },
   {
     "id": "31",
@@ -352,7 +372,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
   },
   {
     "id": "32",
@@ -368,7 +389,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.infobae.com/espacio-no-editorial/2018/11/06/la-celebracion-de-la-creatividad-regional-todos-los-ganadores-de-el-ojo-de-iberoamerica/"
   },
   {
     "id": "34",
@@ -384,7 +406,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
   },
   {
     "id": "35",
@@ -400,7 +423,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
   },
   {
     "id": "37",
@@ -416,7 +440,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.elojodeiberoamerica.com/revivimos-los-mas-destacado-de-las-conferencias-de-el-ojo-2025/"
   },
   {
     "id": "39",
@@ -432,7 +457,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/noticia/el-ojo-de-iberoamrica-2025-ia-creatividad-humana-y-nuevas-fronteras/95096"
   },
   {
     "id": "40",
@@ -448,7 +474,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/noticia/latinspots185-creatividad-para-un-mundo-incierto/91670"
   },
   {
     "id": "41",
@@ -464,7 +491,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Jerga de data/ventas",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/sp/noticia/ranking-las-ideas-ms-premiadas-de-el-ojo-2018/49257"
   },
   {
     "id": "44",
@@ -480,7 +508,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.elojodeiberoamerica.com/review-ojo-2017-20-anos-pensamiento-creativo-iberoamerica/"
   },
   {
     "id": "45",
@@ -496,7 +525,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/noticia/popai-argentina-invita-a-participar-del-taller-shopper-marketing/6491?section=negocios"
   },
   {
     "id": "48",
@@ -512,7 +542,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Fragmento con '…'",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.elojodeiberoamerica.com/pablo-del-campo-ingresa-en-el-salon-de-honor-del-talento-latino/"
   },
   {
     "id": "53",
@@ -528,7 +559,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.marketingdirecto.com/imprescindibles/historia-marcas/historia-campofrio-anuncios-navidad"
   },
   {
     "id": "55",
@@ -544,7 +576,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Portugués + leche; solo funciona con comida/bebida",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.latinspots.com/noticia/leo-burnett-espaa-propone-volver-a-las-amistades-autnticas-con-licores-ruavieja/45730"
   },
   {
     "id": "57",
@@ -560,7 +593,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Estacional (Navidad)",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://exame.com/marketing/parmalat-e-os-mamiferos-que-marcaram-o-brasil/"
   },
   {
     "id": "60",
@@ -576,7 +610,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.semana.com/pais/articulo/colombia-mercadeo-navidad-para-ganar-guerra/141091/"
   },
   {
     "id": "63",
@@ -592,7 +627,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Literal: nombre de producto",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.produ.com/mercadeo/noticias/leo-burnett-mexico-y-corona-senalan-que-america-siempre-ha-sido-grande-en-un-nuevo-spot/"
   },
   {
     "id": "66",
@@ -608,7 +644,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Literal: nombre de producto",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.elfinanciero.com.mx/food-and-drink/2025/09/21/hoy-toca-pollo-quien-es-dueno-de-bachoco-marca-que-innovo-con-la-venta-de-huevos-por-docena/"
   },
   {
     "id": "68",
@@ -624,7 +661,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://naranti.com/noticias/anuncios-espectaculares-bachoco"
   },
   {
     "id": "69",
@@ -640,7 +678,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.adlatina.com/publicidad/publicis-%C3%ADmpetu-y-banca-de-quinielas-de-uruguay-se-consagraron-con-el-gran-effie"
   },
   {
     "id": "70",
@@ -656,7 +695,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.lanacion.com.ar/economia/la-publicidad-debe-ser-amigable-y-respetuosa-del-consumidor-nid1423265/"
   },
   {
     "id": "72",
@@ -672,7 +712,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.eluniverso.com/larevista/sociedad/effie-awards-ecuador-cumplio-dos-decadas-de-premiar-a-las-ideas-que-funcionan-nota/"
   },
   {
     "id": "74",
@@ -688,7 +729,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.adlatina.com/publicidad/%E2%80%9Chimno%E2%80%9D-un-homenaje-al-f%C3%BAtbol"
   },
   {
     "id": "75",
@@ -704,7 +746,8 @@ const CONFIG = {
     "flag": "Depende de contexto",
     "motivo_flag": "Habla de un chip/celular (CTI)",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.youtube.com/watch?v=VWkkWe8U_n8"
   },
   {
     "id": "76",
@@ -720,7 +763,8 @@ const CONFIG = {
     "flag": "Revisar",
     "motivo_flag": "Tema sensible; evaluar si va en un oráculo público",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.youtube.com/watch?v=Sz48pFGybzc"
   },
   {
     "id": "77",
@@ -736,7 +780,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": false,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.youtube.com/watch?v=iFQFw6vAxtA"
   },
   {
     "id": "78",
@@ -752,7 +797,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "",
     "comodin": true,
-    "premio_el_ojo": ""
+    "premio_el_ojo": "",
+    "link": "https://www.adlatina.com/publicidad/preestreno-de-la-comunidad-para-el-bafici"
   },
   {
     "id": "79",
@@ -768,7 +814,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "Nombre de la pieza premiada; confirmar que funciona como frase al aire",
     "comodin": true,
-    "premio_el_ojo": "Plata – El Ojo Innovador, Radio"
+    "premio_el_ojo": "Plata – El Ojo Innovador, Radio",
+    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica"
   },
   {
     "id": "82",
@@ -784,7 +831,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "Nombre de la pieza premiada; confirmar que funciona como frase al aire; argentinismo (guita)",
     "comodin": true,
-    "premio_el_ojo": "Bronce – El Ojo Promo, Activación"
+    "premio_el_ojo": "Bronce – El Ojo Promo, Activación",
+    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica"
   },
   {
     "id": "83",
@@ -800,7 +848,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "Nombre de la pieza premiada; confirmar que funciona como frase al aire",
     "comodin": false,
-    "premio_el_ojo": "Oro – El Ojo Campañas Integradas (Productos)"
+    "premio_el_ojo": "Oro – El Ojo Campañas Integradas (Productos)",
+    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica"
   },
   {
     "id": "86",
@@ -816,7 +865,8 @@ const CONFIG = {
     "flag": "OK",
     "motivo_flag": "Nombre de la pieza premiada; confirmar que funciona como frase al aire; expresión española",
     "comodin": false,
-    "premio_el_ojo": "Bronce – El Ojo Promo (Promociones integradas)"
+    "premio_el_ojo": "Bronce – El Ojo Promo (Promociones integradas)",
+    "link": "https://www.adlatina.com/articulo.php?slug=%2Fpublicidad%2Ftodos-los-ganadores-del-ojo-de-iberoam%C3%A9rica"
   }
 ]
 };

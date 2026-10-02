@@ -22,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const phraseContainer = document.getElementById('phrase-container');
   const phraseText = document.getElementById('phrase-text');
   const phraseCredit = document.getElementById('phrase-credit');
+  const phraseLinkWrapper = document.getElementById('phrase-link-wrapper');
+  const phraseLink = document.getElementById('phrase-link');
   const revealControls = document.getElementById('reveal-controls');
   const btnReset = document.getElementById('btn-reset');
   const particlesCanvas = document.getElementById('particles-canvas');
@@ -513,8 +515,27 @@ document.addEventListener('DOMContentLoaded', () => {
       y: 0,
       duration: 0.6,
       ease: 'power2.out'
-    }, '-=0.2')
-    .call(() => {
+    }, '-=0.2');
+
+    // Enlace "Quiero ver más allá" (si la frase tiene link cargado)
+    if (phraseLinkWrapper && phraseLink && data.link && data.link.trim().length > 0) {
+      phraseLink.href = data.link.trim();
+      phraseLinkWrapper.style.display = 'flex';
+      tlReveal.to(phraseLinkWrapper, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power2.out',
+        onStart: () => {
+          phraseLinkWrapper.classList.add('visible');
+        }
+      }, '-=0.1');
+    } else if (phraseLinkWrapper) {
+      phraseLinkWrapper.style.display = 'none';
+      phraseLinkWrapper.classList.remove('visible');
+    }
+
+    tlReveal.call(() => {
       // Iniciar flotación continua suave de la frase
       startFloatingMotion();
       // Mostrar botón "Hacer otra pregunta"
@@ -559,6 +580,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Limpieza y reinicio a IDLE
         phraseText.innerHTML = '';
         phraseCredit.textContent = '';
+        if (phraseLinkWrapper) {
+          phraseLinkWrapper.classList.remove('visible');
+          phraseLinkWrapper.style.opacity = '0';
+          phraseLinkWrapper.style.display = 'none';
+          if (phraseLink) phraseLink.removeAttribute('href');
+        }
         userInput.value = '';
         state = 'IDLE';
         userInput.focus();
