@@ -514,6 +514,47 @@ picture.stage-layer {
   outline: none;
 }
 
+/* Botón / Cartel interactivo abajo de la bola, centrado (casi footer): "¿Quién es el insightólogo de turno?" */
+.stage-insightologo-btn,
+.cat-insightologo-btn {
+  position: absolute;
+  bottom: 2.8%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  background: rgba(18, 12, 34, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(195, 170, 255, 0.38);
+  border-radius: 9999px;
+  padding: 6px 18px;
+  color: #FFFFFF;
+  font-family: 'Lexend Tera', sans-serif;
+  font-size: clamp(7px, 0.60vw, 9.5px);
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.4s ease, transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6), 0 0 14px rgba(150, 110, 240, 0.25);
+  user-select: none;
+}
+
+.stage-insightologo-btn:hover,
+.cat-insightologo-btn:hover {
+  background: rgba(43, 30, 92, 0.95);
+  border-color: rgba(230, 220, 255, 0.85);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.75), 0 0 22px rgba(180, 140, 255, 0.65);
+  transform: translateX(-50%) translateY(-2px);
+  color: #FFFFFF;
+}
+
+.stage-insightologo-btn:active,
+.cat-insightologo-btn:active {
+  transform: translateX(-50%) scale(0.96);
+}
+
 /* ========================================================
    4. UI Lateral Izquierda (Panel de entrada)
    ======================================================== */
@@ -988,6 +1029,70 @@ picture.stage-layer {
   margin-bottom: 0;
 }
 
+/* Modal específico de Insightólogos */
+/* Modal específico de Insightólogos */
+.modal-insightologo-stage {
+  align-items: center;
+  justify-content: center;
+  padding-top: clamp(24px, 4vh, 40px);
+  padding-bottom: clamp(30px, 5vh, 50px);
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.modal-insightologo-content {
+  margin: auto;
+  width: 100%;
+}
+
+.insightologo-single-card {
+  width: 100%;
+  text-align: left;
+}
+
+.insightologo-item-header {
+  font-family: 'Lexend Tera', sans-serif;
+  font-size: clamp(12px, 1.05vw, 15px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #FFFFFF;
+  margin-bottom: clamp(10px, 1.6vh, 16px);
+  text-shadow: 0 0 8px rgba(220, 205, 255, 0.45);
+  text-align: left;
+}
+
+.insightologo-item-bio {
+  font-family: 'Helvetica', 'Helvetica Neue', Arial, sans-serif;
+  font-size: clamp(10.5px, 0.82vw, 13px);
+  line-height: 1.58;
+  color: #FFFFFF;
+  text-align: left;
+  margin: 0;
+}
+
+.insightologo-reload-hint {
+  font-family: 'Lexend Tera', sans-serif;
+  font-size: clamp(8px, 0.65vw, 10.5px);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: rgba(220, 205, 255, 0.82);
+  text-align: center;
+  margin-top: clamp(22px, 3.6vh, 36px);
+  padding-top: clamp(14px, 2.2vh, 20px);
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  width: 100%;
+  cursor: pointer;
+  transition: color 0.2s ease, transform 0.2s ease, text-shadow 0.2s ease;
+  user-select: none;
+}
+
+.insightologo-reload-hint:hover {
+  color: #FFFFFF;
+  text-shadow: 0 0 10px rgba(185, 145, 255, 0.7);
+  transform: translateY(-1px);
+}
+
 /* ========================================================
    Control de Audio (Mute / Unmute)
    ======================================================== */
@@ -1108,8 +1213,10 @@ picture.stage-layer {
     object-position: center center;
   }
 
-  /* Ocultar gato en mobile según el mockup provisto */
-  #layer-cat {
+  /* Ocultar gato y su botón interactivo en mobile según el mockup provisto */
+  #layer-cat,
+  .cat-insightologo-btn,
+  .stage-insightologo-btn {
     display: none !important;
     visibility: hidden !important;
     opacity: 0 !important;

@@ -57,9 +57,9 @@
       
       <!-- 1. Background scene (adaptable a desktop 16:9 y mobile 9:16) -->
       <picture id="layer-scene-picture" class="stage-layer">
-        <source media="(max-width: 768px)" srcset="assets/escena-mobile-sin-pupila.webp?v=20261002-6">
-        <source media="(orientation: portrait)" srcset="assets/escena-mobile-sin-pupila.webp?v=20261002-6">
-        <img id="layer-scene" class="stage-layer-img" src="assets/escena-sin-pupila.webp" alt="Escena del Oráculo" draggable="false">
+        <source id="layer-scene-source-mobile" media="(max-width: 768px)" srcset="assets/escena-mobile-sin-pupila.webp?v=20261002-6">
+        <source id="layer-scene-source-portrait" media="(orientation: portrait)" srcset="assets/escena-mobile-sin-pupila.webp?v=20261002-6">
+        <img id="layer-scene" class="stage-layer-img" src="assets/escena-perez.webp" alt="Escena del Oráculo" draggable="false">
       </picture>
 
       <!-- Tercer Ojo Interactivo y Pupila 3D (Desktop) -->
@@ -95,13 +95,18 @@
 
       <!-- 3. Hands layer (adaptable a desktop 16:9 y mobile 9:16) -->
       <picture id="layer-hands-picture" class="stage-layer">
-        <source media="(max-width: 768px)" srcset="assets/manos-mobile.png">
-        <source media="(orientation: portrait)" srcset="assets/manos-mobile.png">
-        <img id="layer-hands" class="stage-layer-img" src="assets/manos.png?v=20261002-13" alt="Manos del Oráculo" draggable="false">
+        <source id="layer-hands-source-mobile" media="(max-width: 768px)" srcset="assets/manos-mobile.png">
+        <source id="layer-hands-source-portrait" media="(orientation: portrait)" srcset="assets/manos-mobile.png">
+        <img id="layer-hands" class="stage-layer-img" src="assets/manos-perez.webp" alt="Manos del Oráculo" draggable="false">
       </picture>
 
       <!-- Capa del gato con transparencia alfa real, autoplay y loop continuo -->
       <img id="layer-cat" class="stage-layer" src="assets/gato.webp" alt="Gato místico" draggable="false">
+
+      <!-- Botón / Cartel interactivo abajo de la bola (casi footer) -->
+      <button id="btn-cat-insightologo" class="stage-insightologo-btn" type="button" aria-label="¿Quién es el insightólogo de turno?">
+        ¿Quién es el insightólogo de turno?
+      </button>
 
       <!-- 4. Left side UI: Chat Pill Input positioned over the background artwork -->
       <aside id="input-panel">
@@ -177,6 +182,11 @@
             ¿Qué estoy viendo?
           </button>
         </li>
+        <li>
+          <button id="menu-btn-insightologo" class="menu-item-link" type="button">
+            ¿Quién es el insightólogo de turno?
+          </button>
+        </li>
       </ul>
     </nav>
 
@@ -195,6 +205,24 @@
             <p>Hace 30 años, El Ojo reúne las ideas que abrieron la mirada de Iberoamérica. Hoy, imaginar los próximos 30 parece casi imposible: el futuro de la creatividad cambia tan rápido que hasta los que más saben a veces también lo describen como un horóscopo.</p>
             <p>Este es el primer oráculo de la creatividad iberoamericana, hecho con 30 años del archivo de El Ojo. Si el futuro todavía no está escrito, ¿Por qué no usar todo lo que ya hicimos para tener una pista de cómo empezar a imaginarlo?</p>
             <p>Llegaste a una web accesible desde cualquier parte del mundo, alimentada con 30 años de frases, jingles, titulares y piezas de la publicidad iberoamericana. Hacés una pregunta sobre el futuro y el insightólogo de turno (te puede tocar Pérez, Papón, Mercado, Vega Olmos, Del Campo y muchos más) te responde con una frase del pasado para pensar lo que viene. Además, podés sugerir nuevas frases, para seguir construyendo entre todos el gran acervo de sabiduría creativa insightológica.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pop up / Vista: ¿Quién es el insightólogo de turno? -->
+    <div id="modal-insightologo" class="modal-about" aria-hidden="true" role="dialog" aria-modal="true" aria-label="¿Quién es el insightólogo de turno?">
+      <div id="modal-insightologo-stage" class="modal-about-stage modal-insightologo-stage">
+        <div class="modal-about-content modal-insightologo-content">
+          <button id="modal-insightologo-close" class="modal-about-close" type="button" aria-label="Cerrar modal" title="Cerrar">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+          <h2 id="modal-insightologo-title" class="modal-about-title">¿QUIÉN ES EL INSIGHTÓLOGO DE TURNO?</h2>
+          <div id="modal-insightologo-body" class="modal-about-body modal-insightologo-body">
+            <!-- Rellenado dinámicamente con la bio del activo y todos los expertos -->
           </div>
         </div>
       </div>

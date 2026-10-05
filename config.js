@@ -17,6 +17,198 @@ const CONFIG = {
   // Tiempo de visualización automática antes de ZOOM OUT (ms)
   AUTO_RESET_MS: 20000,
 
+  // Galería de Adivinadores / Insightólogos alternativos (rotación aleatoria por refresh)
+  AVATARS: [
+    {
+      id: 'perez',
+      name: 'Pérez',
+      src: 'assets/escena-perez.webp',
+      srcMobile: 'assets/escena-mobile-sin-pupila.webp',
+      hands: 'assets/manos-perez.webp',
+      handsMobile: 'assets/manos-mobile.png',
+      eye: {
+        eyeX: '48.9%',
+        eyeY: '20.8%',
+        pupilX: '49.596%',
+        pupilY: '20.370%',
+        pupilW: '1.641%',
+        pupilH: '2.407%'
+      }
+    },
+    {
+      id: 'delrio',
+      name: 'Del Río',
+      src: 'assets/escena-delrio.webp',
+      srcMobile: 'assets/escena-delrio.webp',
+      hands: 'assets/manos-delrio.webp',
+      eye: {
+        eyeX: '48.9%',
+        eyeY: '20.8%',
+        pupilX: '49.511%',
+        pupilY: '20.483%',
+        pupilW: '1.641%',
+        pupilH: '2.407%'
+      }
+    },
+    {
+      id: 'mercado',
+      name: 'Mercado',
+      src: 'assets/escena-mercado.webp',
+      srcMobile: 'assets/escena-mercado.webp',
+      hands: 'assets/manos-mercado.webp',
+      eye: {
+        eyeX: '48.9%',
+        eyeY: '20.8%',
+        pupilX: '49.652%',
+        pupilY: '20.359%',
+        pupilW: '1.641%',
+        pupilH: '2.407%'
+      }
+    },
+    {
+      id: 'olivetto',
+      name: 'Olivetto',
+      src: 'assets/escena-olivetto.webp',
+      srcMobile: 'assets/escena-olivetto.webp',
+      hands: 'assets/manos-olivetto.webp',
+      eye: {
+        eyeX: '48.9%',
+        eyeY: '20.8%',
+        pupilX: '49.427%',
+        pupilY: '20.394%',
+        pupilW: '1.641%',
+        pupilH: '2.407%'
+      }
+    },
+    {
+      id: 'serpa',
+      name: 'Serpa',
+      src: 'assets/escena-serpa.webp',
+      srcMobile: 'assets/escena-serpa.webp',
+      hands: 'assets/manos-serpa.webp',
+      eye: {
+        eyeX: '48.9%',
+        eyeY: '20.8%',
+        pupilX: '49.595%',
+        pupilY: '20.639%',
+        pupilW: '1.641%',
+        pupilH: '2.407%'
+      }
+    },
+    {
+      id: 'polar',
+      name: 'Polar',
+      src: 'assets/escena-polar.webp',
+      srcMobile: 'assets/escena-polar.webp',
+      hands: 'assets/manos-polar.webp',
+      eye: {
+        eyeX: '48.9%',
+        eyeY: '20.8%',
+        pupilX: '49.603%',
+        pupilY: '20.697%',
+        pupilW: '1.641%',
+        pupilH: '2.407%'
+      }
+    },
+    {
+      id: 'guichard',
+      name: 'Guichard',
+      src: 'assets/escena-guichard.webp',
+      srcMobile: 'assets/escena-guichard.webp',
+      hands: 'assets/manos-guichard.webp',
+      eye: {
+        eyeX: '48.9%',
+        eyeY: '20.8%',
+        pupilX: '49.602%',
+        pupilY: '20.259%',
+        pupilW: '1.641%',
+        pupilH: '2.407%'
+      }
+    },
+    {
+      id: 'olabuenaga',
+      name: 'Olabuenaga',
+      src: 'assets/escena-olabuenaga.webp',
+      srcMobile: 'assets/escena-olabuenaga.webp',
+      hands: 'assets/manos-olabuenaga.webp',
+      eye: {
+        eyeX: '48.9%',
+        eyeY: '20.8%',
+        pupilX: '49.569%',
+        pupilY: '20.721%',
+        pupilW: '1.641%',
+        pupilH: '2.407%'
+      }
+    },
+    {
+      id: 'visco',
+      name: 'Visco',
+      src: 'assets/escena-visco.webp',
+      srcMobile: 'assets/escena-visco.webp',
+      hands: 'assets/manos-visco.webp',
+      eye: {
+        eyeX: '48.9%',
+        eyeY: '20.9%',
+        pupilX: '49.688%',
+        pupilY: '20.926%',
+        pupilW: '1.641%',
+        pupilH: '2.407%'
+      }
+    }
+  ],
+
+  // Biografías oficiales de los Insightólogos / Expertos
+  EXPERT_BIOS: [
+    {
+      id: "mercado",
+      nombre: "Martín Mercado",
+      pais: "Argentina",
+      bio: "Creativo argentino nacido en 1969. Pasó por TBWA (donde trabajó junto a Ernesto Savaglio), McCann Erickson y Young & Rubicam, y en 2014 fundó Mercado McCann. Es el autor de 'Para todos' de Coca-Cola, traducido a más de 20 idiomas, y de campañas recordadas para Quilmes, TyC Sports y Banco Galicia ('Marcos y Claudia'). En 2017 Adweek lo eligió entre los 10 líderes creativos del mundo, siendo el único latinoamericano de la lista; ese mismo año recibió el Diploma al Mérito Konex, TED lo había destacado en 2012 como líder para inspirar al mundo y Mercado McCann fue elegida Mejor Agencia Argentina en El Ojo de Iberoamérica. En 2025 la Academia Argentina de la Publicidad lo nombró Académico de Honor."
+    },
+    {
+      id: "olivetto",
+      nombre: "Washington Olivetto (1951-2024)",
+      pais: "Brasil",
+      bio: "Nacido en São Paulo, ganó su primer León en Cannes con apenas veinte años y en DPZ escribió el film del primer León de Oro de la publicidad brasileña. En 1986 cofundó W/Brasil, agencia que acumuló casi mil premios y hasta inspiró una canción de Jorge Ben Jor. Creó íconos como el 'garoto Bombril' y 'O Primeiro Sutiã' de Valisère, y fue vicepresidente del Corinthians durante la Democracia Corinthiana. Ganó más de 50 Leones en Cannes, fue el único latinoamericano en obtener el Grand Prix del Clio (2001, 'A Semana'), el único no anglosajón en el Hall of Fame del One Club y fue elegido dos veces publicitario del siglo por la asociación latinoamericana de agencias. Murió en octubre de 2024."
+    },
+    {
+      id: "serpa",
+      nombre: "Marcello Serpa",
+      pais: "Brasil",
+      bio: "Director de arte nacido en São Paulo que se formó en artes visuales en Alemania, donde trabajó en GGK. De vuelta en Brasil pasó por DPZ y DM9, y en 1993 se convirtió en socio y director de creación de AlmapBBDO, que lideró durante 22 años y desde donde transformó Havaianas en un símbolo de brasilidad. Creó el primer Grand Prix de Latinoamérica en Cannes (Guaraná Antarctica Diet, 1993) y bajo su mando la agencia fue tres veces Agencia del Año en el festival. Suma más de 160 Leones, fue el primer brasileño y el más joven en presidir un jurado de Cannes (2000), el primer no anglosajón en recibir el Clio Lifetime Achievement (2008) y el único brasileño distinguido con el León de San Marcos (2016)."
+    },
+    {
+      id: "polar",
+      nombre: "Humberto Polar",
+      pais: "Perú",
+      bio: "Uno de los directores creativos más premiados de Latinoamérica y de los pocos que ganaron Leones de Cannes en tres países distintos. Lideró la creatividad de Mayo Draftfcb Perú, donde nació el panel publicitario que genera agua potable a partir de la humedad del aire (cinco Leones en Cannes 2013), y luego fue director creativo de Grey México. Suma más de diez Leones, fue dos veces jurado de Cannes y jurado en One Show, Clio y El Sol. En paralelo es artista visual y músico electrónico, con exposiciones en América y Europa."
+    },
+    {
+      id: "guichard",
+      nombre: "Michelle Guichard",
+      pais: "Chile",
+      bio: "Creativa chilena que pasó por Porta, Leo Burnett y BBDO antes de convertirse en directora general creativa de Ogilvy Colombia. Es una de las fundadoras del Círculo de Creativas de Chile, espacio que impulsa a las mujeres en la creatividad publicitaria, y ganó diversos premios nacionales e internacionales. Es una voz frecuente en charlas y formación de nuevas generaciones de publicistas."
+    },
+    {
+      id: "olabuenaga",
+      nombre: "Ana María Olabuenaga",
+      pais: "México",
+      bio: "Empezó en 1986 como redactora y pasó por Bozell, Leo Burnett, BBDO y Terán TBWA, donde lideró la mítica campaña de El Palacio de Hierro. Rescató la agencia Noble-D'Arcy y en 2003 fundó Olabuenaga Chemistri junto a Publicis. Es la autora de 'El mensaje está en la botella'. Tiene más de 400 premios, fue la primera mujer en el Salón de la Fama del FIAP (2010), presidió jurados del FIAP y del Círculo Creativo, fue jurado en Cannes y El Sol, y en 2023 El Ojo de Iberoamérica la sumó a su Salón de la Fama junto a Toni Segarra. Carlos Monsiváis la bautizó 'la emperatriz del impacto efímero'. Es autora del libro 'Linchamientos digitales'."
+    },
+    {
+      id: "visco",
+      nombre: "Laura Visco",
+      pais: "Argentina",
+      bio: "Nacida en Buenos Aires, empezó en publicidad a los 19 años y pasó por Publicis Argentina, Ponce Buenos Aires (Axe, Stella Artois), Fallon London y Madre, donde hizo '44 cuadras y una baguette' para Banco Hipotecario, premiada en Cannes, D&AD y El Ojo. Como directora creativa ejecutiva de 72andSunny Amsterdam lideró 'Find Your Magic' de Axe y trabajos para Uber y Coca-Cola, y luego fue Chief Creative Officer de cuentas globales de Grey en Londres. En 2018 integró el Creative 100 de Adweek, fue destacada por AdAge como directora creativa del año y presidió un jurado de El Ojo de Iberoamérica; en 2019 recibió el premio Three Cheers de 3% por su trabajo por la diversidad en la industria."
+    },
+    {
+      id: "delrio",
+      nombre: "Anita Ríos",
+      pais: "Argentina",
+      bio: "Empezó a los 18 años en el área de marketing de Young & Rubicam y tardó unos dos años en pasar a creatividad. Después de Y&R y Del Campo Nazca Saatchi & Saatchi, se sumó en 2003 a VegaOlmosPonce y en 2009 se convirtió en la primera directora general creativa de la Argentina, a cargo de marcas globales como Axe, Rexona e Impulse manejadas desde Buenos Aires. Formó parte del equipo fundador de David y luego fue directora general creativa de J. Walter Thompson Buenos Aires junto a Sebastián Castañeda. En 2019 fundó Anita & Vega con Fernando Vega Olmos, donde es CCO. Suma 30 Leones de Cannes, ganó premios en El Ojo de Iberoamérica y fue jurado en ambos festivales."
+    }
+  ],
+
   // Catálogo completo enriquecido con tags de los 30 años de El Ojo de Iberoamérica (50 frases)
   // Incluye: tema, funcion, tono, flag, comodin y premio_el_ojo
   CATALOG_PHRASES: [

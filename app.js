@@ -34,13 +34,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const audioWind = document.getElementById('audio-wind');
   const audioOffice = document.getElementById('audio-office');
 
-  // Menú Hamburguesa y Modal "¿Qué estoy viendo?"
+  // Menú Hamburguesa y Modales
   const btnMenu = document.getElementById('btn-menu');
   const menuDropdown = document.getElementById('menu-dropdown');
   const menuBtnAbout = document.getElementById('menu-btn-about');
+  const menuBtnInsightologo = document.getElementById('menu-btn-insightologo');
+  const btnCatInsightologo = document.getElementById('btn-cat-insightologo');
   const modalAbout = document.getElementById('modal-about');
   const modalAboutStage = document.getElementById('modal-about-stage');
   const modalAboutClose = document.getElementById('modal-about-close');
+  const modalInsightologo = document.getElementById('modal-insightologo');
+  const modalInsightologoStage = document.getElementById('modal-insightologo-stage');
+  const modalInsightologoClose = document.getElementById('modal-insightologo-close');
+  const modalInsightologoTitle = document.getElementById('modal-insightologo-title');
+  const modalInsightologoBody = document.getElementById('modal-insightologo-body');
   const langBtnEs = document.getElementById('lang-btn-es');
   const langBtnPt = document.getElementById('lang-btn-pt');
   const langLabelText = document.getElementById('lang-label-text');
@@ -58,6 +65,9 @@ document.addEventListener('DOMContentLoaded', () => {
     es: {
       langLabel: 'Idioma',
       aboutMenu: '¿Qué estoy viendo?',
+      insightologoMenu: '¿Quién es el insightólogo de turno?',
+      insightologoTitle: '¿QUIÉN ES EL INSIGHTÓLOGO DE TURNO?',
+      insightologoReloadHint: 'volvé a cargar la página para descubrir más Insightólogos',
       inputPlaceholder: '¿Qué querés saber del futuro?',
       btnMicTitle: 'Dictar pregunta (Voz)',
       btnMicAria: 'Dictar por voz',
@@ -79,6 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
     pt: {
       langLabel: 'Idioma',
       aboutMenu: 'O que estou vendo?',
+      insightologoMenu: 'Quem é o insightólogo da vez?',
+      insightologoTitle: 'QUEM É O INSIGHTÓLOGO DA VEZ?',
+      insightologoReloadHint: 'recarregue a página para descobrir mais Insightólogos',
       inputPlaceholder: 'O que você quer saber do futuro?',
       btnMicTitle: 'Ditar pergunta (Voz)',
       btnMicAria: 'Ditar por voz',
@@ -122,6 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const t = I18N[lang];
 
     if (menuBtnAbout) menuBtnAbout.textContent = t.aboutMenu;
+    if (menuBtnInsightologo) menuBtnInsightologo.textContent = t.insightologoMenu;
+    if (btnCatInsightologo) btnCatInsightologo.textContent = t.insightologoMenu;
     if (userInput) userInput.placeholder = t.inputPlaceholder;
 
     if (btnMic) {
@@ -138,16 +153,44 @@ document.addEventListener('DOMContentLoaded', () => {
     const gyroSpan = document.querySelector('#btn-gyro-permission span');
     if (gyroSpan) gyroSpan.textContent = t.gyroPermission;
 
-    const modalTitleEl = document.querySelector('.modal-about-title');
-    if (modalTitleEl) modalTitleEl.textContent = t.aboutTitle;
+    const modalAboutTitleEl = document.querySelector('#modal-about .modal-about-title');
+    if (modalAboutTitleEl) modalAboutTitleEl.textContent = t.aboutTitle;
 
-    const modalBodyEl = document.querySelector('.modal-about-body');
-    if (modalBodyEl) {
-      modalBodyEl.innerHTML = `
+    const modalAboutBodyEl = document.querySelector('#modal-about .modal-about-body');
+    if (modalAboutBodyEl) {
+      modalAboutBodyEl.innerHTML = `
         <p>${t.aboutP1}</p>
         <p>${t.aboutP2}</p>
         <p>${t.aboutP3}</p>
       `;
+    }
+
+    if (modalInsightologoTitle) modalInsightologoTitle.textContent = t.insightologoTitle;
+    if (modalInsightologo && modalInsightologo.classList.contains('is-active')) {
+      renderInsightologosModal();
+    }
+
+    if (btnSound) {
+      const soundLabel = isMuted ? t.soundUnmute : t.soundMute;
+      btnSound.setAttribute('title', soundLabel);
+      btnSound.setAttribute('aria-label', soundLabel);
+    }
+    if (btnMenu) {
+      btnMenu.setAttribute('title', t.menuTitle);
+    }
+    if (modalAboutClose) {
+      modalAboutClose.setAttribute('title', t.modalCloseTitle);
+      modalAboutClose.setAttribute('aria-label', t.modalCloseTitle);
+    }
+    if (modalInsightologoClose) {
+      modalInsightologoClose.setAttribute('title', t.modalCloseTitle);
+      modalInsightologoClose.setAttribute('aria-label', t.modalCloseTitle);
+    }
+    if (modalAbout) {
+      modalAbout.setAttribute('aria-label', t.aboutTitle);
+    }
+    if (modalInsightologo) {
+      modalInsightologo.setAttribute('aria-label', t.insightologoTitle);
     }
 
     if (btnSound) {
@@ -240,6 +283,169 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ========================================================
+  // ROTACIÓN INTELIGENTE DE ADIVINADORES (Insightólogos)
+  // ========================================================
+  function initAvatarSelection() {
+    const avatars = (typeof CONFIG !== 'undefined' && CONFIG.AVATARS && CONFIG.AVATARS.length > 0)
+      ? CONFIG.AVATARS
+      : [
+          {
+            id: 'perez',
+            name: 'Pérez',
+            src: 'assets/escena-perez.webp',
+            srcMobile: 'assets/escena-mobile-sin-pupila.webp',
+            hands: 'assets/manos-perez.webp',
+            handsMobile: 'assets/manos-mobile.png',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.596%', pupilY: '20.370%', pupilW: '1.641%', pupilH: '2.407%' }
+          },
+          {
+            id: 'delrio',
+            name: 'Del Río',
+            src: 'assets/escena-delrio.webp',
+            srcMobile: 'assets/escena-delrio.webp',
+            hands: 'assets/manos-delrio.webp',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.511%', pupilY: '20.483%', pupilW: '1.641%', pupilH: '2.407%' }
+          },
+          {
+            id: 'mercado',
+            name: 'Mercado',
+            src: 'assets/escena-mercado.webp',
+            srcMobile: 'assets/escena-mercado.webp',
+            hands: 'assets/manos-mercado.webp',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.652%', pupilY: '20.359%', pupilW: '1.641%', pupilH: '2.407%' }
+          },
+          {
+            id: 'olivetto',
+            name: 'Olivetto',
+            src: 'assets/escena-olivetto.webp',
+            srcMobile: 'assets/escena-olivetto.webp',
+            hands: 'assets/manos-olivetto.webp',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.427%', pupilY: '20.394%', pupilW: '1.641%', pupilH: '2.407%' }
+          },
+          {
+            id: 'serpa',
+            name: 'Serpa',
+            src: 'assets/escena-serpa.webp',
+            srcMobile: 'assets/escena-serpa.webp',
+            hands: 'assets/manos-serpa.webp',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.595%', pupilY: '20.639%', pupilW: '1.641%', pupilH: '2.407%' }
+          },
+          {
+            id: 'polar',
+            name: 'Polar',
+            src: 'assets/escena-polar.webp',
+            srcMobile: 'assets/escena-polar.webp',
+            hands: 'assets/manos-polar.webp',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.603%', pupilY: '20.697%', pupilW: '1.641%', pupilH: '2.407%' }
+          },
+          {
+            id: 'guichard',
+            name: 'Guichard',
+            src: 'assets/escena-guichard.webp',
+            srcMobile: 'assets/escena-guichard.webp',
+            hands: 'assets/manos-guichard.webp',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.602%', pupilY: '20.259%', pupilW: '1.641%', pupilH: '2.407%' }
+          },
+          {
+            id: 'olabuenaga',
+            name: 'Olabuenaga',
+            src: 'assets/escena-olabuenaga.webp',
+            srcMobile: 'assets/escena-olabuenaga.webp',
+            hands: 'assets/manos-olabuenaga.webp',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.569%', pupilY: '20.721%', pupilW: '1.641%', pupilH: '2.407%' }
+          },
+          {
+            id: 'visco',
+            name: 'Visco',
+            src: 'assets/escena-visco.webp',
+            srcMobile: 'assets/escena-visco.webp',
+            hands: 'assets/manos-visco.webp',
+            eye: { eyeX: '48.9%', eyeY: '20.9%', pupilX: '49.688%', pupilY: '20.926%', pupilW: '1.641%', pupilH: '2.407%' }
+          }
+        ];
+
+    // Soporte para depuración o forzar avatar por query param (?avatar=delrio | ?avatar=mercado | ?avatar=perez)
+    const urlParams = new URLSearchParams(window.location.search);
+    const forcedAvatar = urlParams.get('avatar');
+    let chosen = null;
+
+    if (forcedAvatar) {
+      chosen = avatars.find(a => a.id.toLowerCase() === forcedAvatar.toLowerCase());
+    }
+
+    if (!chosen) {
+      // Rotación inteligente: evitar repetir el mismo adivinador en refresh consecutivos
+      let lastAvatarId = null;
+      try {
+        lastAvatarId = sessionStorage.getItem('insightologia_last_avatar');
+      } catch (e) {}
+
+      const availableCandidates = (lastAvatarId && avatars.length > 1)
+        ? avatars.filter(a => a.id !== lastAvatarId)
+        : avatars;
+
+      const randomIndex = Math.floor(Math.random() * availableCandidates.length);
+      chosen = availableCandidates[randomIndex] || avatars[0];
+    }
+
+    try {
+      sessionStorage.setItem('insightologia_last_avatar', chosen.id);
+    } catch (e) {}
+
+    // Aplicar imagen al elemento del fondo
+    const layerScene = document.getElementById('layer-scene');
+    if (layerScene) {
+      layerScene.src = chosen.src;
+    }
+
+    // Si tiene versión mobile dedicada
+    const layerSceneSourceMobile = document.getElementById('layer-scene-source-mobile');
+    const layerSceneSourcePortrait = document.getElementById('layer-scene-source-portrait');
+    if (chosen.srcMobile) {
+      if (layerSceneSourceMobile) layerSceneSourceMobile.srcset = chosen.srcMobile;
+      if (layerSceneSourcePortrait) layerSceneSourcePortrait.srcset = chosen.srcMobile;
+    }
+
+    // Identificador para tracking / debugging
+    document.body.dataset.avatar = chosen.id;
+    const stageEl = document.getElementById('stage');
+    if (stageEl) stageEl.dataset.avatar = chosen.id;
+
+    // Control dinámico de la capa de manos:
+    // Ahora cada experto cuenta con su propia capa de manos recortada y suavizada en WebP
+    // colocada por encima de la bola animada para preservar el efecto 3D de profundidad.
+    const layerHandsPic = document.getElementById('layer-hands-picture');
+    const layerHands = document.getElementById('layer-hands');
+    const layerHandsSourceMobile = document.getElementById('layer-hands-source-mobile');
+    const layerHandsSourcePortrait = document.getElementById('layer-hands-source-portrait');
+    if (layerHandsPic) {
+      if (chosen.hands) {
+        layerHandsPic.style.display = 'block';
+        if (layerHands) layerHands.src = chosen.hands;
+        if (layerHandsSourceMobile) layerHandsSourceMobile.srcset = chosen.handsMobile || chosen.hands;
+        if (layerHandsSourcePortrait) layerHandsSourcePortrait.srcset = chosen.handsMobile || chosen.hands;
+      } else {
+        layerHandsPic.style.display = 'none';
+      }
+    }
+
+    // Calibración CSS específica del tercer ojo para este avatar
+    if (chosen.eye) {
+      const rootStyle = document.documentElement.style;
+      if (chosen.eye.eyeX) rootStyle.setProperty('--eye-x', chosen.eye.eyeX);
+      if (chosen.eye.eyeY) rootStyle.setProperty('--eye-y', chosen.eye.eyeY);
+      if (chosen.eye.pupilX) rootStyle.setProperty('--pupil-x', chosen.eye.pupilX);
+      if (chosen.eye.pupilY) rootStyle.setProperty('--pupil-y', chosen.eye.pupilY);
+      if (chosen.eye.pupilW) rootStyle.setProperty('--pupil-w', chosen.eye.pupilW);
+      if (chosen.eye.pupilH) rootStyle.setProperty('--pupil-h', chosen.eye.pupilH);
+    }
+
+    return chosen;
+  }
+
+  const currentAvatar = initAvatarSelection();
+
+  // ========================================================
   // 0. PRELOADER MÍSTICO ("Abriendo la mirada...")
   // ========================================================
   const preloader = document.getElementById('preloader');
@@ -248,12 +454,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const viewportWrapper = document.getElementById('viewport-wrapper');
 
   const assetsToPreload = [
-    { type: 'image', src: 'assets/escena-sin-pupila.webp' },
-    { type: 'image', src: 'assets/escena-mobile-sin-pupila.webp' },
+    { type: 'image', src: currentAvatar ? currentAvatar.src : 'assets/escena-perez.webp' },
+    { type: 'image', src: (currentAvatar && currentAvatar.srcMobile) ? currentAvatar.srcMobile : 'assets/escena-mobile-sin-pupila.webp' },
     { type: 'image', src: 'assets/pupila.png' },
     { type: 'image', src: 'assets/abriendo.webp' },
     { type: 'image', src: 'assets/abriendo-mobile.webp' },
-    { type: 'image', src: 'assets/manos.png' },
+    ...(currentAvatar && currentAvatar.hands ? [{ type: 'image', src: currentAvatar.hands }] : []),
     { type: 'image', src: 'assets/fondo-aterciopelado.jpeg' },
     { type: 'image', src: 'assets/gato.webp' },
     { type: 'image', src: 'assets/manos-mobile.png' },
@@ -556,6 +762,16 @@ document.addEventListener('DOMContentLoaded', () => {
       pointerEvents: 'none'
     });
 
+    if (btnCatInsightologo) {
+      gsap.to(btnCatInsightologo, {
+        opacity: 0,
+        y: 8,
+        duration: 0.4,
+        ease: 'power2.inOut',
+        pointerEvents: 'none'
+      });
+    }
+
     // B. La pregunta vuela y se disuelve hacia el centro de la bola
     if (question.length > 0) {
       floatingQuestion.textContent = `"${question}"`;
@@ -799,7 +1015,7 @@ document.addEventListener('DOMContentLoaded', () => {
       opacity: 0,
       duration: 0.6
     }, 0.3)
-    // 4. Reaparecer el input panel
+    // 4. Reaparecer el input panel y el cartel de insightólogo
     .to(inputPanel, {
       opacity: 1,
       y: 0,
@@ -807,6 +1023,16 @@ document.addEventListener('DOMContentLoaded', () => {
       ease: 'power2.out',
       pointerEvents: 'auto'
     }, '-=0.4');
+
+    if (btnCatInsightologo) {
+      tlOut.to(btnCatInsightologo, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'power2.out',
+        pointerEvents: 'auto'
+      }, '<');
+    }
   }
 
   function startAutoResetTimer() {
@@ -1379,6 +1605,79 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     }
 
+    function renderInsightologosModal() {
+      if (!modalInsightologoBody) return;
+      const bios = (typeof CONFIG !== 'undefined' && CONFIG.EXPERT_BIOS) ? CONFIG.EXPERT_BIOS : [];
+      const t = I18N[currentLang] || I18N.es;
+      const currentId = currentAvatar ? currentAvatar.id : 'perez';
+
+      // Encontrar el experto correspondiente al adivinador de turno en pantalla
+      const currentBio = bios.find(b => b.id === currentId);
+
+      let html = '';
+      if (currentBio && currentBio.bio) {
+        html = `
+          <div class="insightologo-single-card">
+            <h3 class="insightologo-item-header">${currentBio.nombre.toUpperCase()} (${currentBio.pais.toUpperCase()})</h3>
+            <p class="insightologo-item-bio">${currentBio.bio}</p>
+            <div class="insightologo-reload-hint" role="button" tabindex="0" title="Recargar página">${t.insightologoReloadHint || 'volvé a cargar la página para descubrir más Insightólogos'}</div>
+          </div>
+        `;
+      } else {
+        html = `
+          <div class="insightologo-single-card">
+            <div class="insightologo-reload-hint" role="button" tabindex="0" title="Recargar página">${t.insightologoReloadHint || 'volvé a cargar la página para descubrir más Insightólogos'}</div>
+          </div>
+        `;
+      }
+
+      modalInsightologoBody.innerHTML = html;
+
+      const reloadBtn = modalInsightologoBody.querySelector('.insightologo-reload-hint');
+      if (reloadBtn) {
+        reloadBtn.addEventListener('click', () => {
+          window.location.reload();
+        });
+        reloadBtn.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            window.location.reload();
+          }
+        });
+      }
+    }
+
+    function openModalInsightologo() {
+      if (!modalInsightologo) return;
+      closeMenuDropdown();
+      renderInsightologosModal();
+      modalInsightologo.classList.add('is-active');
+      modalInsightologo.setAttribute('aria-hidden', 'false');
+      if (modalInsightologoStage) modalInsightologoStage.scrollTop = 0;
+      if (btnMenu) {
+        btnMenu.style.opacity = '0';
+        btnMenu.style.pointerEvents = 'none';
+      }
+      if (btnSound) {
+        btnSound.style.opacity = '0';
+        btnSound.style.pointerEvents = 'none';
+      }
+    }
+
+    function closeModalInsightologo() {
+      if (!modalInsightologo) return;
+      modalInsightologo.classList.remove('is-active');
+      modalInsightologo.setAttribute('aria-hidden', 'true');
+      if (btnMenu) {
+        btnMenu.style.opacity = '';
+        btnMenu.style.pointerEvents = '';
+      }
+      if (btnSound) {
+        btnSound.style.opacity = '';
+        btnSound.style.pointerEvents = '';
+      }
+    }
+
     if (menuBtnAbout) {
       menuBtnAbout.addEventListener('click', () => {
         openModalAbout();
@@ -1393,9 +1692,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (modalAbout) {
       modalAbout.addEventListener('click', (e) => {
-        // Cerrar si se cliquea en el backdrop
         if (e.target === modalAbout || e.target === modalAboutStage) {
           closeModalAbout();
+        }
+      });
+    }
+
+    if (btnCatInsightologo) {
+      btnCatInsightologo.addEventListener('click', (e) => {
+        e.stopPropagation();
+        openModalInsightologo();
+      });
+    }
+
+    if (menuBtnInsightologo) {
+      menuBtnInsightologo.addEventListener('click', () => {
+        openModalInsightologo();
+      });
+    }
+
+    if (modalInsightologoClose) {
+      modalInsightologoClose.addEventListener('click', () => {
+        closeModalInsightologo();
+      });
+    }
+
+    if (modalInsightologo) {
+      modalInsightologo.addEventListener('click', (e) => {
+        if (e.target === modalInsightologo || e.target === modalInsightologoStage) {
+          closeModalInsightologo();
         }
       });
     }
@@ -1404,6 +1729,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (e.key === 'Escape') {
         if (modalAbout && modalAbout.classList.contains('is-active')) {
           closeModalAbout();
+        } else if (modalInsightologo && modalInsightologo.classList.contains('is-active')) {
+          closeModalInsightologo();
         } else if (menuDropdown && menuDropdown.classList.contains('is-open')) {
           closeMenuDropdown();
         }
