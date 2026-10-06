@@ -68,6 +68,7 @@ document.addEventListener('DOMContentLoaded', () => {
       insightologoMenu: '¿Quién es el insightólogo de turno?',
       insightologoTitle: '¿QUIÉN ES EL INSIGHTÓLOGO DE TURNO?',
       insightologoReloadHint: 'volvé a cargar la página para descubrir más Insightólogos',
+      insightologoGenericNotice: 'En la versión mobile estás viendo al Insightólogo original. Ingresá desde una computadora para descubrir a todos los especialistas.',
       inputPlaceholder: '¿Qué querés saber del futuro?',
       btnMicTitle: 'Dictar pregunta (Voz)',
       btnMicAria: 'Dictar por voz',
@@ -92,6 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
       insightologoMenu: 'Quem é o insightólogo da vez?',
       insightologoTitle: 'QUEM É O INSIGHTÓLOGO DA VEZ?',
       insightologoReloadHint: 'recarregue a página para descobrir mais Insightólogos',
+      insightologoGenericNotice: 'Na versão mobile você está vendo o Insightólogo original. Acesse em um computador para conhecer todos os especialistas.',
       inputPlaceholder: 'O que você quer saber do futuro?',
       btnMicTitle: 'Ditar pergunta (Voz)',
       btnMicAria: 'Ditar por voz',
@@ -283,6 +285,32 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ========================================================
+  // CALIBRACIÓN DINÁMICA DEL TERCER OJO (Desktop vs Mobile)
+  // ========================================================
+  function applyEyeCalibration(avatar) {
+    const av = avatar || currentAvatar;
+    const rootStyle = document.documentElement.style;
+    if (isMobilePortrait()) {
+      // En mobile 9:16 se utiliza la calibración nativa de style.css para el insightólogo genérico
+      rootStyle.removeProperty('--eye-x');
+      rootStyle.removeProperty('--eye-y');
+      rootStyle.removeProperty('--eye-size');
+      rootStyle.removeProperty('--pupil-x');
+      rootStyle.removeProperty('--pupil-y');
+      rootStyle.removeProperty('--pupil-w');
+      rootStyle.removeProperty('--pupil-h');
+    } else if (av && av.eye) {
+      // En desktop 16:9 se inyectan las coordenadas individuales del avatar seleccionado
+      if (av.eye.eyeX) rootStyle.setProperty('--eye-x', av.eye.eyeX);
+      if (av.eye.eyeY) rootStyle.setProperty('--eye-y', av.eye.eyeY);
+      if (av.eye.pupilX) rootStyle.setProperty('--pupil-x', av.eye.pupilX);
+      if (av.eye.pupilY) rootStyle.setProperty('--pupil-y', av.eye.pupilY);
+      if (av.eye.pupilW) rootStyle.setProperty('--pupil-w', av.eye.pupilW);
+      if (av.eye.pupilH) rootStyle.setProperty('--pupil-h', av.eye.pupilH);
+    }
+  }
+
+  // ========================================================
   // ROTACIÓN INTELIGENTE DE ADIVINADORES (Insightólogos)
   // ========================================================
   function initAvatarSelection() {
@@ -302,7 +330,6 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'delrio',
             name: 'Del Río',
             src: 'assets/escena-delrio.webp',
-            srcMobile: 'assets/escena-delrio.webp',
             hands: 'assets/manos-delrio.webp',
             eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.511%', pupilY: '20.483%', pupilW: '1.641%', pupilH: '2.407%' }
           },
@@ -310,7 +337,6 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'mercado',
             name: 'Mercado',
             src: 'assets/escena-mercado.webp',
-            srcMobile: 'assets/escena-mercado.webp',
             hands: 'assets/manos-mercado.webp',
             eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.652%', pupilY: '20.359%', pupilW: '1.641%', pupilH: '2.407%' }
           },
@@ -318,7 +344,6 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'olivetto',
             name: 'Olivetto',
             src: 'assets/escena-olivetto.webp',
-            srcMobile: 'assets/escena-olivetto.webp',
             hands: 'assets/manos-olivetto.webp',
             eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.427%', pupilY: '20.394%', pupilW: '1.641%', pupilH: '2.407%' }
           },
@@ -326,7 +351,6 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'serpa',
             name: 'Serpa',
             src: 'assets/escena-serpa.webp',
-            srcMobile: 'assets/escena-serpa.webp',
             hands: 'assets/manos-serpa.webp',
             eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.595%', pupilY: '20.639%', pupilW: '1.641%', pupilH: '2.407%' }
           },
@@ -334,7 +358,6 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'polar',
             name: 'Polar',
             src: 'assets/escena-polar.webp',
-            srcMobile: 'assets/escena-polar.webp',
             hands: 'assets/manos-polar.webp',
             eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.603%', pupilY: '20.697%', pupilW: '1.641%', pupilH: '2.407%' }
           },
@@ -342,7 +365,6 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'guichard',
             name: 'Guichard',
             src: 'assets/escena-guichard.webp',
-            srcMobile: 'assets/escena-guichard.webp',
             hands: 'assets/manos-guichard.webp',
             eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.602%', pupilY: '20.259%', pupilW: '1.641%', pupilH: '2.407%' }
           },
@@ -350,7 +372,6 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'olabuenaga',
             name: 'Olabuenaga',
             src: 'assets/escena-olabuenaga.webp',
-            srcMobile: 'assets/escena-olabuenaga.webp',
             hands: 'assets/manos-olabuenaga.webp',
             eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.569%', pupilY: '20.721%', pupilW: '1.641%', pupilH: '2.407%' }
           },
@@ -358,7 +379,6 @@ document.addEventListener('DOMContentLoaded', () => {
             id: 'visco',
             name: 'Visco',
             src: 'assets/escena-visco.webp?v=20261006-01',
-            srcMobile: 'assets/escena-visco.webp?v=20261006-01',
             hands: 'assets/manos-visco.webp',
             eye: { eyeX: '48.9%', eyeY: '22.8%', pupilX: '49.688%', pupilY: '22.824%', pupilW: '1.641%', pupilH: '2.407%' }
           }
@@ -373,24 +393,34 @@ document.addEventListener('DOMContentLoaded', () => {
       chosen = avatars.find(a => a.id.toLowerCase() === forcedAvatar.toLowerCase());
     }
 
+    const isMob = isMobilePortrait();
+
     if (!chosen) {
-      // Rotación inteligente: evitar repetir el mismo adivinador en refresh consecutivos
-      let lastAvatarId = null;
-      try {
-        lastAvatarId = sessionStorage.getItem('insightologia_last_avatar');
-      } catch (e) {}
+      if (isMob) {
+        // En mobile se utiliza ÚNICAMENTE el insightólogo genérico (perez)
+        // hasta que se diseñen las versiones mobile del resto de ellos
+        chosen = avatars.find(a => a.id === 'perez') || avatars[0];
+      } else {
+        // En desktop: rotación inteligente entre los insightólogos
+        let lastAvatarId = null;
+        try {
+          lastAvatarId = sessionStorage.getItem('insightologia_last_avatar');
+        } catch (e) {}
 
-      const availableCandidates = (lastAvatarId && avatars.length > 1)
-        ? avatars.filter(a => a.id !== lastAvatarId)
-        : avatars;
+        const availableCandidates = (lastAvatarId && avatars.length > 1)
+          ? avatars.filter(a => a.id !== lastAvatarId)
+          : avatars;
 
-      const randomIndex = Math.floor(Math.random() * availableCandidates.length);
-      chosen = availableCandidates[randomIndex] || avatars[0];
+        const randomIndex = Math.floor(Math.random() * availableCandidates.length);
+        chosen = availableCandidates[randomIndex] || avatars[0];
+      }
     }
 
-    try {
-      sessionStorage.setItem('insightologia_last_avatar', chosen.id);
-    } catch (e) {}
+    if (!isMob && chosen) {
+      try {
+        sessionStorage.setItem('insightologia_last_avatar', chosen.id);
+      } catch (e) {}
+    }
 
     // Aplicar imagen al elemento del fondo
     const layerScene = document.getElementById('layer-scene');
@@ -398,13 +428,16 @@ document.addEventListener('DOMContentLoaded', () => {
       layerScene.src = chosen.src;
     }
 
-    // Si tiene versión mobile dedicada
+    // Configurar fuentes de mobile (<source>):
+    // En mobile siempre se preserva el arte vertical del insightólogo genérico
     const layerSceneSourceMobile = document.getElementById('layer-scene-source-mobile');
     const layerSceneSourcePortrait = document.getElementById('layer-scene-source-portrait');
-    if (chosen.srcMobile) {
-      if (layerSceneSourceMobile) layerSceneSourceMobile.srcset = chosen.srcMobile;
-      if (layerSceneSourcePortrait) layerSceneSourcePortrait.srcset = chosen.srcMobile;
-    }
+    const genericMobileScene = 'assets/escena-mobile-sin-pupila.webp?v=20261002-6';
+    const genericMobileHands = 'assets/manos-mobile.png';
+
+    const mobileSceneSrc = (chosen.srcMobile && chosen.id === 'perez') ? chosen.srcMobile : genericMobileScene;
+    if (layerSceneSourceMobile) layerSceneSourceMobile.srcset = mobileSceneSrc;
+    if (layerSceneSourcePortrait) layerSceneSourcePortrait.srcset = mobileSceneSrc;
 
     // Identificador para tracking / debugging
     document.body.dataset.avatar = chosen.id;
@@ -422,23 +455,16 @@ document.addEventListener('DOMContentLoaded', () => {
       if (chosen.hands) {
         layerHandsPic.style.display = 'block';
         if (layerHands) layerHands.src = chosen.hands;
-        if (layerHandsSourceMobile) layerHandsSourceMobile.srcset = chosen.handsMobile || chosen.hands;
-        if (layerHandsSourcePortrait) layerHandsSourcePortrait.srcset = chosen.handsMobile || chosen.hands;
+        const mobileHandsSrc = (chosen.handsMobile && chosen.id === 'perez') ? chosen.handsMobile : genericMobileHands;
+        if (layerHandsSourceMobile) layerHandsSourceMobile.srcset = mobileHandsSrc;
+        if (layerHandsSourcePortrait) layerHandsSourcePortrait.srcset = mobileHandsSrc;
       } else {
         layerHandsPic.style.display = 'none';
       }
     }
 
-    // Calibración CSS específica del tercer ojo para este avatar
-    if (chosen.eye) {
-      const rootStyle = document.documentElement.style;
-      if (chosen.eye.eyeX) rootStyle.setProperty('--eye-x', chosen.eye.eyeX);
-      if (chosen.eye.eyeY) rootStyle.setProperty('--eye-y', chosen.eye.eyeY);
-      if (chosen.eye.pupilX) rootStyle.setProperty('--pupil-x', chosen.eye.pupilX);
-      if (chosen.eye.pupilY) rootStyle.setProperty('--pupil-y', chosen.eye.pupilY);
-      if (chosen.eye.pupilW) rootStyle.setProperty('--pupil-w', chosen.eye.pupilW);
-      if (chosen.eye.pupilH) rootStyle.setProperty('--pupil-h', chosen.eye.pupilH);
-    }
+    // Calibración CSS específica del tercer ojo según la plataforma
+    applyEyeCalibration(chosen);
 
     return chosen;
   }
@@ -1609,7 +1635,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!modalInsightologoBody) return;
       const bios = (typeof CONFIG !== 'undefined' && CONFIG.EXPERT_BIOS) ? CONFIG.EXPERT_BIOS : [];
       const t = I18N[currentLang] || I18N.es;
-      const currentId = currentAvatar ? currentAvatar.id : 'perez';
+      const isMob = isMobilePortrait();
+      const currentId = isMob ? 'perez' : (currentAvatar ? currentAvatar.id : 'perez');
 
       // Encontrar el experto correspondiente al adivinador de turno en pantalla
       const currentBio = bios.find(b => b.id === currentId);
@@ -1624,8 +1651,13 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `;
       } else {
+        const noticeText = isMob
+          ? (t.insightologoGenericNotice || 'En la versión mobile estás viendo al Insightólogo original. Ingresá desde una computadora para descubrir a todos los especialistas.')
+          : '';
+
         html = `
           <div class="insightologo-single-card">
+            ${noticeText ? `<p class="insightologo-item-bio" style="margin-bottom: 24px; opacity: 0.9;">${noticeText}</p>` : ''}
             <div class="insightologo-reload-hint" role="button" tabindex="0" title="Recargar página">${t.insightologoReloadHint || 'volvé a cargar la página para descubrir más Insightólogos'}</div>
           </div>
         `;
@@ -2068,6 +2100,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function handlePlatformChange() {
+      applyEyeCalibration(currentAvatar);
       if (isMobilePortrait()) {
         checkMobileGyroSupport();
         scheduleNextSaccade();

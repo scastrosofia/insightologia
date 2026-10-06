@@ -39,7 +39,6 @@ const CONFIG = {
       id: 'delrio',
       name: 'Del Río',
       src: 'assets/escena-delrio.webp',
-      srcMobile: 'assets/escena-delrio.webp',
       hands: 'assets/manos-delrio.webp',
       eye: {
         eyeX: '48.9%',
@@ -54,7 +53,6 @@ const CONFIG = {
       id: 'mercado',
       name: 'Mercado',
       src: 'assets/escena-mercado.webp',
-      srcMobile: 'assets/escena-mercado.webp',
       hands: 'assets/manos-mercado.webp',
       eye: {
         eyeX: '48.9%',
@@ -69,7 +67,6 @@ const CONFIG = {
       id: 'olivetto',
       name: 'Olivetto',
       src: 'assets/escena-olivetto.webp',
-      srcMobile: 'assets/escena-olivetto.webp',
       hands: 'assets/manos-olivetto.webp',
       eye: {
         eyeX: '48.9%',
@@ -84,7 +81,6 @@ const CONFIG = {
       id: 'serpa',
       name: 'Serpa',
       src: 'assets/escena-serpa.webp',
-      srcMobile: 'assets/escena-serpa.webp',
       hands: 'assets/manos-serpa.webp',
       eye: {
         eyeX: '48.9%',
@@ -99,7 +95,6 @@ const CONFIG = {
       id: 'polar',
       name: 'Polar',
       src: 'assets/escena-polar.webp',
-      srcMobile: 'assets/escena-polar.webp',
       hands: 'assets/manos-polar.webp',
       eye: {
         eyeX: '48.9%',
@@ -114,7 +109,6 @@ const CONFIG = {
       id: 'guichard',
       name: 'Guichard',
       src: 'assets/escena-guichard.webp',
-      srcMobile: 'assets/escena-guichard.webp',
       hands: 'assets/manos-guichard.webp',
       eye: {
         eyeX: '48.9%',
@@ -129,7 +123,6 @@ const CONFIG = {
       id: 'olabuenaga',
       name: 'Olabuenaga',
       src: 'assets/escena-olabuenaga.webp',
-      srcMobile: 'assets/escena-olabuenaga.webp',
       hands: 'assets/manos-olabuenaga.webp',
       eye: {
         eyeX: '48.9%',
@@ -144,7 +137,6 @@ const CONFIG = {
       id: 'visco',
       name: 'Visco',
       src: 'assets/escena-visco.webp?v=20261006-01',
-      srcMobile: 'assets/escena-visco.webp?v=20261006-01',
       hands: 'assets/manos-visco.webp',
       eye: {
         eyeX: '48.9%',
