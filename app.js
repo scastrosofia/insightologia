@@ -357,10 +357,10 @@ document.addEventListener('DOMContentLoaded', () => {
           {
             id: 'visco',
             name: 'Visco',
-            src: 'assets/escena-visco.webp',
-            srcMobile: 'assets/escena-visco.webp',
+            src: 'assets/escena-visco.webp?v=20261006-01',
+            srcMobile: 'assets/escena-visco.webp?v=20261006-01',
             hands: 'assets/manos-visco.webp',
-            eye: { eyeX: '48.9%', eyeY: '20.9%', pupilX: '49.688%', pupilY: '20.926%', pupilW: '1.641%', pupilH: '2.407%' }
+            eye: { eyeX: '48.9%', eyeY: '22.8%', pupilX: '49.688%', pupilY: '22.824%', pupilW: '1.641%', pupilH: '2.407%' }
           }
         ];
 
