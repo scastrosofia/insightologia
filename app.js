@@ -291,14 +291,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const av = avatar || currentAvatar;
     const rootStyle = document.documentElement.style;
     if (isMobilePortrait()) {
-      // En mobile 9:16 se utiliza la calibración nativa de style.css para el insightólogo genérico
-      rootStyle.removeProperty('--eye-x');
-      rootStyle.removeProperty('--eye-y');
-      rootStyle.removeProperty('--eye-size');
-      rootStyle.removeProperty('--pupil-x');
-      rootStyle.removeProperty('--pupil-y');
-      rootStyle.removeProperty('--pupil-w');
-      rootStyle.removeProperty('--pupil-h');
+      // En mobile 9:16 aplicamos la calibración personalizada de este avatar o los valores base
+      if (av && av.eyeMobile) {
+        if (av.eyeMobile.eyeX) rootStyle.setProperty('--eye-x', av.eyeMobile.eyeX);
+        if (av.eyeMobile.eyeY) rootStyle.setProperty('--eye-y', av.eyeMobile.eyeY);
+        if (av.eyeMobile.pupilX) rootStyle.setProperty('--pupil-x', av.eyeMobile.pupilX);
+        if (av.eyeMobile.pupilY) rootStyle.setProperty('--pupil-y', av.eyeMobile.pupilY);
+        if (av.eyeMobile.pupilW) rootStyle.setProperty('--pupil-w', av.eyeMobile.pupilW);
+        if (av.eyeMobile.pupilH) rootStyle.setProperty('--pupil-h', av.eyeMobile.pupilH);
+      } else {
+        rootStyle.removeProperty('--eye-x');
+        rootStyle.removeProperty('--eye-y');
+        rootStyle.removeProperty('--eye-size');
+        rootStyle.removeProperty('--pupil-x');
+        rootStyle.removeProperty('--pupil-y');
+        rootStyle.removeProperty('--pupil-w');
+        rootStyle.removeProperty('--pupil-h');
+      }
     } else if (av && av.eye) {
       // En desktop 16:9 se inyectan las coordenadas individuales del avatar seleccionado
       if (av.eye.eyeX) rootStyle.setProperty('--eye-x', av.eye.eyeX);
@@ -318,109 +327,129 @@ document.addEventListener('DOMContentLoaded', () => {
       ? CONFIG.AVATARS
       : [
           {
-            id: 'perez',
-            name: 'Pérez',
-            src: 'assets/escena-perez.webp',
-            srcMobile: 'assets/escena-mobile-sin-pupila.webp',
-            hands: 'assets/manos-perez.webp',
+            id: 'bassat',
+            name: 'Bassat',
+            src: 'assets/escena-bassat.webp',
+            srcMobile: 'assets/escena-mobile-bassat.webp',
+            hands: 'assets/manos-bassat.webp',
             handsMobile: 'assets/manos-mobile.png',
-            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.596%', pupilY: '20.370%', pupilW: '1.641%', pupilH: '2.407%' }
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.596%', pupilY: '20.370%', pupilW: '1.641%', pupilH: '2.407%' },
+            eyeMobile: { eyeX: '50.1%', eyeY: '44.8%', pupilX: '50.080%', pupilY: '44.776%', pupilW: '3.009%', pupilH: '1.406%' }
           },
           {
             id: 'delrio',
             name: 'Del Río',
             src: 'assets/escena-delrio.webp',
+            srcMobile: 'assets/escena-mobile-delrio.webp',
             hands: 'assets/manos-delrio.webp',
-            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.511%', pupilY: '20.483%', pupilW: '1.641%', pupilH: '2.407%' }
+            handsMobile: 'assets/manos-mobile.png',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.511%', pupilY: '20.483%', pupilW: '1.641%', pupilH: '2.407%' },
+            eyeMobile: { eyeX: '49.3%', eyeY: '44.6%', pupilX: '49.256%', pupilY: '44.616%', pupilW: '3.009%', pupilH: '1.406%' }
           },
           {
             id: 'mercado',
             name: 'Mercado',
             src: 'assets/escena-mercado.webp',
+            srcMobile: 'assets/escena-mobile-mercado.webp',
             hands: 'assets/manos-mercado.webp',
-            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.652%', pupilY: '20.359%', pupilW: '1.641%', pupilH: '2.407%' }
+            handsMobile: 'assets/manos-mobile.png',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.652%', pupilY: '20.359%', pupilW: '1.641%', pupilH: '2.407%' },
+            eyeMobile: { eyeX: '51.1%', eyeY: '45.8%', pupilX: '51.088%', pupilY: '45.807%', pupilW: '3.009%', pupilH: '1.406%' }
           },
           {
             id: 'olivetto',
             name: 'Olivetto',
             src: 'assets/escena-olivetto.webp',
+            srcMobile: 'assets/escena-mobile-olivetto.webp',
             hands: 'assets/manos-olivetto.webp',
-            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.427%', pupilY: '20.394%', pupilW: '1.641%', pupilH: '2.407%' }
+            handsMobile: 'assets/manos-mobile.png',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.427%', pupilY: '20.394%', pupilW: '1.641%', pupilH: '2.407%' },
+            eyeMobile: { eyeX: '49.6%', eyeY: '44.6%', pupilX: '49.611%', pupilY: '44.633%', pupilW: '3.009%', pupilH: '1.406%' }
           },
           {
             id: 'serpa',
             name: 'Serpa',
             src: 'assets/escena-serpa.webp',
+            srcMobile: 'assets/escena-mobile-serpa.webp',
             hands: 'assets/manos-serpa.webp',
-            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.595%', pupilY: '20.639%', pupilW: '1.641%', pupilH: '2.407%' }
+            handsMobile: 'assets/manos-mobile.png',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.595%', pupilY: '20.639%', pupilW: '1.641%', pupilH: '2.407%' },
+            eyeMobile: { eyeX: '51.8%', eyeY: '44.2%', pupilX: '51.802%', pupilY: '44.209%', pupilW: '3.009%', pupilH: '1.406%' }
           },
           {
             id: 'polar',
             name: 'Polar',
             src: 'assets/escena-polar.webp',
+            srcMobile: 'assets/escena-mobile-polar.webp',
             hands: 'assets/manos-polar.webp',
-            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.603%', pupilY: '20.697%', pupilW: '1.641%', pupilH: '2.407%' }
+            handsMobile: 'assets/manos-mobile.png',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.603%', pupilY: '20.697%', pupilW: '1.641%', pupilH: '2.407%' },
+            eyeMobile: { eyeX: '48.8%', eyeY: '44.9%', pupilX: '48.799%', pupilY: '44.858%', pupilW: '3.009%', pupilH: '1.406%' }
           },
           {
             id: 'guichard',
             name: 'Guichard',
             src: 'assets/escena-guichard.webp',
+            srcMobile: 'assets/escena-mobile-guichard.webp',
             hands: 'assets/manos-guichard.webp',
-            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.602%', pupilY: '20.259%', pupilW: '1.641%', pupilH: '2.407%' }
+            handsMobile: 'assets/manos-mobile.png',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.602%', pupilY: '20.259%', pupilW: '1.641%', pupilH: '2.407%' },
+            eyeMobile: { eyeX: '48.8%', eyeY: '43.7%', pupilX: '48.813%', pupilY: '43.720%', pupilW: '3.009%', pupilH: '1.406%' }
           },
           {
             id: 'olabuenaga',
             name: 'Olabuenaga',
             src: 'assets/escena-olabuenaga.webp',
+            srcMobile: 'assets/escena-mobile-olabuenaga.webp',
             hands: 'assets/manos-olabuenaga.webp',
-            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.569%', pupilY: '20.721%', pupilW: '1.641%', pupilH: '2.407%' }
+            handsMobile: 'assets/manos-mobile.png',
+            eye: { eyeX: '48.9%', eyeY: '20.8%', pupilX: '49.569%', pupilY: '20.721%', pupilW: '1.641%', pupilH: '2.407%' },
+            eyeMobile: { eyeX: '49.0%', eyeY: '45.6%', pupilX: '48.968%', pupilY: '45.642%', pupilW: '3.009%', pupilH: '1.406%' }
           },
           {
             id: 'visco',
             name: 'Visco',
             src: 'assets/escena-visco.webp?v=20261006-01',
+            srcMobile: 'assets/escena-mobile-visco.webp',
             hands: 'assets/manos-visco.webp',
-            eye: { eyeX: '48.9%', eyeY: '22.8%', pupilX: '49.688%', pupilY: '22.824%', pupilW: '1.641%', pupilH: '2.407%' }
+            handsMobile: 'assets/manos-mobile.png',
+            eye: { eyeX: '48.9%', eyeY: '22.8%', pupilX: '49.688%', pupilY: '22.824%', pupilW: '1.641%', pupilH: '2.407%' },
+            eyeMobile: { eyeX: '49.2%', eyeY: '44.6%', pupilX: '49.203%', pupilY: '44.581%', pupilW: '3.009%', pupilH: '1.406%' }
           }
         ];
 
-    // Soporte para depuración o forzar avatar por query param (?avatar=delrio | ?avatar=mercado | ?avatar=perez)
+    // Soporte para depuración o forzar avatar por query param (?avatar=delrio | ?avatar=mercado | ?avatar=bassat)
     const urlParams = new URLSearchParams(window.location.search);
     const forcedAvatar = urlParams.get('avatar');
     let chosen = null;
 
     if (forcedAvatar) {
-      chosen = avatars.find(a => a.id.toLowerCase() === forcedAvatar.toLowerCase());
+      const q = forcedAvatar.toLowerCase();
+      chosen = avatars.find(a => 
+        a.id.toLowerCase() === q ||
+        (q === 'perez' && a.id === 'bassat') ||
+        (q === 'rio' && a.id === 'delrio')
+      );
     }
-
-    const isMob = isMobilePortrait();
 
     if (!chosen) {
-      if (isMob) {
-        // En mobile se utiliza ÚNICAMENTE el insightólogo genérico (perez)
-        // hasta que se diseñen las versiones mobile del resto de ellos
-        chosen = avatars.find(a => a.id === 'perez') || avatars[0];
-      } else {
-        // En desktop: rotación inteligente entre los insightólogos
-        let lastAvatarId = null;
-        try {
-          lastAvatarId = sessionStorage.getItem('insightologia_last_avatar');
-        } catch (e) {}
-
-        const availableCandidates = (lastAvatarId && avatars.length > 1)
-          ? avatars.filter(a => a.id !== lastAvatarId)
-          : avatars;
-
-        const randomIndex = Math.floor(Math.random() * availableCandidates.length);
-        chosen = availableCandidates[randomIndex] || avatars[0];
-      }
-    }
-
-    if (!isMob && chosen) {
+      // Rotación inteligente: evitar repetir el mismo adivinador en refresh consecutivos
+      let lastAvatarId = null;
       try {
-        sessionStorage.setItem('insightologia_last_avatar', chosen.id);
+        lastAvatarId = sessionStorage.getItem('insightologia_last_avatar');
       } catch (e) {}
+
+      const availableCandidates = (lastAvatarId && avatars.length > 1)
+        ? avatars.filter(a => a.id !== lastAvatarId)
+        : avatars;
+
+      const randomIndex = Math.floor(Math.random() * availableCandidates.length);
+      chosen = availableCandidates[randomIndex] || avatars[0];
     }
+
+    try {
+      sessionStorage.setItem('insightologia_last_avatar', chosen.id);
+    } catch (e) {}
 
     // Aplicar imagen al elemento del fondo
     const layerScene = document.getElementById('layer-scene');
@@ -429,13 +458,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Configurar fuentes de mobile (<source>):
-    // En mobile siempre se preserva el arte vertical del insightólogo genérico
     const layerSceneSourceMobile = document.getElementById('layer-scene-source-mobile');
     const layerSceneSourcePortrait = document.getElementById('layer-scene-source-portrait');
     const genericMobileScene = 'assets/escena-mobile-sin-pupila.webp?v=20261002-6';
     const genericMobileHands = 'assets/manos-mobile.png';
 
-    const mobileSceneSrc = (chosen.srcMobile && chosen.id === 'perez') ? chosen.srcMobile : genericMobileScene;
+    const mobileSceneSrc = chosen.srcMobile || genericMobileScene;
     if (layerSceneSourceMobile) layerSceneSourceMobile.srcset = mobileSceneSrc;
     if (layerSceneSourcePortrait) layerSceneSourcePortrait.srcset = mobileSceneSrc;
 
@@ -455,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (chosen.hands) {
         layerHandsPic.style.display = 'block';
         if (layerHands) layerHands.src = chosen.hands;
-        const mobileHandsSrc = (chosen.handsMobile && chosen.id === 'perez') ? chosen.handsMobile : genericMobileHands;
+        const mobileHandsSrc = chosen.handsMobile || genericMobileHands;
         if (layerHandsSourceMobile) layerHandsSourceMobile.srcset = mobileHandsSrc;
         if (layerHandsSourcePortrait) layerHandsSourcePortrait.srcset = mobileHandsSrc;
       } else {
@@ -1635,11 +1663,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (!modalInsightologoBody) return;
       const bios = (typeof CONFIG !== 'undefined' && CONFIG.EXPERT_BIOS) ? CONFIG.EXPERT_BIOS : [];
       const t = I18N[currentLang] || I18N.es;
-      const isMob = isMobilePortrait();
-      const currentId = isMob ? 'perez' : (currentAvatar ? currentAvatar.id : 'perez');
+      const currentId = currentAvatar ? currentAvatar.id : 'bassat';
 
       // Encontrar el experto correspondiente al adivinador de turno en pantalla
-      const currentBio = bios.find(b => b.id === currentId);
+      const currentBio = bios.find(b => b.id === currentId || (currentId === 'perez' && b.id === 'bassat'));
 
       let html = '';
       if (currentBio && currentBio.bio) {
@@ -1651,13 +1678,8 @@ document.addEventListener('DOMContentLoaded', () => {
           </div>
         `;
       } else {
-        const noticeText = isMob
-          ? (t.insightologoGenericNotice || 'En la versión mobile estás viendo al Insightólogo original. Ingresá desde una computadora para descubrir a todos los especialistas.')
-          : '';
-
         html = `
           <div class="insightologo-single-card">
-            ${noticeText ? `<p class="insightologo-item-bio" style="margin-bottom: 24px; opacity: 0.9;">${noticeText}</p>` : ''}
             <div class="insightologo-reload-hint" role="button" tabindex="0" title="Recargar página">${t.insightologoReloadHint || 'volvé a cargar la página para descubrir más Insightólogos'}</div>
           </div>
         `;

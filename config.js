@@ -20,11 +20,11 @@ const CONFIG = {
   // Galería de Adivinadores / Insightólogos alternativos (rotación aleatoria por refresh)
   AVATARS: [
     {
-      id: 'perez',
-      name: 'Pérez',
-      src: 'assets/escena-perez.webp',
-      srcMobile: 'assets/escena-mobile-sin-pupila.webp',
-      hands: 'assets/manos-perez.webp',
+      id: 'bassat',
+      name: 'Bassat',
+      src: 'assets/escena-bassat.webp',
+      srcMobile: 'assets/escena-mobile-bassat.webp',
+      hands: 'assets/manos-bassat.webp',
       handsMobile: 'assets/manos-mobile.png',
       eye: {
         eyeX: '48.9%',
@@ -33,13 +33,23 @@ const CONFIG = {
         pupilY: '20.370%',
         pupilW: '1.641%',
         pupilH: '2.407%'
+      },
+      eyeMobile: {
+        eyeX: '50.1%',
+        eyeY: '44.8%',
+        pupilX: '50.080%',
+        pupilY: '44.776%',
+        pupilW: '3.009%',
+        pupilH: '1.406%'
       }
     },
     {
       id: 'delrio',
       name: 'Del Río',
       src: 'assets/escena-delrio.webp',
+      srcMobile: 'assets/escena-mobile-delrio.webp',
       hands: 'assets/manos-delrio.webp',
+      handsMobile: 'assets/manos-mobile.png',
       eye: {
         eyeX: '48.9%',
         eyeY: '20.8%',
@@ -47,13 +57,23 @@ const CONFIG = {
         pupilY: '20.483%',
         pupilW: '1.641%',
         pupilH: '2.407%'
+      },
+      eyeMobile: {
+        eyeX: '49.3%',
+        eyeY: '44.6%',
+        pupilX: '49.256%',
+        pupilY: '44.616%',
+        pupilW: '3.009%',
+        pupilH: '1.406%'
       }
     },
     {
       id: 'mercado',
       name: 'Mercado',
       src: 'assets/escena-mercado.webp',
+      srcMobile: 'assets/escena-mobile-mercado.webp',
       hands: 'assets/manos-mercado.webp',
+      handsMobile: 'assets/manos-mobile.png',
       eye: {
         eyeX: '48.9%',
         eyeY: '20.8%',
@@ -61,13 +81,23 @@ const CONFIG = {
         pupilY: '20.359%',
         pupilW: '1.641%',
         pupilH: '2.407%'
+      },
+      eyeMobile: {
+        eyeX: '51.1%',
+        eyeY: '45.8%',
+        pupilX: '51.088%',
+        pupilY: '45.807%',
+        pupilW: '3.009%',
+        pupilH: '1.406%'
       }
     },
     {
       id: 'olivetto',
       name: 'Olivetto',
       src: 'assets/escena-olivetto.webp',
+      srcMobile: 'assets/escena-mobile-olivetto.webp',
       hands: 'assets/manos-olivetto.webp',
+      handsMobile: 'assets/manos-mobile.png',
       eye: {
         eyeX: '48.9%',
         eyeY: '20.8%',
@@ -75,13 +105,23 @@ const CONFIG = {
         pupilY: '20.394%',
         pupilW: '1.641%',
         pupilH: '2.407%'
+      },
+      eyeMobile: {
+        eyeX: '49.6%',
+        eyeY: '44.6%',
+        pupilX: '49.611%',
+        pupilY: '44.633%',
+        pupilW: '3.009%',
+        pupilH: '1.406%'
       }
     },
     {
       id: 'serpa',
       name: 'Serpa',
       src: 'assets/escena-serpa.webp',
+      srcMobile: 'assets/escena-mobile-serpa.webp',
       hands: 'assets/manos-serpa.webp',
+      handsMobile: 'assets/manos-mobile.png',
       eye: {
         eyeX: '48.9%',
         eyeY: '20.8%',
@@ -89,13 +129,23 @@ const CONFIG = {
         pupilY: '20.639%',
         pupilW: '1.641%',
         pupilH: '2.407%'
+      },
+      eyeMobile: {
+        eyeX: '51.8%',
+        eyeY: '44.2%',
+        pupilX: '51.802%',
+        pupilY: '44.209%',
+        pupilW: '3.009%',
+        pupilH: '1.406%'
       }
     },
     {
       id: 'polar',
       name: 'Polar',
       src: 'assets/escena-polar.webp',
+      srcMobile: 'assets/escena-mobile-polar.webp',
       hands: 'assets/manos-polar.webp',
+      handsMobile: 'assets/manos-mobile.png',
       eye: {
         eyeX: '48.9%',
         eyeY: '20.8%',
@@ -103,13 +153,23 @@ const CONFIG = {
         pupilY: '20.697%',
         pupilW: '1.641%',
         pupilH: '2.407%'
+      },
+      eyeMobile: {
+        eyeX: '48.8%',
+        eyeY: '44.9%',
+        pupilX: '48.799%',
+        pupilY: '44.858%',
+        pupilW: '3.009%',
+        pupilH: '1.406%'
       }
     },
     {
       id: 'guichard',
       name: 'Guichard',
       src: 'assets/escena-guichard.webp',
+      srcMobile: 'assets/escena-mobile-guichard.webp',
       hands: 'assets/manos-guichard.webp',
+      handsMobile: 'assets/manos-mobile.png',
       eye: {
         eyeX: '48.9%',
         eyeY: '20.8%',
@@ -117,13 +177,23 @@ const CONFIG = {
         pupilY: '20.259%',
         pupilW: '1.641%',
         pupilH: '2.407%'
+      },
+      eyeMobile: {
+        eyeX: '48.8%',
+        eyeY: '43.7%',
+        pupilX: '48.813%',
+        pupilY: '43.720%',
+        pupilW: '3.009%',
+        pupilH: '1.406%'
       }
     },
     {
       id: 'olabuenaga',
       name: 'Olabuenaga',
       src: 'assets/escena-olabuenaga.webp',
+      srcMobile: 'assets/escena-mobile-olabuenaga.webp',
       hands: 'assets/manos-olabuenaga.webp',
+      handsMobile: 'assets/manos-mobile.png',
       eye: {
         eyeX: '48.9%',
         eyeY: '20.8%',
@@ -131,13 +201,23 @@ const CONFIG = {
         pupilY: '20.721%',
         pupilW: '1.641%',
         pupilH: '2.407%'
+      },
+      eyeMobile: {
+        eyeX: '49.0%',
+        eyeY: '45.6%',
+        pupilX: '48.968%',
+        pupilY: '45.642%',
+        pupilW: '3.009%',
+        pupilH: '1.406%'
       }
     },
     {
       id: 'visco',
       name: 'Visco',
       src: 'assets/escena-visco.webp?v=20261006-01',
+      srcMobile: 'assets/escena-mobile-visco.webp',
       hands: 'assets/manos-visco.webp',
+      handsMobile: 'assets/manos-mobile.png',
       eye: {
         eyeX: '48.9%',
         eyeY: '22.8%',
@@ -145,12 +225,26 @@ const CONFIG = {
         pupilY: '22.824%',
         pupilW: '1.641%',
         pupilH: '2.407%'
+      },
+      eyeMobile: {
+        eyeX: '49.2%',
+        eyeY: '44.6%',
+        pupilX: '49.203%',
+        pupilY: '44.581%',
+        pupilW: '3.009%',
+        pupilH: '1.406%'
       }
     }
   ],
 
   // Biografías oficiales de los Insightólogos / Expertos
   EXPERT_BIOS: [
+    {
+      id: "bassat",
+      nombre: "Lluís Bassat",
+      pais: "España",
+      bio: "Publicitario español nacido en Barcelona en 1941, fundador de Bassat & Asociados en 1975 (luego Bassat Ogilvy tras asociarse con David Ogilvy). Es uno de los creativos y estrategas más influyentes de la publicidad iberoamericana y europea, responsable de las inolvidables ceremonias de inauguración y clausura de los Juegos Olímpicos de Barcelona 1992. Autor de libros fundamentales de la industria como 'El libro rojo de la publicidad' y 'El libro rojo de las marcas', acumuló más de 400 premios nacionales e internacionales y fue nombrado en diversas ocasiones el publicitario más influyente del siglo en España."
+    },
     {
       id: "mercado",
       nombre: "Martín Mercado",
